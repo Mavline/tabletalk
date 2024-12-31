@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>BOM Enricher</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="root">
+        <h2>BOM Component Description Enricher</h2>
+        
+        <!-- Загрузка файла -->
+        <div class="upload-section">
+            <h3>1. Загрузите BOM файл (Excel)</h3>
+            <input type="file" id="bomFile" accept=".xlsx,.xls">
+        </div>
+
+        <!-- Статус обработки -->
+        <div class="status-section">
+            <h3>2. Статус обработки</h3>
+            <div id="processingStatus">Ожидание файла...</div>
+            <div id="progressBar" class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+
+        <!-- Результаты -->
+        <div class="results-section">
+            <h3>3. Результаты</h3>
+            <div id="results">
+                <table id="previewTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>Name (До)</th>
+                            <th>Name (После)</th>
+                            <th>Источник</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <button id="downloadBtn" style="display: none;">Скачать обработанный файл</button>
+        </div>
+    </div>
+    <script src="frontend.js"></script>
+</body>
+</html> 

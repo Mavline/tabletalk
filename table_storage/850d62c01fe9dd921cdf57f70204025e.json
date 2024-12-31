@@ -1,0 +1,218 @@
+{
+  "originalName": "short_ex.xlsx",
+  "processedName": "1735570521795_enriched.xlsx",
+  "uploadTime": "2024-12-30T14:53:33.127Z",
+  "lastAccess": "2024-12-30T14:55:21.836Z",
+  "chatHistory": [
+    {
+      "role": "assistant",
+      "content": "Я анализирую таблицу \"Bill of Materials\" и помогаю дополнить информацию о компонентах и их названиях посредством поиска в источниках на сайтах:\n- https://www.digikey.co.il/en\n- https://www.mouser.com/\n- https://www.datasheets360.com/\n\nЯ могу:\n1. Определить недостающую информацию в описаниях\n2. Найти компоненты по парт-номеру\n3. Дополнить описания, сохраняя существующий стиль\n4. Ответить на вопросы о компонентах\n\nЧем могу помочь?",
+      "timestamp": "2024-12-30T14:53:33.159Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"INSERT HCOIL CRM LOCK .138-32*\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/southco/NAS1130-06L15/102073\"\n}",
+      "timestamp": "2024-12-30T14:53:37.253Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CRM 470 PF 50 V 5% X7R 0402 SMT\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/knowles-syfer/0402X471J500SNT/1869358\"\n}",
+      "timestamp": "2024-12-30T14:53:40.068Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CRM 39 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/murata-electronics/GRM1555C1H390GA01D/2593013\"\n}",
+      "timestamp": "2024-12-30T14:53:42.717Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P 1 M ST SMT SMPM\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/johnson-components/M701-199-SF162/1046878\"\n}",
+      "timestamp": "2024-12-30T14:53:46.013Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RECEPT COAX 1 C ST SMT UFL 3P\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/hirose-electric-co-ltd/U-FL-R-SMT-1-10/364926\"\n}",
+      "timestamp": "2024-12-30T14:53:48.716Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT 10P 1.27MM SMT\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/samtec/SFM-105-02-S-D-K-TR/1028507\"\n}",
+      "timestamp": "2024-12-30T14:53:51.092Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 100NH 0.1A 5% 0402\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/taiyo-yuden/L-07CR10JV6T/1666388\"\n}",
+      "timestamp": "2024-12-30T14:53:54.140Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 12NH 1.24A 2% 0402 Q=30\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/murata-electronics/LQW15AN12NG8ZD/4422375\"\n}",
+      "timestamp": "2024-12-30T14:53:56.700Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 10NH 1.4A 2% 0402 Q=31\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/murata-electronics/LQW15AN10NG8ZD/4422374\"\n}",
+      "timestamp": "2024-12-30T14:53:59.257Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 1.8K 0.0625W 1% 0402 SMT\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/vishay-dale/CRCW04021K80FKED/792391\"\n}",
+      "timestamp": "2024-12-30T14:54:01.922Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1567.5MHZ 1DB SMT2\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anatech-electronics/DBP-1567-S-A-50/102073\"\n}",
+      "timestamp": "2024-12-30T14:54:04.792Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC AMP LNA 1.2-3GHZ TDFN 8\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anaren/AHL5216T8/102073\"\n}",
+      "timestamp": "2024-12-30T14:54:07.498Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"DIPLEXER DC-3G 1.5DB 2W 1008-8\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anatech-electronics/LDPQ-132-33+/102073\"\n}",
+      "timestamp": "2024-12-30T14:54:10.488Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1.232 GHZ 1DB SMT2\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anatech-electronics/DBP-1232-P-A-50/102073\"\n}",
+      "timestamp": "2024-12-30T14:54:13.386Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER EMI 350MA 10V 250M 1005\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/taiyo-yuden/MEM1005PP251T001/1666388\"\n}",
+      "timestamp": "2024-12-30T14:54:15.748Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC RF SWITCH SPDT 0.5-6GHZ QFN\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/infineon-technologies/BGS12PN10E6327XTSA1/4497699\"\n}",
+      "timestamp": "2024-12-30T14:54:18.430Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SPLITTER 2W0 1-2.4 GHZ 0805-6\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anatech-electronics/SCG-2-242+/102073\"\n}",
+      "timestamp": "2024-12-30T14:54:20.904Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER LP DC-1.575 GHZ 0805\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anatech-electronics/LFCG-1575+/102073\"\n}",
+      "timestamp": "2024-12-30T14:54:23.729Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC BUFFER UHS DUAL SC70 6\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/onsemi/NC7WZ16P6X/1150503\"\n}",
+      "timestamp": "2024-12-30T14:54:26.574Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW PH PHIL CRES NC 2X.250\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/keystone-electronics/MS51957-3/102073\"\n}",
+      "timestamp": "2024-12-30T14:54:29.132Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCOTCH-WELD EPOXY ADHESIVE\",\n    \"source\": \"https://www.3m.com/3M/en_US/p/d/b00033701/\"\n}",
+      "timestamp": "2024-12-30T14:54:31.404Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"INSERT HCOIL CRM LOCK .138-32*\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/southco/NAS1130-06L15/102073\"\n}",
+      "timestamp": "2024-12-30T14:54:34.386Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CRM 470 PF 50 V 5% X7R 0402 SMT\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/knowles-syfer/0402X471J500SNT/1869358\"\n}",
+      "timestamp": "2024-12-30T14:54:37.066Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CRM 39 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/murata-electronics/GRM1555C1H390GA01D/2593013\"\n}",
+      "timestamp": "2024-12-30T14:54:39.667Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P 1 M ST SMT SMPM\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/johnson-components/M701-199-SF162/1046878\"\n}",
+      "timestamp": "2024-12-30T14:54:42.206Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RECEPT COAX 1 C ST SMT UFL 3P\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/hirose-electric-co-ltd/U-FL-R-SMT-1-10/364926\"\n}",
+      "timestamp": "2024-12-30T14:54:44.818Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT 10P 1.27MM SMT\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/samtec/SFM-105-02-S-D-K-TR/1028507\"\n}",
+      "timestamp": "2024-12-30T14:54:47.395Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 100NH 0.1A 5% 0402\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/taiyo-yuden/L-07CR10JV6T/1666388\"\n}",
+      "timestamp": "2024-12-30T14:54:50.176Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 12NH 1.24A 2% 0402 Q=30\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/murata-electronics/LQW15AN12NG8ZD/4422375\"\n}",
+      "timestamp": "2024-12-30T14:54:52.776Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 10NH 1.4A 2% 0402 Q=31\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/murata-electronics/LQW15AN10NG8ZD/4422374\"\n}",
+      "timestamp": "2024-12-30T14:54:56.027Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 1.8K 0.06W 1% 0402\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/vishay-dale/CRCW04021K80FKED/792391\"\n}",
+      "timestamp": "2024-12-30T14:54:58.436Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1567.5MHZ 1DB SMT2\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anatech-electronics/DBP-1567-S-A-50/102073\"\n}",
+      "timestamp": "2024-12-30T14:55:00.942Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC AMP LNA 1.2-3GHZ TDFN 8\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anaren/AHL5216T8/102073\"\n}",
+      "timestamp": "2024-12-30T14:55:03.481Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"DIPLEXER DC-3G 1.5DB 2W 1008-8\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anatech-electronics/LDPQ-132-33+/102073\"\n}",
+      "timestamp": "2024-12-30T14:55:06.002Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1.232 GHZ 1DB SMT2\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anatech-electronics/DBP-1232-P-A-50/102073\"\n}",
+      "timestamp": "2024-12-30T14:55:09.048Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER EMI 350MA 10V 250MHZ 1005\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/taiyo-yuden/MEM1005PP251T001/1666388\"\n}",
+      "timestamp": "2024-12-30T14:55:11.384Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC RF SWITCH SPDT 0.5-6GHZ QFN\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/infineon-technologies/BGS12PN10E6327XTSA1/4497699\"\n}",
+      "timestamp": "2024-12-30T14:55:13.924Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SPLITTER 2W0 1-2.4 GHZ 0805-6\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anatech-electronics/SCG-2-242+/102073\"\n}",
+      "timestamp": "2024-12-30T14:55:16.797Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER LP DC-1.575 GHZ 0805\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/anatech-electronics/LFCG-1575+/102073\"\n}",
+      "timestamp": "2024-12-30T14:55:19.305Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC BUFFER UHS DUAL SC70 6\",\n    \"source\": \"https://www.digikey.co.il/en/products/detail/onsemi/NC7WZ16P6X/1150503\"\n}",
+      "timestamp": "2024-12-30T14:55:21.650Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Файл успешно обработан. Обработано строк: 69. \nВы можете задавать вопросы о компонентах или запросить дополнительную информацию.",
+      "timestamp": "2024-12-30T14:55:21.836Z"
+    }
+  ]
+}

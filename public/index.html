@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOM Enricher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        .upload-section {
+            border: 2px dashed #444;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+        }
+        .progress-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #4CAF50;
+            transition: width 0.3s ease;
+        }
+        .updates {
+            margin: 20px 0;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .updates table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .updates th {
+            background: #333;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #444;
+        }
+        .updates td {
+            padding: 12px;
+            border-bottom: 1px solid #444;
+        }
+        .updates tr:hover {
+            background: #333;
+        }
+        .llm-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px;
+            background: #2a2a2a;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+            max-width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .llm-status.working {
+            border-left-color: #ffd700;
+        }
+        .llm-status.error {
+            border-left-color: #ff6b6b;
+        }
+        #downloadBtn {
+            display: none;
+            padding: 12px 24px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .highlight-diff {
+            background: rgba(76, 175, 80, 0.2);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        #status {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .llm-chat {
+            margin: 20px 0;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .chat-header {
+            padding: 15px;
+            background: #333;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-header h3 {
+            margin: 0;
+        }
+        #connectionStatus {
+            font-size: 14px;
+            color: #888;
+        }
+        #connectionStatus.connected {
+            color: #4CAF50;
+        }
+        #connectionStatus.error {
+            color: #ff6b6b;
+        }
+        .chat-messages {
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .message.user {
+            background: #333;
+            margin-left: 20%;
+        }
+        .message.llm {
+            background: #2d2d2d;
+            margin-right: 20%;
+            border-left: 4px solid #4CAF50;
+        }
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid #444;
+            display: flex;
+            gap: 10px;
+        }
+        #userQuestion {
+            flex: 1;
+            min-height: 60px;
+            padding: 10px;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #e0e0e0;
+            resize: vertical;
+        }
+        #askButton {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #askButton:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        .download-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .download-btn:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>BOM Component Description Enricher</h1>
+    
+    <div class="upload-section" id="dropZone">
+        <p>Перетащите Excel файл сюда или</p>
+        <input type="file" id="fileInput" accept=".xlsx,.xls">
+    </div>
+
+    <div class="progress-section">
+        <div id="status">Ожидание файла...</div>
+        <div class="progress-bar">
+            <div class="progress" id="progressBar"></div>
+        </div>
+    </div>
+
+    <div class="llm-chat">
+        <div class="chat-header">
+            <h3>Диалог с LLM</h3>
+            <div id="connectionStatus">Проверка подключения...</div>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input">
+            <textarea id="userQuestion" placeholder="Задайте вопрос о компонентах..."></textarea>
+            <button id="askButton">Спросить LLM</button>
+        </div>
+    </div>
+
+    <div class="updates">
+        <table>
+            <thead>
+                <tr>
+                    <th>Original Description</th>
+                    <th>Enriched Description</th>
+                    <th>Source</th>
+                </tr>
+            </thead>
+            <tbody id="updatesTable"></tbody>
+        </table>
+    </div>
+
+    <div class="llm-status" id="llmStatus" style="display: none;">
+        <div id="llmStatusText"></div>
+    </div>
+
+    <a id="downloadBtn" class="download-btn" style="display: none;">Скачать обработанный файл</a>
+
+    <script>
+        let currentFileId = null;
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const progressBar = document.getElementById('progressBar');
+        const progressSection = document.querySelector('.progress-section');
+        const progressStatus = document.getElementById('status');
+        const updatesTable = document.getElementById('updatesTable');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const llmStatus = document.getElementById('llmStatus');
+        const llmStatusText = document.getElementById('llmStatusText');
+        const chatMessages = document.getElementById('chatMessages');
+        const userQuestion = document.getElementById('userQuestion');
+        const askButton = document.getElementById('askButton');
+
+        // Инициализация WebSocket подключения
+        const ws = new WebSocket(`ws://${window.location.host}`);
+
+        ws.onopen = () => {
+            console.log('WebSocket подключение установлено');
+            const connectionStatus = document.getElementById('connectionStatus');
+            connectionStatus.textContent = '✅ Подключено к API';
+            connectionStatus.className = 'connected';
+            showLLMStatus('✅ Подключение установлено', 'success');
+        };
+
+        ws.onclose = () => {
+            console.log('WebSocket подключение закрыто');
+            const connectionStatus = document.getElementById('connectionStatus');
+            connectionStatus.textContent = '❌ Ошибка подключения';
+            connectionStatus.className = 'error';
+            showLLMStatus('❌ Подключение потеряно', 'error');
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket ошибка:', error);
+            const connectionStatus = document.getElementById('connectionStatus');
+            connectionStatus.textContent = '❌ Ошибка подключения';
+            connectionStatus.className = 'error';
+            showLLMStatus('❌ Ошибка подключения', 'error');
+        };
+
+        ws.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                console.log('Получено сообщение:', data);
+                
+                if (data.fileId) {
+                    currentFileId = data.fileId;
+                    loadChatHistory(currentFileId);
+                }
+                
+                switch (data.type) {
+                    case 'headers':
+                        // Создаем таблицу с полученными заголовками
+                        const updatesDiv = document.querySelector('.updates');
+                        updatesDiv.innerHTML = '';
+                        updatesDiv.appendChild(createTable(data.headers));
+                        break;
+                        
+                    case 'progress':
+                        updateProgress(data.current, data.total);
+                        break;
+                        
+                    case 'preview':
+                        addTableRow(data);
+                        break;
+                        
+                    case 'error':
+                        showError(data.message);
+                        showLLMStatus(`❌ Ошибка: ${data.message}`, 'error');
+                        break;
+                }
+            } catch (error) {
+                console.error('Ошибка обработки сообщения WebSocket:', error);
+                showError('Ошибка обработки ответа сервера');
+                showLLMStatus('❌ Ошибка обработки ответа сервера', 'error');
+            }
+        };
+
+        // Загрузка истории чата
+        async function loadChatHistory(fileId) {
+            try {
+                const response = await fetch(`/api/chat-history/${fileId}`);
+                if (!response.ok) {
+                    throw new Error('Не удалось загрузить историю чата');
+                }
+                const { history } = await response.json();
+                chatMessages.innerHTML = '';
+                history.forEach(msg => addMessage(msg.content, msg.role));
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            } catch (error) {
+                console.error('Ошибка загрузки истории:', error);
+                showError('Не удалось загрузить историю чата');
+            }
+        }
+
+        function showLLMStatus(text, type = 'working') {
+            llmStatus.style.display = 'block';
+            llmStatus.className = 'llm-status ' + type;
+            llmStatusText.innerHTML = text;
+        }
+
+        function highlightDifferences(before, after) {
+            const words1 = before.split(' ');
+            const words2 = after.split(' ');
+            let result = '';
+            
+            for (let i = 0; i < words2.length; i++) {
+                if (!words1.includes(words2[i])) {
+                    result += `<span class="highlight-diff">${words2[i]}</span> `;
+                } else {
+                    result += words2[i] + ' ';
+                }
+            }
+            return result.trim();
+        }
+
+        dropZone.ondragover = (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#4CAF50';
+        };
+
+        dropZone.ondragleave = () => {
+            dropZone.style.borderColor = '#444';
+        };
+
+        dropZone.ondrop = (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#444';
+            const file = e.dataTransfer.files[0];
+            if (file && file.name.match(/\.(xlsx|xls)$/i)) {
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change'));
+            } else {
+                showError('Пожалуйста, загрузите файл Excel (.xlsx или .xls)');
+            }
+        };
+
+        fileInput.onchange = async function() {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            if (!file.name.match(/\.(xlsx|xls)$/i)) {
+                showError('Пожалуйста, загрузите файл Excel (.xlsx или .xls)');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            updatesTable.innerHTML = '';
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            progressStatus.textContent = 'Загрузка файла...';
+            downloadBtn.style.display = 'none';
+            showLLMStatus('🔍 Начинаем анализ компонентов...');
+
+            try {
+                const response = await fetch('/process', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Ошибка загрузки файла');
+                }
+
+                progressStatus.textContent = 'Файл успешно загружен!';
+                showLLMStatus('✅ Файл успешно загружен', 'success');
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                downloadBtn.href = url;
+                downloadBtn.download = file.name.replace('.xlsx', '_enriched.xlsx');
+                downloadBtn.style.display = 'block';
+                downloadBtn.textContent = 'Скачать обработанный файл';
+                showLLMStatus('✅ Обработка завершена. Нажмите кнопку "Скачать обработанный файл"', 'success');
+
+                downloadBtn.onclick = () => {
+                    setTimeout(() => {
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
+                };
+
+            } catch (error) {
+                console.error('Error:', error);
+                progressStatus.textContent = `Ошибка: ${error.message}`;
+                showError(error.message);
+                showLLMStatus(`❌ Ошибка: ${error.message}`, 'error');
+            }
+        };
+
+        function addMessage(text, type) {
+            if (text.trim().startsWith('{') && text.trim().endsWith('}')) {
+                return;
+            }
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            message.textContent = text;
+            chatMessages.appendChild(message);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        askButton.onclick = async () => {
+            const question = userQuestion.value.trim();
+            if (!question) return;
+
+            if (!currentFileId) {
+                showError('Сначала загрузите файл!');
+                return;
+            }
+
+            addMessage(question, 'user');
+            askButton.disabled = true;
+            userQuestion.disabled = true;
+
+            try {
+                const response = await fetch('/api/ask-llm', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        question,
+                        fileId: currentFileId 
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Ошибка при обращении к LLM');
+                }
+
+                const data = await response.json();
+                addMessage(data.answer, 'llm');
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage(`Ошибка: ${error.message}`, 'error');
+                showLLMStatus(`❌ Ошибка: ${error.message}`, 'error');
+            } finally {
+                askButton.disabled = false;
+                userQuestion.disabled = false;
+                userQuestion.value = '';
+            }
+        };
+
+        userQuestion.onkeydown = (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                askButton.click();
+            }
+        };
+
+        function handleLLMResponse(data) {
+            const row = updatesTable.insertRow();
+            row.innerHTML = `
+                <td>${data.partNumber || '-'}</td>
+                <td>${data.before}</td>
+                <td>
+                    <div class="llm-suggestion">
+                        <div class="llm-text">${data.llmResponse}</div>
+                        <div class="llm-actions">
+                            <button class="accept-btn">Принять</button>
+                            <button class="edit-btn">Редактировать</button>
+                            <button class="reject-btn">Отклонить</button>
+                        </div>
+                        <div class="edit-form" style="display: none;">
+                            <textarea class="edit-description">${data.before}</textarea>
+                            <button class="save-btn">Сохранить</button>
+                            <button class="cancel-btn">Отмена</button>
+                        </div>
+                    </div>
+                </td>
+                <td>Ожидает решения</td>
+            `;
+
+            const suggestion = row.querySelector('.llm-suggestion');
+            const editForm = suggestion.querySelector('.edit-form');
+            const editDescription = suggestion.querySelector('.edit-description');
+
+            suggestion.querySelector('.accept-btn').onclick = () => {
+                data.accept();
+                row.cells[2].innerHTML = data.after;
+                row.cells[3].innerHTML = `<a href="${data.source}" target="_blank">Подтверждено</a>`;
+            };
+
+            suggestion.querySelector('.edit-btn').onclick = () => {
+                suggestion.querySelector('.llm-actions').style.display = 'none';
+                editForm.style.display = 'block';
+            };
+
+            suggestion.querySelector('.reject-btn').onclick = () => {
+                data.reject();
+                row.cells[2].innerHTML = 'Отклонено';
+                row.cells[3].innerHTML = '-';
+            };
+
+            suggestion.querySelector('.save-btn').onclick = () => {
+                const newDescription = editDescription.value.trim();
+                if (newDescription) {
+                    data.after = newDescription;
+                    data.accept();
+                    row.cells[2].innerHTML = newDescription;
+                    row.cells[3].innerHTML = 'Отредактировано пользователем';
+                }
+            };
+
+            suggestion.querySelector('.cancel-btn').onclick = () => {
+                suggestion.querySelector('.llm-actions').style.display = 'block';
+                editForm.style.display = 'none';
+            };
+        }
+
+        function updateProgress(current, total) {
+            const percent = Math.round((current / total) * 100);
+            progressBar.style.width = `${percent}%`;
+            progressBar.textContent = `${percent}%`;
+            progressStatus.textContent = `Обработано ${current} из ${total} строк`;
+        }
+
+        function showProgress() {
+            progressSection.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            progressStatus.textContent = 'Начинаем обработку...';
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            document.body.appendChild(errorDiv);
+            setTimeout(() => errorDiv.remove(), 5000);
+        }
+
+        function addTableRow(data) {
+            const row = updatesTable.insertRow();
+            row.innerHTML = `
+                <td>${data.before || '-'}</td>
+                <td>${data.after || '-'}</td>
+                <td>${data.source ? `<a href="${data.source}" target="_blank">${data.source}</a>` : '-'}</td>
+            `;
+        }
+
+        // Добавляем функцию для создания таблицы
+        function createTable(headers) {
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tr = document.createElement('tr');
+            
+            // Создаем заголовки из полученных от сервера данных
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                tr.appendChild(th);
+            });
+            
+            thead.appendChild(tr);
+            table.appendChild(thead);
+            
+            const tbody = document.createElement('tbody');
+            tbody.id = 'updatesTable';
+            table.appendChild(tbody);
+            
+            return table;
+        }
+    </script>
+</body>
+</html> 

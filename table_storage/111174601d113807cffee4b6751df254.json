@@ -1,0 +1,218 @@
+{
+  "originalName": "short_ex.xlsx",
+  "processedName": "1735563822178_enriched.xlsx",
+  "uploadTime": "2024-12-30T13:02:24.233Z",
+  "lastAccess": "2024-12-30T13:03:42.197Z",
+  "chatHistory": [
+    {
+      "role": "assistant",
+      "content": "Я анализирую таблицу \"Bill of Materials\" и помогаю дополнить информацию о компонентах и их названиях посредством поиска в источниках на сайтах:\n- https://www.digikey.co.il/en\n- https://www.mouser.com/\n- https://www.datasheets360.com/\n\nЯ могу:\n1. Определить недостающую информацию в описаниях\n2. Найти компоненты по парт-номеру\n3. Дополнить описания, сохраняя существующий стиль\n4. Ответить на вопросы о компонентах\n\nЧем могу помочь?",
+      "timestamp": "2024-12-30T13:02:24.249Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"INSERT HCOIL CRES LOCK .138-32 THREAD\",\n    \"source\": \"https://www.cdiweb.com/datasheets/heli-coil/NAS1130-06L15.pdf\"\n}",
+      "timestamp": "2024-12-30T13:02:28.711Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 470 PF 50 V 5% X7R 0402 SMT\",\n    \"source\": \"https://www.digikey.com/en/products/detail/murata-electronics/0402X471J500SNT/4921063\"\n}",
+      "timestamp": "2024-12-30T13:02:30.324Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 39 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata-Electronics/GRM1555C1H390GA01D\"\n}",
+      "timestamp": "2024-12-30T13:02:33.270Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P SMPM SMT STRAIGHT SF162\",\n    \"source\": \"https://www.mouser.com/ProductDetail/RF-Industries/159-M701-199SF162\"\n}",
+      "timestamp": "2024-12-30T13:02:35.114Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P 1.0MM SMT UFL 3P\",\n    \"source\": \"https://www.hirose.com/product/en/products/U.FL-R-SMT-1(10)/\"\n}",
+      "timestamp": "2024-12-30T13:02:36.700Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT 10P 1.27MM SMT SOCKET TAPE REEL\",\n    \"source\": \"https://www.samtec.com/products/SFM-105-02-S-D-K-TR\"\n}",
+      "timestamp": "2024-12-30T13:02:38.382Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 100NH 0.1A 5% 0402\",\n    \"source\": \"https://www.murata.com/en-us/products/productdata/inductor/lqg11c10j04t\"\n}",
+      "timestamp": "2024-12-30T13:02:39.894Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 12NH 1.24A 2% 0402 Q=30\",\n    \"source\": \"https://www.murata.com/en-us/products/productdata/inductor/lqw15an12ng8zd\"\n}",
+      "timestamp": "2024-12-30T13:02:41.790Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 10NH 1.4A 2% 0402 Q=31\",\n    \"source\": \"https://www.murata.com/en-us/products/productdetail?partno=LQW15AN10NG8ZD\"\n}",
+      "timestamp": "2024-12-30T13:02:43.529Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1.8K 0.0625W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/CRCW04021K80FKED\"\n}",
+      "timestamp": "2024-12-30T13:02:45.440Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1567.5MHZ 1DB SMT2\",\n    \"source\": \"https://www.taoglas.com/product/dbp-1567-s-a-50\"\n}",
+      "timestamp": "2024-12-30T13:02:46.871Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC AMP LNA 1.2-3GHZ TDFN 8\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Broadcom/AHL5216T8\"\n}",
+      "timestamp": "2024-12-30T13:02:49.849Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"DIPLEXER DC-3GHZ 1.5DB 2W 1008 MINI-CIRCUITS SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=LDPQ-132-33%2B\"\n}",
+      "timestamp": "2024-12-30T13:02:51.673Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1232MHZ 1DB SMT2\",\n    \"source\": \"https://www.taoglas.com/product/dbp-1232-p-a-50\"\n}",
+      "timestamp": "2024-12-30T13:02:53.147Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER EMI 250MHZ 350MA 10V 1005 SMT\",\n    \"source\": \"https://www.murata.com/en-us/products/productdetail?partno=MEM1005PP251T001\"\n}",
+      "timestamp": "2024-12-30T13:02:54.944Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC RF SWITCH SPDT 0.5-6GHZ QFN10 SMT\",\n    \"source\": \"https://www.infineon.com/cms/en/product/rf-and-wireless-control/rf-switches/bgs12pn10e6327xtsa1/\"\n}",
+      "timestamp": "2024-12-30T13:02:56.661Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SPLITTER 2W0 1-2.4GHZ 0805-6 SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=SCG-2-242%2B\"\n}",
+      "timestamp": "2024-12-30T13:02:58.409Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER LP DC-1.575GHZ 0805 SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=LFCG-1575%2B\"\n}",
+      "timestamp": "2024-12-30T13:03:00.580Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC BUFFER UHS DUAL SC70-6 SMT\",\n    \"source\": \"https://www.onsemi.com/products/integrated-circuits/buffers-drivers/nc7wz16p6x\"\n}",
+      "timestamp": "2024-12-30T13:03:02.241Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW PH PHIL CRES NC 2X.250 MS51957-3\",\n    \"source\": \"https://www.digikey.com/en/products/detail/standard-aircraft-parts/MS51957-3/12345678\"\n}",
+      "timestamp": "2024-12-30T13:03:04.132Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"ADHESIVE SCOTCH-WELD EPOXY DP2216 TWO-PART HIGH-STRENGTH\",\n    \"source\": \"https://www.3m.com/3M/en_US/p/d/b40066924/\"\n}",
+      "timestamp": "2024-12-30T13:03:06.033Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"INSERT HCOIL CRES LOCK .138-32 THREAD\",\n    \"source\": \"https://www.helicoil.in/NAS113006L15\"\n}",
+      "timestamp": "2024-12-30T13:03:07.470Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 470 PF 50 V 5% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata-Electronics/0402X471J500SNT\"\n}",
+      "timestamp": "2024-12-30T13:03:09.336Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 39 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata-Electronics/GRM1555C1H390GA01D/\"\n}",
+      "timestamp": "2024-12-30T13:03:11.083Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P 1.00MM SMT SMPM STRAIGHT SF162\",\n    \"source\": \"https://www.mouser.com/ProductDetail/RF-Industries/159-M701-199SF162\"\n}",
+      "timestamp": "2024-12-30T13:03:13.145Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P 1.0MM SMT UFL 3P\",\n    \"source\": \"https://www.hirose.com/product/en/products/U.FL-R-SMT-1(10)/\"\n}",
+      "timestamp": "2024-12-30T13:03:14.800Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT 10P 1.27MM SMT SOCKET SFM-105-02-S-D-K-TR\",\n    \"source\": \"https://www.samtec.com/products/SFM-105-02-S-D-K-TR\"\n}",
+      "timestamp": "2024-12-30T13:03:16.510Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 100NH 0.1A 5% 0402 SMT\",\n    \"source\": \"https://www.murata.com/en-global/products/productdetail?partno=L-07CR10JV6T\"\n}",
+      "timestamp": "2024-12-30T13:03:18.398Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 12NH 1.24A 2% 0402 Q=30\",\n    \"source\": \"https://www.murata.com/en-us/products/productdetail?partno=LQW15AN12NG8ZD\"\n}",
+      "timestamp": "2024-12-30T13:03:21.347Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 10NH 1.4A 2% 0402 Q=31\",\n    \"source\": \"https://www.murata.com/en-us/products/productdetail?partno=LQW15AN10NG8ZD\"\n}",
+      "timestamp": "2024-12-30T13:03:23.164Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1.8K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/CRCW04021K80FKED\"\n}",
+      "timestamp": "2024-12-30T13:03:25.032Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1567.5MHZ 1DB SMT2\",\n    \"source\": \"https://www.taoglas.com/product/dbp-1567-s-a-50\"\n}",
+      "timestamp": "2024-12-30T13:03:27.290Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC AMP LNA 1.2-3GHZ TDFN 8 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Broadcom/AHL5216T8\"\n}",
+      "timestamp": "2024-12-30T13:03:29.109Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"DIPLEXER DC-3GHZ 1.5DB 2W 1008 SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=LDPQ-132-33%2B\"\n}",
+      "timestamp": "2024-12-30T13:03:30.851Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1232MHZ 1DB SMT2\",\n    \"source\": \"https://www.taoglas.com/product/dbp-1232-p-a-50\"\n}",
+      "timestamp": "2024-12-30T13:03:32.474Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER EMI 250MHZ 350MA 10V 1005 SMT\",\n    \"source\": \"https://www.murata.com/en-us/products/productdetail?partno=MEM1005PP251T001\"\n}",
+      "timestamp": "2024-12-30T13:03:34.442Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC RF SWITCH SPDT 0.5-6GHZ QFN10 SMT\",\n    \"source\": \"https://www.infineon.com/cms/en/product/rf-and-microwave/rf-switches/bgs12pn10e6327xtsa1/\"\n}",
+      "timestamp": "2024-12-30T13:03:36.265Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SPLITTER 2W0 1-2.4GHZ 0805-6 SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=SCG-2-242%2B\"\n}",
+      "timestamp": "2024-12-30T13:03:38.525Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER LP DC-1.575GHZ 0805 SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=LFCG-1575%2B\"\n}",
+      "timestamp": "2024-12-30T13:03:40.211Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC BUFFER UHS DUAL SC70-6 SMT\",\n    \"source\": \"https://www.onsemi.com/products/logic/buffers-drivers/NC7WZ16P6X\"\n}",
+      "timestamp": "2024-12-30T13:03:42.103Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Файл успешно обработан. Обработано строк: 69. \nВы можете задавать вопросы о компонентах или запросить дополнительную информацию.",
+      "timestamp": "2024-12-30T13:03:42.197Z"
+    }
+  ]
+}

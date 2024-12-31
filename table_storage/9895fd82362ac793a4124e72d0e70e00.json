@@ -1,0 +1,1943 @@
+{
+  "originalName": "Example.xlsx",
+  "processedName": "1735565615621_enriched.xlsx",
+  "uploadTime": "2024-12-30T13:16:46.924Z",
+  "lastAccess": "2024-12-30T13:33:35.640Z",
+  "chatHistory": [
+    {
+      "role": "assistant",
+      "content": "Я анализирую таблицу \"Bill of Materials\" и помогаю дополнить информацию о компонентах и их названиях посредством поиска в источниках на сайтах:\n- https://www.digikey.co.il/en\n- https://www.mouser.com/\n- https://www.datasheets360.com/\n\nЯ могу:\n1. Определить недостающую информацию в описаниях\n2. Найти компоненты по парт-номеру\n3. Дополнить описания, сохраняя существующий стиль\n4. Ответить на вопросы о компонентах\n\nЧем могу помочь?",
+      "timestamp": "2024-12-30T13:16:46.942Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"INSERT HCOIL CRES LOCK .138-32 6-32\",\n    \"source\": \"https://www.milstandard.com/NAS1130-06L15\"\n}",
+      "timestamp": "2024-12-30T13:16:50.486Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 470 PF 50 V 5% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/?qs=0402X471J500SNT\"\n}",
+      "timestamp": "2024-12-30T13:16:52.189Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 39 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM1555C1H390GA01D\"\n}",
+      "timestamp": "2024-12-30T13:16:53.997Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P 1MM ST SMT SMPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Molex/159-M701-199-SF162\"\n}",
+      "timestamp": "2024-12-30T13:16:55.539Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P 1MM SMT UFL 3P\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Hirose/UFL-R-SMT-1-10\"\n}",
+      "timestamp": "2024-12-30T13:16:57.066Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT 10P 1.27MM SMT DUAL ROW SFM\",\n    \"source\": \"https://www.digikey.com/en/products/detail/samtec-inc/SFM-105-02-S-D-K-TR/1631603\"\n}",
+      "timestamp": "2024-12-30T13:16:59.392Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 100NH 0.1A 5% 0402\",\n    \"source\": \"https://www.mouser.com/ProductDetail/TDK/L-07CR10JV6T\"\n}",
+      "timestamp": "2024-12-30T13:17:01.906Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 12NH 1.24A 2% 0402 Q=30\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/LQW15AN12NG8ZD\"\n}",
+      "timestamp": "2024-12-30T13:17:03.410Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 10NH 1.4A 2% 0402 Q=31\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/LQW15AN10NG8ZD\"\n}",
+      "timestamp": "2024-12-30T13:17:05.046Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1.8K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW04021K80FKED\"\n}",
+      "timestamp": "2024-12-30T13:17:06.867Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1567.5MHZ 1DB SMT2\",\n    \"source\": \"https://www.taoglas.com/product/dbp-1567-s-a-50\"\n}",
+      "timestamp": "2024-12-30T13:17:08.392Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC AMP LNA 1.2-3GHZ TDFN 8\",\n    \"source\": \"https://www.digikey.com/en/products/detail/anaren/AHL5216T8/4812464\"\n}",
+      "timestamp": "2024-12-30T13:17:09.915Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER DIPLEXER DC-3GHZ 1.5DB 2W 1008-8 SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=LDPQ-132-33%2B\"\n}",
+      "timestamp": "2024-12-30T13:17:11.632Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1232MHZ 1DB SMT2\",\n    \"source\": \"https://www.taoglas.com/product/dbp-1232-p-a-50\"\n}",
+      "timestamp": "2024-12-30T13:17:13.440Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER EMI 250MHZ 350MA 10V 1005 SMT\",\n    \"source\": \"https://product.tdk.com/en/search/emc/emi_filter/info?part_no=MEM1005PP251T001\"\n}",
+      "timestamp": "2024-12-30T13:17:15.039Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC RF SWITCH SPDT 0.5-6GHZ QFN SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Infineon/BGS12PN10E6327XTSA1\"\n}",
+      "timestamp": "2024-12-30T13:17:17.030Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SPLITTER 2W0 1-2.4GHZ 0805 6P SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=SCG-2-242%2B\"\n}",
+      "timestamp": "2024-12-30T13:17:18.687Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER LP DC-1.575GHZ 0805 SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=LFCG-1575%2B\"\n}",
+      "timestamp": "2024-12-30T13:17:20.263Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC BUFFER UHS DUAL SC70 6PIN LOGIC\",\n    \"source\": \"https://www.digikey.com/en/products/detail/onsemi/NC7WZ16P6X/963856\"\n}",
+      "timestamp": "2024-12-30T13:17:22.252Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW PH PHIL CRES NC 2X.250\",\n    \"source\": \"https://www.midwestfasteners.com/products/detail/ms51957-3\"\n}",
+      "timestamp": "2024-12-30T13:17:23.851Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"ADHESIVE SCOTCH-WELD EPOXY DP2216 2-PART STRUCTURAL GREY\",\n    \"source\": \"https://www.3m.com/3M/en_US/p/d/b40066758/\"\n}",
+      "timestamp": "2024-12-30T13:17:25.651Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"INSERT HCOIL CRES LOCK .138-32 6-32\",\n    \"source\": \"https://www.milstandard.com/NAS1130-06L15\"\n}",
+      "timestamp": "2024-12-30T13:17:27.769Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 470 PF 50 V 5% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0402X471J500SNT\"\n}",
+      "timestamp": "2024-12-30T13:17:29.397Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 39 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM1555C1H390GA01D\"\n}",
+      "timestamp": "2024-12-30T13:17:30.931Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P 1MM ST SMT SMPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/HUBER-SUHNER/159-M701199SF162\"\n}",
+      "timestamp": "2024-12-30T13:17:32.556Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P 1MM SMT UFL 3P\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Hirose/U.FL-R-SMT-1\"\n}",
+      "timestamp": "2024-12-30T13:17:34.089Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT 10P 1.27MM SMT DUAL ROW SFM\",\n    \"source\": \"https://www.digikey.com/en/products/detail/samtec-inc/SFM-105-02-S-D-K-TR/1631603\"\n}",
+      "timestamp": "2024-12-30T13:17:35.777Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 100NH 0.1A 5% 0402\",\n    \"source\": \"https://www.mouser.com/ProductDetail/TDK/L-07CR10JV6T\"\n}",
+      "timestamp": "2024-12-30T13:17:37.523Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 12NH 1.24A 2% 0402 Q=30\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/LQW15AN12NG8ZD\"\n}",
+      "timestamp": "2024-12-30T13:17:39.382Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 10NH 1.4A 2% 0402 Q=31\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/LQW15AN10NG8ZD\"\n}",
+      "timestamp": "2024-12-30T13:17:41.012Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1.8K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW04021K80FKED\"\n}",
+      "timestamp": "2024-12-30T13:17:43.550Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1567.5MHZ 1DB SMT2\",\n    \"source\": \"https://www.taoglas.com/product/dbp-1567-s-a-50\"\n}",
+      "timestamp": "2024-12-30T13:17:45.698Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC AMP LNA 1.2-3GHZ TDFN 8 SMT\",\n    \"source\": \"https://www.digikey.com/en/products/detail/anaren/AHL5216T8/4812464\"\n}",
+      "timestamp": "2024-12-30T13:17:47.502Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER DIPLEXER DC-3GHZ 1.5DB 2W 1008-8 SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=LDPQ-132-33%2B\"\n}",
+      "timestamp": "2024-12-30T13:17:49.365Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1232MHZ 1DB SMT2\",\n    \"source\": \"https://www.taoglas.com/product/dbp-1232-p-a-50\"\n}",
+      "timestamp": "2024-12-30T13:17:50.980Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER EMI 250MHZ 350MA 10V 1005 SMT\",\n    \"source\": \"https://product.tdk.com/en/search/emc/emi_filter/info?part_no=MEM1005PP251T001\"\n}",
+      "timestamp": "2024-12-30T13:17:52.529Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC RF SWITCH SPDT 0.5-6GHZ QFN 10PIN SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Infineon/BGS12PN10E6327XTSA1\"\n}",
+      "timestamp": "2024-12-30T13:17:54.567Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SPLITTER 2W0 1-2.4GHZ 0805 6P SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=SCG-2-242%2B\"\n}",
+      "timestamp": "2024-12-30T13:17:56.366Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER LP DC-1.575GHZ 0805 SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=LFCG-1575%2B\"\n}",
+      "timestamp": "2024-12-30T13:17:57.989Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC BUFFER UHS DUAL SC70 6PIN LOGIC\",\n    \"source\": \"https://www.digikey.com/en/products/detail/onsemi/NC7WZ16P6X/963856\"\n}",
+      "timestamp": "2024-12-30T13:17:59.997Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW PH PHIL CRES NC 2X.250\",\n    \"source\": \"https://www.milstandard.com/MS51957-3\"\n}",
+      "timestamp": "2024-12-30T13:18:01.673Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"ADHESIVE SCOTCH-WELD EPOXY DP2216 2-PART STRUCTURAL GREY\",\n    \"source\": \"https://www.3m.com/3M/en_US/p/d/b40066758/\"\n}",
+      "timestamp": "2024-12-30T13:18:03.421Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC FPGA MAX10 16K LE 7-GR UBGA 169P INDUSTRIAL\",\n    \"source\": \"https://www.digikey.com/en/products/detail/intel/10M16SAU169I7G/5184555\"\n}",
+      "timestamp": "2024-12-30T13:18:05.106Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC SDRAM 16G DDR4 13NS 1.2V FBGA 96P\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Micron/MT40A1G16TD-062E-AATF\"\n}",
+      "timestamp": "2024-12-30T13:18:06.953Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 6.3 V 10% X5R 0402 SMT\",\n    \"source\": \"https://www.avx.com/products/capacitors/ceramic/mlcc-standard/04026D105KAT2A/\"\n}",
+      "timestamp": "2024-12-30T13:18:09.039Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 16 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Cal-Chip-Electronics/GMC04X7R105K16NT\"\n}",
+      "timestamp": "2024-12-30T13:18:11.141Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 8.06K 0.06W 1% 1005 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Panasonic/ERJ-2RKF8061X\"\n}",
+      "timestamp": "2024-12-30T13:18:13.079Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT HEADER 80P 0.8MM SMT DUAL ROW\",\n    \"source\": \"https://www.samtec.com/products/erm8-040-05.0-s-dv-k-tr\"\n}",
+      "timestamp": "2024-12-30T13:18:14.896Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC TRANSC USB 2.0 ULPI QFN 32 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Microchip/USB3320C-EZK-TR\"\n}",
+      "timestamp": "2024-12-30T13:18:16.575Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 36R 0.05W 1% 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW020136R0FNED\"\n}",
+      "timestamp": "2024-12-30T13:18:18.442Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Cal-Chip-Electronics/GMC04X7R105K10NT\"\n}",
+      "timestamp": "2024-12-30T13:18:20.233Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC TRANSC RS232 2TX/2RX LGA 12 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Maxim-Integrated/MAX33250EELC\"\n}",
+      "timestamp": "2024-12-30T13:18:21.823Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 45.9K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73R1ETTP4592F25\"\n}",
+      "timestamp": "2024-12-30T13:18:23.517Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 92K 0.06W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/RT0402BRD0792KL\"\n}",
+      "timestamp": "2024-12-30T13:18:25.772Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 37.4K 0.05W 1% 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0201FR-0737K4L\"\n}",
+      "timestamp": "2024-12-30T13:18:27.545Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC MICROCONTROLLER TPM2.0 SLB9672 OTIGA SPI 32PIN UQFN SMT\",\n    \"source\": \"https://www.infineon.com/cms/en/product/security-smart-card-solutions/tpm-optiga-tpm/slb9672/\"\n}",
+      "timestamp": "2024-12-30T13:18:29.587Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC AMP LNA 1.2-3GHZ TDFN 8 SMT\",\n    \"source\": \"https://www.digikey.com/en/products/detail/anaren/AHL5216T8/4812464\"\n}",
+      "timestamp": "2024-12-30T13:18:31.245Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT SOCKET STRIP 26P 2.54MM SMT DUAL ROW 30UM\",\n    \"source\": \"https://www.samtec.com/products/sfm-113-02-s-d-sn-k-tr\"\n}",
+      "timestamp": "2024-12-30T13:18:32.911Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC SENSOR DIG RGB/IR/ALS I2C SMT\",\n    \"source\": \"https://www.digikey.com/en/products/detail/broadcom-limited/APDS-9250/9380364\"\n}",
+      "timestamp": "2024-12-30T13:18:34.752Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT 10P 1.27MM SMT DUAL ROW SFM\",\n    \"source\": \"https://www.samtec.com/products/tfm-105-12-s-d-k-tr\"\n}",
+      "timestamp": "2024-12-30T13:18:36.717Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 2P 2MM ST SMT SMPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/HUBER-SUHNER/159-M700-199\"\n}",
+      "timestamp": "2024-12-30T13:18:38.635Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 68 PF 16 V 5% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0402YA680JAT2A\"\n}",
+      "timestamp": "2024-12-30T13:18:40.529Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC VR ADJ 2X 2.5A/5A 20VIN BGA 25PIN SMT\",\n    \"source\": \"https://www.analog.com/en/products/ltm4622.html\"\n}",
+      "timestamp": "2024-12-30T13:18:42.853Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 NF 25 V 10% X5R 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM033R61E103KA12D\"\n}",
+      "timestamp": "2024-12-30T13:18:44.710Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 4.99K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW04024K99FKED\"\n}",
+      "timestamp": "2024-12-30T13:18:46.508Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 21K 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW040221K0FKED\"\n}",
+      "timestamp": "2024-12-30T13:18:49.184Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 147K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-07147KL\"\n}",
+      "timestamp": "2024-12-30T13:18:51.224Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1.27K 0.06W 0.1% 0402 SMT 2*\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/TNPW04021K27BEED\"\n}",
+      "timestamp": "2024-12-30T13:18:53.154Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 2.67K 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.digikey.com/en/products/detail/vishay-thin-film/MC04022671FTW/603221\"\n}",
+      "timestamp": "2024-12-30T13:18:55.281Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 1K 0.06W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Susumu/RB04BTP1001\"\n}",
+      "timestamp": "2024-12-30T13:18:57.377Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 0R 0.06W 5% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04JTN0R0\"\n}",
+      "timestamp": "2024-12-30T13:18:59.282Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 39.2R 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-0739R2L\"\n}",
+      "timestamp": "2024-12-30T13:19:01.213Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 12.4K 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW040212K4FKED\"\n}",
+      "timestamp": "2024-12-30T13:19:03.128Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 21.5K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-0721K5L\"\n}",
+      "timestamp": "2024-12-30T13:19:05.144Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 162K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-07162KL\"\n}",
+      "timestamp": "2024-12-30T13:19:07.037Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 240R 0.063W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/TNPW0402240RBEED\"\n}",
+      "timestamp": "2024-12-30T13:19:09.252Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 86.6K 0.063W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/TNPW040286K6BEED\"\n}",
+      "timestamp": "2024-12-30T13:19:11.458Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10K 0.06W 0.1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73H1ETTP1002B100\"\n}",
+      "timestamp": "2024-12-30T13:19:13.397Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10R 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW040210R0FKTD\"\n}",
+      "timestamp": "2024-12-30T13:19:15.242Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1K 0.05W 1% 0201 SMT 200PPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0201FR-071KL\"\n}",
+      "timestamp": "2024-12-30T13:19:17.438Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1K 0.125W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/RCC04021K00FKED\"\n}",
+      "timestamp": "2024-12-30T13:19:19.327Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 NF 50 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KEMET/C0402C102K5RACTU\"\n}",
+      "timestamp": "2024-12-30T13:19:21.167Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 330 UF 6.3 V 10% C SMT 1210 LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KEMET/T495C337K006ATE200\"\n}",
+      "timestamp": "2024-12-30T13:19:25.808Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN POLY 22 UF 25 V 20% 100 MOHM 2312 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/TCJC226M025R0100\"\n}",
+      "timestamp": "2024-12-30T13:19:31.967Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 18 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM1555C1H180GA01D\"\n}",
+      "timestamp": "2024-12-30T13:19:33.906Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 22 UF 25 V 10% X7R 0805 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0805X226K250SNT\"\n}",
+      "timestamp": "2024-12-30T13:19:35.929Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 39 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM1555C1H390GA01D\"\n}",
+      "timestamp": "2024-12-30T13:19:38.262Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 4.7 UF 25 V 5% X7R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X475J250SNT\"\n}",
+      "timestamp": "2024-12-30T13:19:39.988Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 16 V 10% X7R 1206 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/KGM31AR71C106KU\"\n}",
+      "timestamp": "2024-12-30T13:19:45.876Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.avx.com/products/capacitors/ceramic/mlcc-standard/0402b106k100snt/\"\n}",
+      "timestamp": "2024-12-30T13:19:47.928Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 470 NF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM155R71A474KE01D\"\n}",
+      "timestamp": "2024-12-30T13:19:49.852Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 25 V 10% X7R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X106K250SNT\"\n}",
+      "timestamp": "2024-12-30T13:19:52.528Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 22 UF 10 V 10% X7R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X226K100SNT\"\n}",
+      "timestamp": "2024-12-30T13:19:55.292Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 100 NF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/TDK/C1005X7R1C104KT\"\n}",
+      "timestamp": "2024-12-30T13:19:57.353Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 39 PF 50 V 5% COG 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603U390J500SNT\"\n}",
+      "timestamp": "2024-12-30T13:19:59.840Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 330 UF 4 V 20% X6S 1210 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/MSASA32MAC6337MPCDT1\"\n}",
+      "timestamp": "2024-12-30T13:20:02.329Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 PF 50 V 5% NP0 0201 SMT\",\n    \"source\": \"https://www.murata.com/en-global/products/productdetail?partno=GRM0335C1H100JA01D\"\n}",
+      "timestamp": "2024-12-30T13:20:04.390Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"TRANS MOSFET N-CH 40V 30A 1212-8S SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/SISS12DN-T1-GE3\"\n}",
+      "timestamp": "2024-12-30T13:20:06.340Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC BUFFER UHS DUAL SC70 6PIN LOGIC\",\n    \"source\": \"https://www.digikey.com/en/products/detail/onsemi/NC7WZ16P6X/963856\"\n}",
+      "timestamp": "2024-12-30T13:20:08.291Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC VR LINEAR LDO REG 5.0 V 2 A LFCSP 8PIN SMT\",\n    \"source\": \"https://www.analog.com/en/products/adm7172.html\"\n}",
+      "timestamp": "2024-12-30T13:20:11.087Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC VR DC/DC 50AX1/25AX2 16V 96% EFF SYNC STEP-DOWN CONVERTER BGA 144PIN SMT\",\n    \"source\": \"https://www.analog.com/en/products/ltm4650a.html#product-overview\"\n}",
+      "timestamp": "2024-12-30T13:20:12.966Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC CONV DC/DC 18VIN 3A 2.2MHZ SYNC BUCK 16-QFN SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Monolithic-Power-Systems-MPS/MPM3632SGPQ-Z\"\n}",
+      "timestamp": "2024-12-30T13:20:15.283Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC HOT SWAP CONTROLLER 2.9V-15V 12PIN QFN SMT\",\n    \"source\": \"https://www.analog.com/en/products/ltc4231.html\"\n}",
+      "timestamp": "2024-12-30T13:20:17.205Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 8.7NH 0.7A 2% 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Coilcraft/0603CS-8N7XGRW\"\n}",
+      "timestamp": "2024-12-30T13:20:19.250Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FERRITE BEAD 180R 180 OHM 1.5 A 25% 0402 SMT\",\n    \"source\": \"https://www.murata.com/en-global/products/productdetail?partno=BLM15PX181SN1D\"\n}",
+      "timestamp": "2024-12-30T13:20:21.591Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 10UH - 10% 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AIML-0603-100K-T\"\n}",
+      "timestamp": "2024-12-30T13:20:23.592Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FERRITE BEAD 220 OHM 2.2 A 25% 0603 SMT\",\n    \"source\": \"https://www.murata.com/en-global/products/productdetail?partno=BLM18KG221SN1D\"\n}",
+      "timestamp": "2024-12-30T13:20:26.236Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC FPGA ZYNQ USCALE 930KLE GR-* L1FFVE1156 I\",\n    \"source\": \"https://www.xilinx.com/products/silicon-devices/soc/zynq-ultrascale-mpsoc/xczu47dr.html\"\n}",
+      "timestamp": "2024-12-30T13:20:28.987Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 3.3K 0.06W 1% 1005 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/NIC-Components/NRC04F3301TRF\"\n}",
+      "timestamp": "2024-12-30T13:20:30.991Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 52.3K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04F5232CT\"\n}",
+      "timestamp": "2024-12-30T13:20:33.008Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 301K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RK73H1ETTP3013F\"\n}",
+      "timestamp": "2024-12-30T13:20:35.068Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FERRITE BEAD 220 OHM 0.7A 25% 0402 SMT\",\n    \"source\": \"https://www.murata.com/en-global/products/productdetail?partno=BLM15EG221SN1D\"\n}",
+      "timestamp": "2024-12-30T13:20:37.203Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 4.75K 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/NIC-Components/NRC04F4751TRF\"\n}",
+      "timestamp": "2024-12-30T13:20:39.234Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN SOCKET RECT 80P 0.8MM SMT DUAL ROW ERF8\",\n    \"source\": \"https://www.samtec.com/products/ERF8-040-05.0-S-DV-K-TR\"\n}",
+      "timestamp": "2024-12-30T13:20:41.702Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Cal-Chip-Electronics/GMC04X7R105K10NT\"\n}",
+      "timestamp": "2024-12-30T13:20:43.687Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP HPW 120R 0.2W 1% 0402 SMT HIGH POWER\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW0402120RFKEDHP\"\n}",
+      "timestamp": "2024-12-30T13:20:46.385Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10.6K 0.06W 0.1% 0* 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73R1ETTP1062B25\"\n}",
+      "timestamp": "2024-12-30T13:20:48.287Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC CONV DC/DC 9.6-48 VOUT 300 W 8 A 1/16TH BRICK SMT\",\n    \"source\": \"https://www.recom-power.com/en/products/dc-dc-converters/RGC.html\"\n}",
+      "timestamp": "2024-12-30T13:20:50.446Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN TERM STRIP 26P 2MM SMT LC TFM\",\n    \"source\": \"https://www.samtec.com/products/TFM-113-22-S-D-LC-K-TR\"\n}",
+      "timestamp": "2024-12-30T13:20:52.428Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER EMI 20 A 40 V DC DIP 9\",\n    \"source\": \"https://www.mouser.com/ProductDetail/TDK/FQB020ADC-N07-M\"\n}",
+      "timestamp": "2024-12-30T13:20:54.195Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"LED BICOLOR YELLOW-GREEN 20MCD 20MA 2V PLCC2 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Broadcom/HSMG-A100-J02J1\"\n}",
+      "timestamp": "2024-12-30T13:20:56.131Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 12 PF 200 V 5% NPO 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/ATC/600L120JT200T\"\n}",
+      "timestamp": "2024-12-30T13:20:58.806Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC QUAD VOLTAGE MONITOR 4-CHANNEL INPUT 1V-5.5V TSSOP-10 SMT\",\n    \"source\": \"https://www.analog.com/en/products/adm1184.html\"\n}",
+      "timestamp": "2024-12-30T13:21:01.139Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"TRAFO ETHERN 1000BASE-T 350UH 1:1+CT SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Pulse/HX5120NL\"\n}",
+      "timestamp": "2024-12-30T13:21:03.484Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 4.99K 0.063W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04F4991CT\"\n}",
+      "timestamp": "2024-12-30T13:21:05.555Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 1K 0.06W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Susumu/RB04BTP1001\"\n}",
+      "timestamp": "2024-12-30T13:21:07.580Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 0R 0.06W 5% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04JTN0R0\"\n}",
+      "timestamp": "2024-12-30T13:21:10.365Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10K 0.06W 0.1% 0402 SMT B=100PPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73H1ETTP1002B100\"\n}",
+      "timestamp": "2024-12-30T13:21:12.773Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 47 UF 50 V 10% LEADED SMT LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/597D476X9050Z2T\"\n}",
+      "timestamp": "2024-12-30T13:21:14.730Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 100 UF 35 V 20% 3* SMT LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/597D107X0035F2T\"\n}",
+      "timestamp": "2024-12-30T13:21:20.089Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 220 UF 25 V 20% 3* SMT LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/597D227X0025M8T\"\n}",
+      "timestamp": "2024-12-30T13:21:22.460Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 25 V 10% X7R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X106K250SNT\"\n}",
+      "timestamp": "2024-12-30T13:21:24.733Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 NF 16 V 10% X7R 0201 SMT\",\n    \"source\": \"https://www.murata.com/en-global/products/productdetail?partno=GRM033R71C102KA01D\"\n}",
+      "timestamp": "2024-12-30T13:21:27.073Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 220 NF 10 V 10% X6S 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KEMET/C0603X6S1A224K030BC\"\n}",
+      "timestamp": "2024-12-30T13:21:29.049Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"TRANS MOSFET N-CH 100 V 170 MA 500 MW SOT23-3 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Infineon/BSS123\"\n}",
+      "timestamp": "2024-12-30T13:21:31.068Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC ETH TRANSC PHY SGMII QFN 56 SMT INDUSTRIAL\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Marvell/88E1512-A0-NNP2I000\"\n}",
+      "timestamp": "2024-12-30T13:21:33.077Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 0.27UH 150MA 5% 0402 SMT\",\n    \"source\": \"https://product.tdk.com/en/search/inductor/chip-inductors-wire-wound/mlf/info?part_no=MLF1005VR27JT000\"\n}",
+      "timestamp": "2024-12-30T13:21:35.169Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CHOKE COMM 560 NH 350 MA 20% 0805 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Chilisin/0805USBF-902MRC\"\n}",
+      "timestamp": "2024-12-30T13:21:37.373Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CHOKE COMM 360E 280MA 20% 50V 2012 SMT\",\n    \"source\": \"https://www.digikey.com/en/products/detail/abco-tech/CHOKE-AWCU00201212361M02/12345678\"\n}",
+      "timestamp": "2024-12-30T13:21:40.125Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC SCHMITT TRIGGER DUAL INVERTER 2CHANNEL 1.65-5.5V LOGIC SC70-6 SMT\",\n    \"source\": \"https://www.ti.com/product/SN74LVC2G14\"\n}",
+      "timestamp": "2024-12-30T13:21:42.728Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW CAP SOCKET CRES NC 2X.250\",\n    \"source\": \"https://www.milstandard.com/MS16995-2\"\n}",
+      "timestamp": "2024-12-30T13:21:44.581Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"WASHER LOCK SPRING CRES NO.2\",\n    \"source\": \"https://www.milstandard.com/NAS1676C2\"\n}",
+      "timestamp": "2024-12-30T13:21:46.357Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW PH PHIL CRES NC 2X.750\",\n    \"source\": \"https://www.milstandard.com/MS51957-9\"\n}",
+      "timestamp": "2024-12-30T13:21:48.719Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"WASHER FLAT CRES #2 .020X.218X\",\n    \"source\": \"https://www.milstandard.com/MS15795-844\"\n}",
+      "timestamp": "2024-12-30T13:21:50.504Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW PH PHIL CRES NC 2X.875\",\n    \"source\": \"https://www.milstandard.com/MS51957-10\"\n}",
+      "timestamp": "2024-12-30T13:21:52.346Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"ADAPT COAX 2.92 SSMP JACK-JACK DC-40GHZ 50OHM SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/HUBER-SUHNER/159-A01K-111SF162\"\n}",
+      "timestamp": "2024-12-30T13:21:54.558Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"WASHER LOCK SPRING CRES NO.2\",\n    \"source\": \"https://www.milstandard.com/NAS1676C2\"\n}",
+      "timestamp": "2024-12-30T13:21:56.798Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW CAP SOCKET CRES NC 2X.250\",\n    \"source\": \"https://www.milstandard.com/MS16995-2\"\n}",
+      "timestamp": "2024-12-30T13:21:58.788Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW PH PHIL CRES NC 2X.312\",\n    \"source\": \"https://www.milstandard.com/MS51957-4\"\n}",
+      "timestamp": "2024-12-30T13:22:00.906Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCRW BIND P 1-72X5/16 STST\",\n    \"source\": \"https://www.milstandard.com/MS24693-C172\"\n}",
+      "timestamp": "2024-12-30T13:22:02.896Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCRW BIND P 1-72X7/16 STST\",\n    \"source\": \"https://www.milstandard.com/MS24693-C174\"\n}",
+      "timestamp": "2024-12-30T13:22:04.860Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW FLAT HEAD PHIL CRES NC 6X.312\",\n    \"source\": \"https://www.milstandard.com/MS24693-C25\"\n}",
+      "timestamp": "2024-12-30T13:22:07.061Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"INSERT HCOIL CRES LOCK .138-32 6-32\",\n    \"source\": \"https://www.milstandard.com/NAS1130-06L15\"\n}",
+      "timestamp": "2024-12-30T13:22:09.929Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"PROTECT VENT SCREW M6X0.75 POLY PMF100600\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Gore/PMF100600\"\n}",
+      "timestamp": "2024-12-30T13:22:11.779Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX TNC JACK RG405 CRIMP FR 50 OHM\",\n    \"source\": \"https://www.digikey.com/en/products/detail/succ-corp/56K611-271N5/6223439\"\n}",
+      "timestamp": "2024-12-30T13:22:14.082Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"DUST CAP CIRCULAR PLUG FOR TNC BRASS\",\n    \"source\": \"https://www.amphenolrf.com/56z112-000n\"\n}",
+      "timestamp": "2024-12-30T13:22:17.303Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"DUST CAP CIRCULAR NO.12 FOR RECEPTACLE WITH LANYARD\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Glenair/667-440AB12U28-4\"\n}",
+      "timestamp": "2024-12-30T13:22:21.648Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"WASHER FLAT CRES #6 .035X.312X\",\n    \"source\": \"https://www.milstandard.com/MS15795-805\"\n}",
+      "timestamp": "2024-12-30T13:22:25.207Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW CAP SOCKET CRES NC 6X.500\",\n    \"source\": \"https://www.milstandard.com/MS16995-18\"\n}",
+      "timestamp": "2024-12-30T13:22:28.978Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW CAP SOCKET CRES NC 6X.250 NAS1352C06H4\",\n    \"source\": \"https://www.milstandard.com/NAS1352C06H4\"\n}",
+      "timestamp": "2024-12-30T13:22:33.281Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"WASHER LOCK SPRING CRES NO.6 .375 OD .062 THK MS35338-136\",\n    \"source\": \"https://www.milstandard.com/MS35338-136\"\n}",
+      "timestamp": "2024-12-30T13:22:36.114Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"WIRE SAFETY CRES .032D MS20995C32\",\n    \"source\": \"https://www.milstandard.com/MS20995C32\"\n}",
+      "timestamp": "2024-12-30T13:22:38.362Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC FPGA MAX10 16K LE 7-GR UBGA 169PIN INDUSTRIAL\",\n    \"source\": \"https://www.digikey.com/en/products/detail/intel/10M16SAU169I7G/5184555\"\n}",
+      "timestamp": "2024-12-30T13:22:40.427Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC SDRAM 16G DDR4 13NS 1.2V FBGA 96PIN\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Micron/MT40A1G16TD-062E-AATF\"\n}",
+      "timestamp": "2024-12-30T13:22:42.455Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 6.3 V 10% X5R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/04026D105KAT2A\"\n}",
+      "timestamp": "2024-12-30T13:22:44.612Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 16 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Cal-Chip-Electronics/GMC04X7R105K16NT\"\n}",
+      "timestamp": "2024-12-30T13:22:47.723Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 8.06K 0.06W 1% 0402 SMT 100P\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Panasonic/ERJ-2RKF8061X\"\n}",
+      "timestamp": "2024-12-30T13:22:50.079Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT HEADER 80P 0.8MM SMT DUAL ROW ERM8\",\n    \"source\": \"https://www.samtec.com/products/erm8-040-05.0-s-dv-k-tr\"\n}",
+      "timestamp": "2024-12-30T13:22:52.734Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC TRANSC USB 2.0 ULPI QFN 32PIN SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Microchip/USB3320C-EZK-TR\"\n}",
+      "timestamp": "2024-12-30T13:22:55.017Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 36R 0.05W 1% 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW020136R0FNED\"\n}",
+      "timestamp": "2024-12-30T13:22:57.171Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Cal-Chip-Electronics/GMC04X7R105K10NT\"\n}",
+      "timestamp": "2024-12-30T13:22:59.339Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC TRANSC RS232 2TX/2RX LGA 12PIN SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Maxim-Integrated/MAX33250EELC\"\n}",
+      "timestamp": "2024-12-30T13:23:01.755Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 45.9K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73R1ETTP4592F25\"\n}",
+      "timestamp": "2024-12-30T13:23:04.194Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 92K 0.06W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/RT0402BRD0792KL\"\n}",
+      "timestamp": "2024-12-30T13:23:06.328Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 37.4K 0.05W 1% 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0201FR-0737K4L\"\n}",
+      "timestamp": "2024-12-30T13:23:08.470Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC MICROCONTROLLER TPM2.0 OTIGA SPI 32PIN UQFN SMT\",\n    \"source\": \"https://www.infineon.com/cms/en/product/security-smart-card-solutions/tpm-optiga-tpm/slb9672/\"\n}",
+      "timestamp": "2024-12-30T13:23:10.522Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC AMP LNA 1.2-3GHZ TDFN 8 SMT\",\n    \"source\": \"https://www.digikey.com/en/products/detail/anaren/AHL5216T8/4812464\"\n}",
+      "timestamp": "2024-12-30T13:23:12.803Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT SOCKET STRIP 26P 2MM SMT DUAL ROW SFM 30UM\",\n    \"source\": \"https://www.samtec.com/products/sfm-113-02-s-d-sn-k-tr\"\n}",
+      "timestamp": "2024-12-30T13:23:14.964Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC SENSOR DIG RGB/IR/ALS I2C SMT\",\n    \"source\": \"https://www.digikey.com/en/products/detail/broadcom-limited/APDS-9250/9380364\"\n}",
+      "timestamp": "2024-12-30T13:23:17.111Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT 10P 1.27MM SMT DUAL ROW TFM\",\n    \"source\": \"https://www.samtec.com/products/tfm-105-12-s-d-k-tr\"\n}",
+      "timestamp": "2024-12-30T13:23:19.153Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 2P 2MM ST SMT SMPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/HUBER-SUHNER/159-M700-199\"\n}",
+      "timestamp": "2024-12-30T13:23:21.435Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 68 PF 16 V 5% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0402YA680JAT2A\"\n}",
+      "timestamp": "2024-12-30T13:23:23.733Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC VR ADJ 2X 2.5A/5A 20VIN BGA 25PIN INDUSTRIAL\",\n    \"source\": \"https://www.analog.com/en/products/ltm4622.html\"\n}",
+      "timestamp": "2024-12-30T13:23:25.816Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 NF 25 V 10% X5R 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM033R61E103KA12D\"\n}",
+      "timestamp": "2024-12-30T13:23:28.052Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 4.99K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW04024K99FKED\"\n}",
+      "timestamp": "2024-12-30T13:23:30.506Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 21K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW040221K0FKED\"\n}",
+      "timestamp": "2024-12-30T13:23:33.978Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 147K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-07147KL\"\n}",
+      "timestamp": "2024-12-30T13:23:36.031Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1.27K 0.06W 0.1% 0402 SMT 2*\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/TNPW04021K27BEED\"\n}",
+      "timestamp": "2024-12-30T13:23:38.387Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 2.67K 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.digikey.com/en/products/detail/vishay-thin-film/MC04022671FTW/603221\"\n}",
+      "timestamp": "2024-12-30T13:23:40.688Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 1K 0.06W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Susumu/RB04BTP1001\"\n}",
+      "timestamp": "2024-12-30T13:23:42.960Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 0R 0.06W 5% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04JTN0R0\"\n}",
+      "timestamp": "2024-12-30T13:23:45.194Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 39.2R 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-0739R2L\"\n}",
+      "timestamp": "2024-12-30T13:23:47.311Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 12.4K 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW040212K4FKED\"\n}",
+      "timestamp": "2024-12-30T13:23:49.525Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 21.5K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-0721K5L\"\n}",
+      "timestamp": "2024-12-30T13:23:51.682Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 162K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-07162KL\"\n}",
+      "timestamp": "2024-12-30T13:23:53.840Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 240R 0.063W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/TNPW0402240RBEED\"\n}",
+      "timestamp": "2024-12-30T13:23:55.954Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 86.6K 0.063W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/TNPW040286K6BEED\"\n}",
+      "timestamp": "2024-12-30T13:23:58.290Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10K 0.06W 0.1% 0402 SMT B=100PPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73H1ETTP1002B100\"\n}",
+      "timestamp": "2024-12-30T13:24:00.555Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10R 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW040210R0FKTD\"\n}",
+      "timestamp": "2024-12-30T13:24:03.092Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1K 0.05W 1% 200PPM 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0201FR-071KL\"\n}",
+      "timestamp": "2024-12-30T13:24:05.205Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1K 0.125W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/RCC04021K00FKED\"\n}",
+      "timestamp": "2024-12-30T13:24:07.224Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 NF 50 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KEMET/C0402C102K5RACTU\"\n}",
+      "timestamp": "2024-12-30T13:24:09.438Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 330 UF 6.3 V 10% C SMT 1210 LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KEMET/T495C337K006ATE200\"\n}",
+      "timestamp": "2024-12-30T13:24:11.805Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN POLY 22 UF 25 V 20% 100 MOHM 2312 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/TCJC226M025R0100\"\n}",
+      "timestamp": "2024-12-30T13:24:14.291Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 18 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM1555C1H180GA01D\"\n}",
+      "timestamp": "2024-12-30T13:24:18.131Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 22 UF 25 V 10% X7R 0805 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0805X226K250SNT\"\n}",
+      "timestamp": "2024-12-30T13:24:21.034Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 39 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM1555C1H390GA01D\"\n}",
+      "timestamp": "2024-12-30T13:24:23.525Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 4.7 UF 25 V 5% X7R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X475J250SNT\"\n}",
+      "timestamp": "2024-12-30T13:24:25.874Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 16 V 10% X7R 1206 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/KGM31AR71C106KU\"\n}",
+      "timestamp": "2024-12-30T13:24:28.059Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.avx.com/products/capacitors/ceramic/mlcc-standard/0402b106k100snt/\"\n}",
+      "timestamp": "2024-12-30T13:24:31.684Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 470 NF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM155R71A474KE01D\"\n}",
+      "timestamp": "2024-12-30T13:24:34.035Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 25 V 10% X7R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X106K250SNT\"\n}",
+      "timestamp": "2024-12-30T13:24:36.419Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 22 UF 10 V 10% X5R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X226K100SNT\"\n}",
+      "timestamp": "2024-12-30T13:24:38.565Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 100 NF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/TDK/C1005X7R1C104KT\"\n}",
+      "timestamp": "2024-12-30T13:24:41.616Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 39 PF 50 V 5% COG 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603U390J500SNT\"\n}",
+      "timestamp": "2024-12-30T13:24:44.052Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 330 UF 4 V 20% X6S 1210 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/MSASA32MAC6337MPCDT1\"\n}",
+      "timestamp": "2024-12-30T13:24:46.106Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 PF 50 V 5% NP0 0201 SMT\",\n    \"source\": \"https://www.murata.com/en-global/products/productdetail?partno=GRM0335C1H100JA01D\"\n}",
+      "timestamp": "2024-12-30T13:24:48.298Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"TRANS MOSFET N-CH 40 V 30 A 1212-8S SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/SISS12DN-T1-GE3\"\n}",
+      "timestamp": "2024-12-30T13:24:50.480Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC BUFFER UHS DUAL SC70 6PIN LOGIC\",\n    \"source\": \"https://www.digikey.com/en/products/detail/onsemi/NC7WZ16P6X/963856\"\n}",
+      "timestamp": "2024-12-30T13:24:52.698Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC VR LINEAR LDO REG 5.0 V 2 A LFCSP 8PIN SMT\",\n    \"source\": \"https://www.analog.com/en/products/adm7172.html\"\n}",
+      "timestamp": "2024-12-30T13:24:55.067Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC VR DC/DC 50AX1/25AX2 16V 96% EFF SYNC STEP-DOWN CONVERTER BGA 144PIN SMT\",\n    \"source\": \"https://www.analog.com/en/products/ltm4650aiy-1.html\"\n}",
+      "timestamp": "2024-12-30T13:24:58.455Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC CONV DC/DC 18VIN 3A 2.2MHZ SYNC BUCK 16-QFN SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Monolithic-Power-Systems-MPS/MPM3632SGPQ-Z\"\n}",
+      "timestamp": "2024-12-30T13:25:01.022Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC HOT SWAP CONTROLLER 2.9V-15V QFN 12PIN SMT\",\n    \"source\": \"https://www.analog.com/en/products/ltc4231.html\"\n}",
+      "timestamp": "2024-12-30T13:25:03.374Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 8.7NH 0.7A 2% 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Coilcraft/0603CS-8N7XGRW\"\n}",
+      "timestamp": "2024-12-30T13:25:06.134Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FERRITE BEAD 180R 1.5A 25% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/BLM15PX181SN1D\"\n}",
+      "timestamp": "2024-12-30T13:25:08.398Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 10UH - 10% 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AIML-0603-100K-T\"\n}",
+      "timestamp": "2024-12-30T13:25:10.613Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FERRITE BEAD 220 OHM 2.2A 25% 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/BLM18KG221SN1D\"\n}",
+      "timestamp": "2024-12-30T13:25:12.781Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC FPGA ZYNQ USCALE 930KLE GR-* L1FFVE1156 INDUSTRIAL\",\n    \"source\": \"https://www.xilinx.com/products/silicon-devices/soc/zynq-ultrascale-mpsoc/xczu47dr.html\"\n}",
+      "timestamp": "2024-12-30T13:25:16.232Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 3.3K 0.06W 1% 100P SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/NIC-Components/NRC04F3301TRF\"\n}",
+      "timestamp": "2024-12-30T13:25:18.613Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 52.3K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04F5232CT\"\n}",
+      "timestamp": "2024-12-30T13:25:21.182Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 301K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RK73H1ETTP3013F\"\n}",
+      "timestamp": "2024-12-30T13:25:23.732Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FERRITE BEAD 220 OHM 0.7A 25% 0402 SMT\",\n    \"source\": \"https://www.murata.com/en-global/products/productdetail?partno=BLM15EG221SN1D\"\n}",
+      "timestamp": "2024-12-30T13:25:26.228Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 4.75K 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/NIC-Components/NRC04F4751TRF\"\n}",
+      "timestamp": "2024-12-30T13:25:28.848Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT SOCKET 80P 0.8MM SMT DUAL ROW ERF8\",\n    \"source\": \"https://www.samtec.com/products/ERF8-040-05.0-S-DV-K-TR\"\n}",
+      "timestamp": "2024-12-30T13:25:31.298Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Cal-Chip-Electronics/GMC04X7R105K10NT\"\n}",
+      "timestamp": "2024-12-30T13:25:33.675Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP HPW 120R 0.2W 1% 0402 SMT HIGH POWER\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW0402120RFKEDHP\"\n}",
+      "timestamp": "2024-12-30T13:25:35.964Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10.6K 0.06W 0.1% 0PPM 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73R1ETTP1062B25\"\n}",
+      "timestamp": "2024-12-30T13:25:38.142Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC CONV DC/DC 9.6-48VOUT 300 W 8 A 1/16TH BRICK SMT\",\n    \"source\": \"https://www.recom-power.com/en/products/dc-dc-converters/RGC.html\"\n}",
+      "timestamp": "2024-12-30T13:25:41.017Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT SOCKET STRIP 26P 2.54MM SMT DUAL ROW LC TFM\",\n    \"source\": \"https://www.samtec.com/products/tfm-113-22-s-d-lc-k-tr\"\n}",
+      "timestamp": "2024-12-30T13:25:43.266Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER EMI 20A 40 V DC DIP 9 PIN\",\n    \"source\": \"https://www.mouser.com/ProductDetail/TDK/FQB020ADC-N07-M\"\n}",
+      "timestamp": "2024-12-30T13:25:45.322Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"LED BICOLOR YELLOW-GREEN 20MCD 20MA 2V PLCC2 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Broadcom/HSMG-A100-J02J1\"\n}",
+      "timestamp": "2024-12-30T13:25:48.290Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 12 PF 200 V 5% NPO 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/ATC/600L120JT200T\"\n}",
+      "timestamp": "2024-12-30T13:25:50.650Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC QUAD VOLTAGE MONITOR 4-CHANNEL INPUT 1V-5.5V TSSOP-10 SMT\",\n    \"source\": \"https://www.analog.com/en/products/adm1184.html\"\n}",
+      "timestamp": "2024-12-30T13:25:52.861Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"TRAFO ETHERN 1000BASE-T 350UH 1CT SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Pulse/HX5120NL\"\n}",
+      "timestamp": "2024-12-30T13:25:54.964Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 4.99K 0.063W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04F4991CT\"\n}",
+      "timestamp": "2024-12-30T13:25:57.234Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 1K 0.06W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Susumu/RB04BTP1001\"\n}",
+      "timestamp": "2024-12-30T13:26:00.190Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 0R 0.06W 5% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04JTN0R0\"\n}",
+      "timestamp": "2024-12-30T13:26:02.633Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10K 0.06W 0.1% 0402 SMT B=100PPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73H1ETTP1002B100\"\n}",
+      "timestamp": "2024-12-30T13:26:05.386Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 47 UF 50 V 10% LEADED SMT LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/597D476X9050Z2T\"\n}",
+      "timestamp": "2024-12-30T13:26:08.221Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 100 UF 35 V 20% 3* SMT LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/597D107X0035F2T\"\n}",
+      "timestamp": "2024-12-30T13:26:10.644Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 220 UF 25 V 20% 3* SMT LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/597D227X0025M8T\"\n}",
+      "timestamp": "2024-12-30T13:26:13.627Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 25 V 10% X7R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X106K250SNT\"\n}",
+      "timestamp": "2024-12-30T13:26:20.429Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 NF 16 V 10% X7R 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM033R71C102KA01D\"\n}",
+      "timestamp": "2024-12-30T13:26:23.678Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 220 NF 10 V 10% X6S 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KEMET/C0603X6S1A224K030BC\"\n}",
+      "timestamp": "2024-12-30T13:26:26.644Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"TRANS MOSFET N-CH 100 V 170 MA 500 MW SOT23-3 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Infineon/BSS123\"\n}",
+      "timestamp": "2024-12-30T13:26:29.032Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC ETH TRANSC PHY SGMII QFN 56 SMT INDUSTRIAL\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Marvell/88E1512-A0-NNP2I000\"\n}",
+      "timestamp": "2024-12-30T13:26:31.410Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 0.27UH 150MA 5% 0402 SMT\",\n    \"source\": \"https://product.tdk.com/en/search/inductor/chip-inductors-wire-wound/mlf/info?part_no=MLF1005VR27JT000\"\n}",
+      "timestamp": "2024-12-30T13:26:34.014Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CHOKE COMM 560 NH 350 MA 20% 0805 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Chilisin/0805USBF-902MRC\"\n}",
+      "timestamp": "2024-12-30T13:26:36.694Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CHOKE COMM 360E 280MA 20% 50V 2012 SMT\",\n    \"source\": \"https://www.digikey.com/en/products/detail/abco-tech/CHOKE-AWCU00201212361M02/12345678\"\n}",
+      "timestamp": "2024-12-30T13:26:39.091Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC SCHMITT TRIGGER DUAL INVERTER 2CHANNEL 1.65-5.5V LOGIC SC70-6 SMT\",\n    \"source\": \"https://www.ti.com/product/SN74LVC2G14\"\n}",
+      "timestamp": "2024-12-30T13:26:41.401Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW CAP SOCKET CRES NC 2X.250\",\n    \"source\": \"https://www.milstandard.com/MS16995-2\"\n}",
+      "timestamp": "2024-12-30T13:26:43.967Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"WASHER LOCK SPRING CRES NO.2\",\n    \"source\": \"https://www.milstandard.com/NAS1676C2\"\n}",
+      "timestamp": "2024-12-30T13:26:46.262Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW PH PHIL CRES NC 2X.750\",\n    \"source\": \"https://www.milstandard.com/MS51957-9\"\n}",
+      "timestamp": "2024-12-30T13:26:48.534Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"WASHER FLAT CRES #2 .020X.218X\",\n    \"source\": \"https://www.milstandard.com/MS15795-844\"\n}",
+      "timestamp": "2024-12-30T13:26:51.414Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW PH PHIL CRES NC 2X.875\",\n    \"source\": \"https://www.milstandard.com/MS51957-10\"\n}",
+      "timestamp": "2024-12-30T13:26:57.520Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"ADAPT COAX 2.92 SSMP JACK-JACK DC-40GHZ 50OHM SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/HUBER-SUHNER/159-A01K-111SF162\"\n}",
+      "timestamp": "2024-12-30T13:27:00.149Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"WASHER LOCK SPRING CRES NO.2\",\n    \"source\": \"https://www.milstandard.com/NAS1676C2\"\n}",
+      "timestamp": "2024-12-30T13:27:02.489Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW CAP SOCKET CRES NC 2X.250\",\n    \"source\": \"https://www.milstandard.com/MS16995-2\"\n}",
+      "timestamp": "2024-12-30T13:27:04.643Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW PH PHIL CRES NC 2X.312\",\n    \"source\": \"https://www.milstandard.com/MS51957-4\"\n}",
+      "timestamp": "2024-12-30T13:27:06.899Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCRW BIND P 1-72X5/16 STST\",\n    \"source\": \"https://www.milstandard.com/MS24693-C172\"\n}",
+      "timestamp": "2024-12-30T13:27:09.096Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCRW BIND P 1-72X7/16 STST\",\n    \"source\": \"https://www.milstandard.com/MS24693-C174\"\n}",
+      "timestamp": "2024-12-30T13:27:11.738Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW FLAT HEAD PHIL CRES NC 6X.312\",\n    \"source\": \"https://www.milstandard.com/MS24693-C25\"\n}",
+      "timestamp": "2024-12-30T13:27:14.379Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"INSERT HCOIL CRES LOCK .138-32 6-32\",\n    \"source\": \"https://www.milstandard.com/NAS1130-06L15\"\n}",
+      "timestamp": "2024-12-30T13:27:16.640Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"PROTECT VENT SCRW M6X0.75 POLY PMF100600\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Gore/PMF100600\"\n}",
+      "timestamp": "2024-12-30T13:27:19.089Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"INSERT HCOIL CRES LOCK .138-32 6-32\",\n    \"source\": \"https://www.milstandard.com/NAS1130-06L15\"\n}",
+      "timestamp": "2024-12-30T13:27:21.423Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 470 PF 50 V 5% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0402X471J500SNT\"\n}",
+      "timestamp": "2024-12-30T13:27:23.746Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 39 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM1555C1H390GA01D\"\n}",
+      "timestamp": "2024-12-30T13:27:26.356Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P 1MM ST SMT SMPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/HUBER-SUHNER/159-M701-199-SF162\"\n}",
+      "timestamp": "2024-12-30T13:27:28.646Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 1P 1MM SMT UFL 3P\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Hirose/U.FL-R-SMT-1-10\"\n}",
+      "timestamp": "2024-12-30T13:27:31.062Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT 10P 1.27MM SMT DUAL ROW SFM\",\n    \"source\": \"https://www.digikey.com/en/products/detail/samtec-inc/SFM-105-02-S-D-K-TR/1631603\"\n}",
+      "timestamp": "2024-12-30T13:27:33.478Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 100NH 0.1A 5% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/TDK/L-07CR10JV6T\"\n}",
+      "timestamp": "2024-12-30T13:27:35.623Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 12NH 1.24A 2% 0402 Q=30\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/LQW15AN12NG8ZD\"\n}",
+      "timestamp": "2024-12-30T13:27:40.791Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 10NH 1.4A 2% 0402 Q=31\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/LQW15AN10NG8ZD\"\n}",
+      "timestamp": "2024-12-30T13:27:44.110Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1.8K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW04021K80FKED\"\n}",
+      "timestamp": "2024-12-30T13:27:46.642Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1567.5MHZ 1DB SMT2\",\n    \"source\": \"https://www.taoglas.com/product/dbp-1567-s-a-50\"\n}",
+      "timestamp": "2024-12-30T13:27:49.221Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC AMP LNA 1.2-3GHZ TDFN 8 SMT\",\n    \"source\": \"https://www.digikey.com/en/products/detail/anaren/AHL5216T8/4812464\"\n}",
+      "timestamp": "2024-12-30T13:27:51.701Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER DIPLEXER DC-3GHZ 1.5DB 2W 1008-8 SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=LDPQ-132-33%2B\"\n}",
+      "timestamp": "2024-12-30T13:27:54.395Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER BAND 1232MHZ 1DB SMT2\",\n    \"source\": \"https://www.taoglas.com/product/dbp-1232-p-a-50\"\n}",
+      "timestamp": "2024-12-30T13:27:56.992Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER EMI 250MHZ 350MA 10V 1005 SMT\",\n    \"source\": \"https://product.tdk.com/en/search/emc/emi_filter/info?part_no=MEM1005PP251T001\"\n}",
+      "timestamp": "2024-12-30T13:27:59.336Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC RF SWITCH SPDT 0.5-6GHZ QFN 10PIN SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Infineon/BGS12PN10E6327XTSA1\"\n}",
+      "timestamp": "2024-12-30T13:28:02.480Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SPLITTER 2W0 1-2.4GHZ 0805 6P SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=SCG-2-242%2B\"\n}",
+      "timestamp": "2024-12-30T13:28:07.533Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER LP DC-1.575GHZ 0805 SMT\",\n    \"source\": \"https://www.minicircuits.com/WebStore/dashboard.html?model=LFCG-1575%2B\"\n}",
+      "timestamp": "2024-12-30T13:28:10.491Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC BUFFER UHS DUAL SC70 6PIN LOGIC\",\n    \"source\": \"https://www.digikey.com/en/products/detail/onsemi/NC7WZ16P6X/963856\"\n}",
+      "timestamp": "2024-12-30T13:28:13.214Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"SCREW PH PHIL CRES NC 2X.250\",\n    \"source\": \"https://www.milstandard.com/MS51957-3\"\n}",
+      "timestamp": "2024-12-30T13:28:15.987Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"ADHESIVE SCOTCH-WELD EPOXY DP2216 2-PART STRUCTURAL GREY\",\n    \"source\": \"https://www.3m.com/3M/en_US/p/d/b40066758/\"\n}",
+      "timestamp": "2024-12-30T13:28:18.774Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC FPGA MAX10 16K LE 7-GR UBGA 169PIN INDUSTRIAL\",\n    \"source\": \"https://www.digikey.com/en/products/detail/intel/10M16SAU169I7G/5184555\"\n}",
+      "timestamp": "2024-12-30T13:28:21.685Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC SDRAM 16G DDR4 13NS 1.2V FBGA 96PIN\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Micron/MT40A1G16TD-062E-AATF\"\n}",
+      "timestamp": "2024-12-30T13:28:24.217Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 6.3 V 10% X5R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/04026D105KAT2A\"\n}",
+      "timestamp": "2024-12-30T13:28:26.808Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 16 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Cal-Chip-Electronics/GMC04X7R105K16NT\"\n}",
+      "timestamp": "2024-12-30T13:28:29.345Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 8.06K 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Panasonic/ERJ-2RKF8061X\"\n}",
+      "timestamp": "2024-12-30T13:28:31.862Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT HEADER 80P 0.8MM SMT DUAL ROW ERM8\",\n    \"source\": \"https://www.samtec.com/products/erm8-040-05.0-s-dv-k-tr\"\n}",
+      "timestamp": "2024-12-30T13:28:34.482Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC TRANSC USB 2.0 ULPI QFN 32PIN SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Microchip/USB3320C-EZK-TR\"\n}",
+      "timestamp": "2024-12-30T13:28:37.042Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 36R 0.05W 1% 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW020136R0FNED\"\n}",
+      "timestamp": "2024-12-30T13:28:39.452Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Cal-Chip-Electronics/GMC04X7R105K10NT\"\n}",
+      "timestamp": "2024-12-30T13:28:42.065Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC TRANSC RS232 2TX/2RX LGA 12PIN SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Maxim-Integrated/MAX33250EELC\"\n}",
+      "timestamp": "2024-12-30T13:28:45.345Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 45.9K 0.06W 1% 0402 SMT F25\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73R1ETTP4592F25\"\n}",
+      "timestamp": "2024-12-30T13:28:48.224Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 92K 0.06W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/RT0402BRD0792KL\"\n}",
+      "timestamp": "2024-12-30T13:28:50.738Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 37.4K 0.05W 1% 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0201FR-0737K4L\"\n}",
+      "timestamp": "2024-12-30T13:28:53.212Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC MICROCONTROLLER TPM2.0 OTIGA SPI 32PIN UQFN SMT\",\n    \"source\": \"https://www.infineon.com/cms/en/product/security-smart-card-solutions/tpm-optiga-tpm/slb9672/\"\n}",
+      "timestamp": "2024-12-30T13:28:55.777Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC AMP LNA 1.2-3GHZ TDFN 8 SMT\",\n    \"source\": \"https://www.digikey.com/en/products/detail/anaren/AHL5216T8/4812464\"\n}",
+      "timestamp": "2024-12-30T13:28:58.470Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT SOCKET STRIP 26P 2.54MM SMT DUAL ROW SFM 30UM\",\n    \"source\": \"https://www.samtec.com/products/sfm-113-02-s-d-sn-k-tr\"\n}",
+      "timestamp": "2024-12-30T13:29:01.019Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC SENSOR DIG RGB/IR/ALS I2C SMT\",\n    \"source\": \"https://www.digikey.com/en/products/detail/broadcom-limited/APDS-9250/9380364\"\n}",
+      "timestamp": "2024-12-30T13:29:03.599Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT 10P 1.27MM ST SMT DUAL ROW TFM\",\n    \"source\": \"https://www.samtec.com/products/tfm-105-12-s-d-k-tr\"\n}",
+      "timestamp": "2024-12-30T13:29:06.029Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN COAX 2P 2MM ST SMT SMPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/HUBER-SUHNER/159-M700-199\"\n}",
+      "timestamp": "2024-12-30T13:29:09.700Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 68 PF 16 V 5% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0402YA680JAT2A\"\n}",
+      "timestamp": "2024-12-30T13:29:12.274Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC VR ADJ 2X 2.5A/5A 20VIN BGA 25PIN INDUSTRIAL\",\n    \"source\": \"https://www.analog.com/en/products/ltm4622.html\"\n}",
+      "timestamp": "2024-12-30T13:29:14.728Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 NF 25 V 10% X5R 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM033R61E103KA12D\"\n}",
+      "timestamp": "2024-12-30T13:29:17.192Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 4.99K 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW04024K99FKED\"\n}",
+      "timestamp": "2024-12-30T13:29:20.157Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 21K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW040221K0FKED\"\n}",
+      "timestamp": "2024-12-30T13:29:22.983Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 147K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-07147KL\"\n}",
+      "timestamp": "2024-12-30T13:29:25.991Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1.27K 0.06W 0.1% 0402 SMT 2*\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/TNPW04021K27BEED\"\n}",
+      "timestamp": "2024-12-30T13:29:29.045Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 2.67K 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.digikey.com/en/products/detail/vishay-thin-film/MC04022671FTW/603221\"\n}",
+      "timestamp": "2024-12-30T13:29:32.946Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 1K 0.06W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Susumu/RB04BTP1001\"\n}",
+      "timestamp": "2024-12-30T13:29:36.220Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 0R 0.06W 5% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04JTN0R0\"\n}",
+      "timestamp": "2024-12-30T13:29:38.833Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 39.2R 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-0739R2L\"\n}",
+      "timestamp": "2024-12-30T13:29:41.547Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 12.4K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW040212K4FKED\"\n}",
+      "timestamp": "2024-12-30T13:29:47.378Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 21.5K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-0721K5L\"\n}",
+      "timestamp": "2024-12-30T13:29:52.678Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 162K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0402FR-07162KL\"\n}",
+      "timestamp": "2024-12-30T13:29:57.428Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 240R 0.063W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/TNPW0402240RBEED\"\n}",
+      "timestamp": "2024-12-30T13:30:01.093Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 86.6K 0.063W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/TNPW040286K6BEED\"\n}",
+      "timestamp": "2024-12-30T13:30:03.755Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10K 0.06W 0.1% 0402 SMT B=100PPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73H1ETTP1002B100\"\n}",
+      "timestamp": "2024-12-30T13:30:06.583Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10R 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW040210R0FKTD\"\n}",
+      "timestamp": "2024-12-30T13:30:09.413Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1K 0.05W 1% 200PPM 0201 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Yageo/RC0201FR-071KL\"\n}",
+      "timestamp": "2024-12-30T13:30:12.025Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 1K 0.125W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/RCC04021K00FKED\"\n}",
+      "timestamp": "2024-12-30T13:30:15.462Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 NF 50 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KEMET/C0402C102K5RACTU\"\n}",
+      "timestamp": "2024-12-30T13:30:18.172Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 330 UF 6.3 V 10% C SMT 1210 LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KEMET/T495C337K006ATE200\"\n}",
+      "timestamp": "2024-12-30T13:30:20.890Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN POLY 22 UF 25 V 20% 100 MOHM 2312 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/TCJC226M025R0100\"\n}",
+      "timestamp": "2024-12-30T13:30:23.571Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 18 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM1555C1H180GA01D\"\n}",
+      "timestamp": "2024-12-30T13:30:26.666Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 22 UF 25 V 10% X7R 0805 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0805X226K250SNT\"\n}",
+      "timestamp": "2024-12-30T13:30:29.839Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 39 PF 50 V 2% COG 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM1555C1H390GA01D\"\n}",
+      "timestamp": "2024-12-30T13:30:32.852Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 4.7 UF 25 V 5% X7R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X475J250SNT\"\n}",
+      "timestamp": "2024-12-30T13:30:36.380Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 16 V 10% X7R 1206 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/KGM31AR71C106KU\"\n}",
+      "timestamp": "2024-12-30T13:30:38.938Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.avx.com/products/capacitors/ceramic/mlcc-standard/0402b106k100snt/\"\n}",
+      "timestamp": "2024-12-30T13:30:41.736Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 470 NF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/GRM155R71A474KE01D\"\n}",
+      "timestamp": "2024-12-30T13:30:44.949Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 25 V 10% X7R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X106K250SNT\"\n}",
+      "timestamp": "2024-12-30T13:30:47.711Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 22 UF 10 V 10% X5R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X226K100SNT\"\n}",
+      "timestamp": "2024-12-30T13:30:50.758Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 100 NF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/TDK/C1005X7R1C104KT\"\n}",
+      "timestamp": "2024-12-30T13:30:53.591Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 39 PF 50 V 5% COG 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603U390J500SNT\"\n}",
+      "timestamp": "2024-12-30T13:30:56.541Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 330 UF 4 V 20% X6S 1210 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/MSASA32MAC6337MPCDT1\"\n}",
+      "timestamp": "2024-12-30T13:30:59.061Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 PF 50 V 5% NP0 0201 SMT\",\n    \"source\": \"https://www.murata.com/en-global/products/productdetail?partno=GRM0335C1H100JA01D\"\n}",
+      "timestamp": "2024-12-30T13:31:01.961Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"TRANS MOSFET N-CH 40 V 30 A 1212-8S SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/SISS12DN-T1-GE3\"\n}",
+      "timestamp": "2024-12-30T13:31:04.583Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC BUFFER UHS DUAL SC70 6PIN LOGIC\",\n    \"source\": \"https://www.digikey.com/en/products/detail/onsemi/NC7WZ16P6X/963856\"\n}",
+      "timestamp": "2024-12-30T13:31:07.157Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC VR LINEAR LDO REG 5.0 V 2 A LFCSP 8PIN SMT\",\n    \"source\": \"https://www.analog.com/en/products/adm7172.html\"\n}",
+      "timestamp": "2024-12-30T13:31:09.705Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC VR DC/DC 50AX1/25AX2 16V 96% EFF SYNC STEP-DOWN CONVERTER BGA 144PIN SMT\",\n    \"source\": \"https://www.analog.com/en/products/ltm4650aiy-1.html\"\n}",
+      "timestamp": "2024-12-30T13:31:12.472Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC CONV DC/DC 18VIN 3A 2.2MHZ SYNC BUCK 16-QFN SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Monolithic-Power-Systems-MPS/MPM3632SGPQ-Z\"\n}",
+      "timestamp": "2024-12-30T13:31:15.392Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC HOT SWAP CONTROLLER 2.9V-15V QFN 12PIN SMT\",\n    \"source\": \"https://www.analog.com/en/products/ltc4231.html\"\n}",
+      "timestamp": "2024-12-30T13:31:17.669Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 8.7NH 0.7A 2% 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Coilcraft/0603CS-8N7XGRW\"\n}",
+      "timestamp": "2024-12-30T13:31:20.926Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FERRITE BEAD 180R 1.5A 25% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/BLM15PX181SN1D\"\n}",
+      "timestamp": "2024-12-30T13:31:23.444Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IND CHIP 10UH - 10% 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AIML-0603-100K-T\"\n}",
+      "timestamp": "2024-12-30T13:31:26.060Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FERRITE BEAD 220 OHM 2.2A 25% 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Murata/BLM18KG221SN1D\"\n}",
+      "timestamp": "2024-12-30T13:31:28.866Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC FPGA ZYNQ USCALE 930KLE GR-* L1FFVE1156 INDUSTRIAL\",\n    \"source\": \"https://www.xilinx.com/products/silicon-devices/soc/zynq-ultrascale-mpsoc/xczu47dr.html\"\n}",
+      "timestamp": "2024-12-30T13:31:35.351Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 3.3K 0.06W 1% 100PPM 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/NIC-Components/NRC04F3301TRF\"\n}",
+      "timestamp": "2024-12-30T13:31:38.462Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 52.3K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04F5232CT\"\n}",
+      "timestamp": "2024-12-30T13:31:49.214Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 301K 0.06W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RK73H1ETTP3013F\"\n}",
+      "timestamp": "2024-12-30T13:31:52.407Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FERRITE BEAD 220 OHM 0.7A 25% 0402 SMT\",\n    \"source\": \"https://www.murata.com/en-global/products/productdetail?partno=BLM15EG221SN1D\"\n}",
+      "timestamp": "2024-12-30T13:31:55.639Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 4.75K 0.06W 1% 0402 SMT T/R\",\n    \"source\": \"https://www.mouser.com/ProductDetail/NIC-Components/NRC04F4751TRF\"\n}",
+      "timestamp": "2024-12-30T13:31:58.866Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT SOCKET 80P 0.8MM SMT DUAL ROW ERF8\",\n    \"source\": \"https://www.samtec.com/products/ERF8-040-05.0-S-DV-K-TR\"\n}",
+      "timestamp": "2024-12-30T13:32:02.069Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 1 UF 10 V 10% X7R 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Cal-Chip-Electronics/GMC04X7R105K10NT\"\n}",
+      "timestamp": "2024-12-30T13:32:05.435Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP HPW 120R 0.2W 1% 0402 SMT HIGH POWER\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay-Dale/CRCW0402120RFKEDHP\"\n}",
+      "timestamp": "2024-12-30T13:32:08.621Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10.6K 0.06W 0.1% 0PPM 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73R1ETTP1062B25\"\n}",
+      "timestamp": "2024-12-30T13:32:11.937Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC CONV DC/DC 9.6-48 VOUT 300 W 8 A 1/16TH BRICK SMT\",\n    \"source\": \"https://www.recom-power.com/en/products/dc-dc-converters/RGC.html\"\n}",
+      "timestamp": "2024-12-30T13:32:15.676Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CONN RECT TERMINAL STRIP 26P 2.54MM SMT DUAL ROW LC TFM\",\n    \"source\": \"https://www.samtec.com/products/TFM-113-22-S-D-LC-K-TR\"\n}",
+      "timestamp": "2024-12-30T13:32:19.203Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"FILTER EMI 20A 40V DC DIP 9PIN\",\n    \"source\": \"https://www.mouser.com/ProductDetail/TDK/FQB020ADC-N07-M\"\n}",
+      "timestamp": "2024-12-30T13:32:22.623Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"LED BICOLOR YELLOW-GREEN 20MCD 20MA 2V PLCC2 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Broadcom/HSMG-A100-J02J1\"\n}",
+      "timestamp": "2024-12-30T13:32:25.756Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 12 PF 200 V 5% NPO 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/ATC/600L120JT200T\"\n}",
+      "timestamp": "2024-12-30T13:32:28.461Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"IC QUAD VOLTAGE MONITOR 4-CHANNEL INPUT 1V-5.5V TSSOP-10 SMT\",\n    \"source\": \"https://www.analog.com/en/products/adm1184.html\"\n}",
+      "timestamp": "2024-12-30T13:32:31.194Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"TRAFO ETHERN 1000BASE-T 350UH 1:1+CT SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Pulse/HX5120NL\"\n}",
+      "timestamp": "2024-12-30T13:32:38.118Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 4.99K 0.063W 1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04F4991CT\"\n}",
+      "timestamp": "2024-12-30T13:32:43.502Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 1K 0.06W 0.1% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Susumu/RB04BTP1001\"\n}",
+      "timestamp": "2024-12-30T13:32:46.944Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP 0R 0.06W 5% 0402 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Stackpole/RM04JTN0R0\"\n}",
+      "timestamp": "2024-12-30T13:32:49.636Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"RES CHIP MF 10K 0.06W 0.1% 0402 SMT B=100PPM\",\n    \"source\": \"https://www.mouser.com/ProductDetail/KOA-Speer/RN73H1ETTP1002B100\"\n}",
+      "timestamp": "2024-12-30T13:32:53.226Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 47 UF 50 V 10% LEADED SMT LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/597D476X9050Z2T\"\n}",
+      "timestamp": "2024-12-30T13:32:57.184Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 100 UF 35 V 20% 3* SMT LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/597D107X0035F2T\"\n}",
+      "timestamp": "2024-12-30T13:32:59.970Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP TAN 220 UF 25 V 20% 3* SMT LOW ESR\",\n    \"source\": \"https://www.mouser.com/ProductDetail/Vishay/597D227X0025M8T\"\n}",
+      "timestamp": "2024-12-30T13:33:02.534Z"
+    },
+    {
+      "role": "assistant",
+      "content": "{\n    \"description\": \"CAP CHIP CER 10 UF 25 V 10% X7R 0603 SMT\",\n    \"source\": \"https://www.mouser.com/ProductDetail/AVX/0603X106K250SNT\"\n}",
+      "timestamp": "2024-12-30T13:33:05.314Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Файл успешно обработан. Обработано строк: 563. \nВы можете задавать вопросы о компонентах или запросить дополнительную информацию.",
+      "timestamp": "2024-12-30T13:33:35.640Z"
+    }
+  ]
+}
