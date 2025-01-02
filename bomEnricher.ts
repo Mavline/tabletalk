@@ -3,8 +3,51 @@ import OpenAI from 'openai';
 import dotenv from 'dotenv';
 import { StorageManager, ChatMessage } from './storage';
 import WebSocket from 'ws';
+import fs from 'fs';
+import path from 'path';
 
 dotenv.config();
+
+// Функция очистки временных файлов
+function cleanupTempFiles() {
+    try {
+        // Очищаем файлы истории чата
+        const tableStorageDir = path.join(process.cwd(), 'table_storage');
+        if (fs.existsSync(tableStorageDir)) {
+            const files = fs.readdirSync(tableStorageDir);
+            for (const file of files) {
+                if (file.endsWith('.json')) {
+                    fs.unlinkSync(path.join(tableStorageDir, file));
+                    console.log(`Удален файл истории: ${file}`);
+                }
+            }
+        }
+
+        // Очищаем логи и временные файлы загрузок
+        const uploadsDir = path.join(process.cwd(), 'uploads');
+        if (fs.existsSync(uploadsDir)) {
+            const files = fs.readdirSync(uploadsDir);
+            for (const file of files) {
+                fs.unlinkSync(path.join(uploadsDir, file));
+                console.log(`Удален файл загрузки: ${file}`);
+            }
+        }
+
+        // Создаем директории если они не существуют
+        [tableStorageDir, uploadsDir].forEach(dir => {
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+                console.log(`Создана директория: ${dir}`);
+            }
+        });
+
+    } catch (error) {
+        console.error('Ошибка при очистке файлов:', error);
+    }
+}
+
+// Экспортируем функцию очистки для использования в server.ts
+export { cleanupTempFiles };
 
 const openai = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
@@ -22,7 +65,7 @@ type OpenAIMessage = {
 async function checkApiConnection(): Promise<boolean> {
     try {
         const completion = await openai.chat.completions.create({
-            model: "deepseek/deepseek-chat",
+            model: "perplexity/llama-3.1-sonar-small-128k-online",
             messages: [
                 {
                     role: "system",
@@ -60,8 +103,7 @@ interface ProcessedRow {
 async function processRow(
     description: string, 
     partNumber: string,
-    fileId?: string,
-    onLLMResponse?: (response: string, accept: () => void, reject: () => void) => void
+    fileId?: string
 ): Promise<ProcessedRow | null> {
     try {
         // Получаем историю чата для контекста
@@ -74,145 +116,121 @@ async function processRow(
             }
         }
 
-        // Формируем сообщения с учетом истории
         const messages: OpenAIMessage[] = [
             {
                 role: "system",
-                content: `You are a JSON-only response API. You MUST ALWAYS respond in valid JSON format.
-You are analyzing a Bill of Materials table and enriching component descriptions.
+                content: `You are a BOM component description enricher.
 
-RESPONSE FORMAT:
-You MUST ONLY return a JSON object with exactly two fields:
-{
-    "description": "formatted component description following rules below",
-    "source": "full product URL with https://"
-}
-DO NOT include any explanations, notes or text outside the JSON object.
+FIRST RULE - MOST IMPORTANT:
+Check if part number exists and is not empty.
+If part number is empty or missing, ALWAYS return exactly these two lines:
+NO_PART_NUMBER
+NO_SOURCE
 
-RULES FOR DESCRIPTIONS:
-1. NEVER simplify or shorten existing descriptions
-2. Keep ALL parameters from the original description
-3. Add missing parameters if found in part number
-4. STRICTLY FOLLOW unit conversion rules - this is MANDATORY!
+Only if part number exists, proceed with enrichment using rules below:
 
-UNIT CONVERSION RULES (MANDATORY!):
-1. Capacitors:
-   - UF/uF -> MF (microfarads to MF)
-   Examples:
-   * 10 UF -> 10 MF
-   * 4.7 uF -> 4.7 MF
-   
-   - NF/nF -> Use MF or PF (shortest form)
-   Examples:
-   * 470 NF -> 0.47 MF
-   * 1 NF -> 1000 PF
-   
-2. Resistors and Impedance:
-   - OHM/Ohm/ohm -> R
-   - KOHM/KOhm/kohm -> K
-   - MOHM/MOhm/mohm -> M
-   Examples:
-   * 50 OHM -> 50R
-   * IMPEDANCE=180 OHM -> IMPEDANCE=180R
-   * 1.5 KOHM -> 1.5K
-   * 2.2 MOHM -> 2.2M
+OUTPUT FORMAT:
+Line 1: Enriched component description
+Line 2: Valid source URL (must start with https://)
 
-3. Ceramic:
-   - CER -> CRM (ALWAYS replace!)
-   Examples:
-   * CAP CHIP CER -> CAP CHIP CRM
-   * CERAMIC -> CRM
+RULES:
+1. ONLY output these 2 lines, nothing else
+2. NO markdown, NO formatting
+3. NO explanations or comments
+4. Keep original parameters and add missing ones
+5. For unknown components, keep original description
+6. Source URL must be real and relevant
+7. If part number is empty or missing, return exactly:
+   NO_PART_NUMBER
+   NO_SOURCE
 
-Component Type Formats:
+UNIT CONVERSION:
+- UF/uF -> MF
+- NF/nF -> MF or PF  
+- OHM/Ohm/ohm -> R
+- KOHM/KOhm/kohm -> K
+- MOHM/MOhm/mohm -> M
+- CER -> CRM
 
-Capacitors:
-CAP CHIP CRM <value> <power> <deviation> <temperature> <assembly> <size> <parameters>
-Example: CAP CHIP CRM 39 PF 50 V 2% COG 0402 SMT Q=30
+Example 1 (with part number):
+Part: GRM1555C1H390GA01D
+Description: CAP CHIP CER 39 PF 50 V 2% COG
 
-Resistors:
-RES CHIP <value> <power> <deviation> <size> <assembly> <parameters>
-Example: RES CHIP 1.8K 0.0625W 1% 0402 SMT
+Response:
+CAP CHIP CRM 39 PF 50 V 2% COG 0402 SMT
+https://www.digikey.com/product-detail/en/GRM1555C1H390GA01D
 
-Filters:
-FILTER <type> <frequency> <size> <parameters>
-Example: FILTER BAND 1567.5MHZ 1DB SMT2
+Example 2 (no part number):
+Part: 
+Description: ANTENNA BASE, GROUND VER
 
-Inductors:
-IND CHIP <value> <current> <deviation> <size> <parameters>
-Example: IND CHIP 12NH 1.24A 2% 0402 Q=30
-
-Connectors:
-CONN <type> <pins> <pitch> <mount> <parameters>
-Example: CONN COAX 1P 1.778MM SMT UFL 3P
-
-RULES FOR LINKS:
-1. Always provide FULL product URL with all parameters
-2. Use direct product pages instead of search/category pages
-3. Prefer datasheets and detailed specifications
-4. Include product ID/part number in URL when possible
-
-IMPORTANT:
-1. Use ONLY information from vendor part number
-2. Do NOT add manufacturer names
-3. ALWAYS check and convert ALL units according to rules above
-4. If original description is longer - keep ALL its parameters
-5. Return strictly JSON format:
-{
-    "description": "formatted description following rules above",
-    "source": "full product URL with https://"
-}`
+Response:
+NO_PART_NUMBER
+NO_SOURCE`
             },
             ...chatHistory.map(msg => ({
                 role: msg.role as 'user' | 'assistant',
                 content: msg.content
             })),
             {
-                role: "user",
-                content: `Analyze this component:
+                role: "user", 
+                content: `Enrich this component description:
 Part: ${partNumber}
 Description: ${description}
 
-Provide enriched description following ALL rules above.
-IMPORTANT: Keep ALL parameters from original description!`
+Return ONLY enriched description and valid source URL in 2 lines.`
             }
         ];
 
         const completion = await openai.chat.completions.create({
-            model: "deepseek/deepseek-chat",
-            messages,
-            response_format: { type: "json_object" }
+            model: "perplexity/llama-3.1-sonar-small-128k-online",
+            messages
         });
-
-        const result = JSON.parse(completion.choices[0].message.content || '{}');
-
-        // Добавляем https:// к ссылке, если его нет
-        if (result.source && !result.source.startsWith('http')) {
-            result.source = 'https://' + result.source;
+        
+        // Проверяем наличие ответа
+        if (!completion?.choices?.[0]?.message?.content) {
+            console.error('Нет ответа от LLM');
+            return null;
         }
-
-        if (!result.description || result.description === 'null') {
+        
+        const response = completion.choices[0].message.content;
+        
+        // Строгая валидация ответа
+        const lines = response.split('\n').map(line => line.trim()).filter(line => line);
+        
+        if (lines.length !== 2) {
+            console.error('Invalid LLM response format - expected 2 lines, got:', lines.length);
             return null;
         }
 
-        if (onLLMResponse) {
-            return new Promise((resolve) => {
-                onLLMResponse(
-                    result.description,
-                    () => resolve(result),
-                    () => resolve(null)
-                );
-            });
+        const [description_text, source_url] = lines;
+
+        // Проверяем, не пустой ли парт-номер
+        if (description_text === 'NO_PART_NUMBER') {
+            return {
+                description: description,
+                source: 'N/A - No part number'
+            };
         }
 
-        if (fileId) {
-            // Сохраняем JSON для контекста
-            await storageManager.addChatMessage(fileId, 'assistant', completion.choices[0].message.content || '');
+        // Проверяем формат ответа
+        if (!description_text || description_text.includes('###') || 
+            !source_url || !source_url.startsWith('https://')) {
+            console.error('Invalid LLM response format:', {description_text, source_url});
+            return null;
         }
 
-        return result as ProcessedRow;
-    } catch (error) {
+        // Если компонент неизвестен, возвращаем оригинальное описание
+        const result = {
+            description: description_text.includes('unknown') ? description : description_text,
+            source: source_url
+        };
+
+        return result;
+
+    } catch (error: any) {
         console.error('Error processing row:', error);
-        throw error;
+        throw error; // Пробрасываем ошибку выше для обработки в processExcelBuffer
     }
 }
 
@@ -239,39 +257,83 @@ export async function processExcelBuffer(
         const headers = worksheet.getRow(1).values as string[];
         console.log('Найдены заголовки:', headers);
 
-        // Даем LLM проанализировать заголовки
+        // Анализируем заголовки с помощью LLM
         const headerAnalysis = await openai.chat.completions.create({
-            model: "openai/gpt-4o-2024-11-20",
+            model: "perplexity/llama-3.1-sonar-small-128k-online",
             messages: [
                 {
                     role: "system",
-                    content: `Вы анализируете заголовки таблицы Bill of Materials.
-Найдите колонки с описанием компонента и его парт-номером.
-Ответ дайте в формате JSON:
-{
-    "descriptionColumn": "индекс колонки с описанием",
-    "partNumberColumn": "индекс колонки с парт-номером"
-}`
+                    content: `You are analyzing the Bill of Materials table headers.
+Your task is to understand which columns contain component information.
+
+IMPORTANT: Analyze the semantic meaning of each header, not just exact matches.
+Look for columns that might contain:
+
+1. Component Description/Name:
+   - Could be labeled as: Name, Description, Component, Item, etc.
+   - Should contain detailed component information
+   - Usually the longest text field
+
+2. Part Number:
+   - Could be labeled as: Part #, Part Number, Vendor Part, Item Number, etc.
+   - Contains unique identifier for the component
+   - Usually alphanumeric code
+
+Analyze each header's meaning and purpose in the BOM context.
+Return your analysis in plain text, explaining which headers you identified and why.`
                 },
                 {
                     role: "user",
-                    content: `Заголовки таблицы: ${headers.join(', ')}`
+                    content: `Analyze these table headers and explain which ones contain component descriptions and part numbers: ${headers.join(', ')}`
                 }
-            ],
-            response_format: { type: "json_object" }
+            ]
         });
 
-        const headerInfo = JSON.parse(headerAnalysis.choices[0].message.content || '{}');
-        const nameIndex = parseInt(headerInfo.descriptionColumn) - 1;
-        const partIndex = parseInt(headerInfo.partNumberColumn) - 1;
+        console.log('Анализ заголовков:', headerAnalysis.choices[0].message.content);
 
-        console.log(`Индексы колонок: Description=${nameIndex}, Part=${partIndex}`);
+        // Находим нужные колонки на основе анализа
+        let descIndex = -1;
+        let partIndex = -1;
 
-        if (isNaN(nameIndex) || isNaN(partIndex) || nameIndex < 0 || partIndex < 0) {
-            throw new Error(`Не найдены нужные колонки. Найденные колонки: ${headers.join(', ')}`);
+        // Проходим по заголовкам и ищем наиболее подходящие колонки
+        headers.forEach((header, index) => {
+            if (!header) return; // Пропускаем пустые заголовки
+            
+            const headerLower = header.toString().toLowerCase();
+            
+            // Ищем колонку с описанием
+            if (
+                headerLower.includes('name') ||
+                headerLower.includes('description') ||
+                headerLower.includes('component') ||
+                headerLower.includes('item')
+            ) {
+                if (descIndex === -1 || headerLower.includes('description')) {
+                    descIndex = index;
+                }
+            }
+            
+            // Ищем колонку с парт-номером
+            if (
+                headerLower.includes('part') ||
+                headerLower.includes('number') ||
+                headerLower.includes('#') ||
+                headerLower.includes('pn') ||
+                headerLower.includes('vendor')
+            ) {
+                if (partIndex === -1 || headerLower.includes('part')) {
+                    partIndex = index;
+                }
+            }
+        });
+
+        console.log(`Определены колонки: Description='${headers[descIndex]}' (${descIndex}), Part='${headers[partIndex]}' (${partIndex})`);
+
+        if (descIndex < 0 || partIndex < 0) {
+            throw new Error(`Не удалось определить нужные колонки. Найденные заголовки: ${headers.join(', ')}`);
         }
 
-        // Добавляем только две колонки
+        // Добавляем колонки для результатов
         const llmSuggestionIndex = worksheet.columnCount + 1;
         const sourceIndex = worksheet.columnCount + 2;
 
@@ -281,48 +343,45 @@ export async function processExcelBuffer(
         const totalRows = worksheet.rowCount - 1;
         console.log(`Всего строк для обработки: ${totalRows}`);
 
-        for (let rowNumber = 2; rowNumber <= worksheet.rowCount; rowNumber++) {
-            const row = worksheet.getRow(rowNumber);
-            const description = row.getCell(nameIndex + 1).value?.toString();
-            const partNumber = row.getCell(partIndex + 1).value?.toString();
+        try {
+            // Перебираем строки, начиная со второй (пропускаем заголовки)
+            for (let rowNumber = 2; rowNumber <= worksheet.rowCount; rowNumber++) {
+                const row = worksheet.getRow(rowNumber);
+                
+                // Получаем значения из нужных колонок
+                const description = row.getCell(descIndex).value?.toString() ?? '';
+                const partNumber = row.getCell(partIndex).value?.toString() ?? '';
 
-            console.log(`\nОбработка строки ${rowNumber}/${worksheet.rowCount}:`);
-            console.log(`Описание: ${description}`);
-            console.log(`Парт-номер: ${partNumber}`);
+                console.log(`\nОбработка строки ${rowNumber}/${worksheet.rowCount}:`);
+                console.log(`Описание: ${description}`);
+                console.log(`Парт-номер: ${partNumber}`);
 
-            if (description && partNumber) {
-                try {
-                    console.log('Отправляем запрос к LLM...');
-                    const result = await processRow(description, partNumber, fileId);
-                    if (result) {
-                        console.log('Получен ответ от LLM:', result);
-                        row.getCell(llmSuggestionIndex).value = result.description;
-                        
-                        // Создаем кликабельную ссылку в Excel с полным URL
-                        const sourceCell = row.getCell(sourceIndex);
-                        sourceCell.value = {
-                            text: result.source,
-                            hyperlink: result.source
-                        };
-                        
-                        onPreview?.(description, result.description, result.source);
-                    } else {
-                        console.log('LLM не предложила изменений для этой строки');
-                        row.getCell(llmSuggestionIndex).value = 'No suggestions';
-                        row.getCell(sourceIndex).value = '-';
-                    }
-                } catch (error) {
-                    console.error(`Ошибка при обработке строки ${rowNumber}:`, error);
-                    row.getCell(llmSuggestionIndex).value = `Ошибка: ${error instanceof Error ? error.message : 'Неизвестная ошибка'}`;
-                    row.getCell(sourceIndex).value = 'ERROR';
+                const result = await processRow(description, partNumber, fileId);
+                
+                if (result) {
+                    console.log('Получен ответ от LLM:', result);
+                    
+                    // Записываем результаты в таблицу
+                    row.getCell(llmSuggestionIndex).value = result.description;
+                    row.getCell(sourceIndex).value = {
+                        text: result.source,
+                        hyperlink: result.source
+                    };
+                    
+                    // Вызываем callback для обновления UI
+                    onPreview?.(description, result.description, result.source);
                 }
-            } else {
-                console.log('Пропускаем строку - пустое описание или парт-номер');
-                row.getCell(llmSuggestionIndex).value = 'Пропущено - неполные данные';
-                row.getCell(sourceIndex).value = '-';
-            }
 
-            onProgress?.(rowNumber - 1, totalRows);
+                onProgress?.(rowNumber - 1, totalRows);
+            }
+        } catch (error: any) {
+            // Если превышен лимит API, сохраняем промежуточные результаты
+            if (error?.status === 403 && error?.error?.message?.includes('Key limit exceeded')) {
+                console.error('Превышен лимит API ключа. Сохраняем промежуточные результаты...');
+                const arrayBuffer = await workbook.xlsx.writeBuffer();
+                throw new Error('API_LIMIT_EXCEEDED:' + new Uint8Array(arrayBuffer).toString());
+            }
+            throw error;
         }
 
         // Автоматически подгоняем ширину колонок
@@ -337,7 +396,7 @@ export async function processExcelBuffer(
                         }
                     });
                     if (typeof column.width === 'number' || column.width === undefined) {
-                        column.width = Math.min(maxLength + 2, 100); // Максимальная ширина 100 символов
+                        column.width = Math.min(maxLength + 2, 100);
                     }
                 }
             });
@@ -349,7 +408,10 @@ export async function processExcelBuffer(
         return new Uint8Array(arrayBuffer);
         
     } catch (error) {
-        console.error('Ошибка при обработке файла:', error);
+        // Проверяем, не содержит ли ошибка промежуточные результаты
+        if (error instanceof Error && error.message.startsWith('API_LIMIT_EXCEEDED:')) {
+            return new Uint8Array(error.message.split(':')[1].split(',').map(Number));
+        }
         throw error;
     }
 }
@@ -369,11 +431,11 @@ export async function askLLM(question: string, fileId?: string): Promise<string>
         const messages: OpenAIMessage[] = [
             {
                 role: "system",
-                content: `Вы анализируете таблицу "Bill of Materials" и ЗАПОЛНЯЕТЕ ОПИСАНИЕ компонентов.
-Вы можете использовать информацию с ЛЮБЫХ ВНЕШНИХ сайтов
+                content: `You are analyzing the "Bill of Materials" table and FILLING IN component descriptions.
+                You can use information from ANY EXTERNAL websites.
 
-Отвечайте на вопросы пользователя, используя всю доступную информацию о компонентах.
-Можете давать развернутые ответы, объяснения, рекомендации - всё, что поможет пользователю лучше понять компоненты.`
+                Answer user questions using all available component information.
+                You can provide detailed answers, explanations, recommendations - anything that helps the user better understand the components.`
             },
             ...chatHistory.map(msg => ({
                 role: msg.role as 'user' | 'assistant',
@@ -383,7 +445,7 @@ export async function askLLM(question: string, fileId?: string): Promise<string>
         ];
 
         const response = await openai.chat.completions.create({
-            model: "openai/gpt-4o-2024-11-20",
+            model: "perplexity/llama-3.1-sonar-small-128k-online",
             messages,
         });
 

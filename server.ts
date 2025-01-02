@@ -1,12 +1,15 @@
 import express, { Request, Response } from 'express';
 import multer from 'multer';
 import cors from 'cors';
-import { processExcelBuffer, askLLM } from './bomEnricher';
+import { processExcelBuffer, askLLM, cleanupTempFiles } from './bomEnricher';
 import { Server as HttpServer } from 'http';
 import { WebSocket, WebSocketServer } from 'ws';
 import { StorageManager } from './storage';
 import * as fs from 'fs';
 import ExcelJS from 'exceljs';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -21,35 +24,32 @@ app.use(express.static('public'));
 // Маршрут для обработки файла
 app.post('/process', upload.single('file'), async (req: Request, res: Response): Promise<void> => {
     if (!req.file?.buffer) {
-        res.status(400).json({ error: 'Файл не загружен' });
+        res.status(400).json({ error: 'File not uploaded' });
         return;
     }
 
     if (!req.file.originalname.match(/\.(xlsx|xls)$/i)) {
-        res.status(400).json({ error: 'Поддерживаются только файлы Excel (.xlsx, .xls)' });
+        res.status(400).json({ error: 'Only Excel files (.xlsx, .xls) are supported' });
         return;
     }
 
     try {
-        console.log(`Начинаем обработку файла: ${req.file.originalname}`);
+        console.log(`Starting file processing: ${req.file.originalname}`);
         
         // Сохраняем загруженный файл
         const fileId = await storageManager.saveUploadedFile(req.file.buffer, req.file.originalname);
 
         // Сохраняем начальное сообщение LLM в историю чата
         await storageManager.addChatMessage(fileId, 'assistant', 
-            `Я анализирую таблицу "Bill of Materials" и помогаю дополнить информацию о компонентах и их названиях посредством поиска в источниках на сайтах:
-- https://www.digikey.co.il/en
-- https://www.mouser.com/
-- https://www.datasheets360.com/
+            `I am analyzing the "Bill of Materials" table and helping to supplement information about components and their names by searching in sources on websites:
 
-Я могу:
-1. Определить недостающую информацию в описаниях
-2. Найти компоненты по парт-номеру
-3. Дополнить описания, сохраняя существующий стиль
-4. Ответить на вопросы о компонентах
+I can:
+1. Identify missing information in descriptions
+2. Find components by part number
+3. Supplement descriptions while preserving the existing style
+4. Answer questions about components
 
-Чем могу помочь?`
+How can I help?`
         );
 
         // Получаем количество строк в файле
@@ -61,7 +61,7 @@ app.post('/process', upload.single('file'), async (req: Request, res: Response):
         const processedBuffer = await processExcelBuffer(
             req.file.buffer,
             (current: number, total: number) => {
-                console.log(`Прогресс: ${current}/${total} строк`);
+                console.log(`Progress: ${current}/${total} rows`);
                 wss.clients.forEach((client: WebSocket) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify({
@@ -74,10 +74,10 @@ app.post('/process', upload.single('file'), async (req: Request, res: Response):
                 });
             },
             (before: string, after: string, source: string) => {
-                console.log('Предпросмотр изменений:');
-                console.log('До:', before);
-                console.log('После:', after);
-                console.log('Источник:', source);
+                console.log('Preview of changes:');
+                console.log('Before:', before);
+                console.log('After:', after);
+                console.log('Source:', source);
                 wss.clients.forEach((client: WebSocket) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify({
@@ -98,18 +98,18 @@ app.post('/process', upload.single('file'), async (req: Request, res: Response):
 
         // Добавляем сообщение о завершении обработки
         await storageManager.addChatMessage(fileId, 'assistant', 
-            `Файл успешно обработан. Обработано строк: ${totalRows}. 
-Вы можете задавать вопросы о компонентах или запросить дополнительную информацию.`
+            `File processed successfully. Processed rows: ${totalRows}. 
+You can ask questions about components or request additional information.`
         );
 
-        console.log('Отправляем обработанный файл клиенту');
+        console.log('Sending processed file to client');
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.setHeader('Content-Disposition', `attachment; filename=${processedName}`);
         res.send(Buffer.from(processedBuffer));
 
     } catch (error) {
-        console.error('Ошибка при обработке файла:', error);
-        const errorMessage = error instanceof Error ? error.message : 'Неизвестная ошибка';
+        console.error('Error processing file:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         wss.clients.forEach((client: WebSocket) => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify({
@@ -127,7 +127,7 @@ app.post('/api/ask-llm', async (req: Request, res: Response): Promise<void> => {
     try {
         const { question, fileId } = req.body;
         if (!question) {
-            res.status(400).json({ error: 'Вопрос не указан' });
+            res.status(400).json({ error: 'Question not specified' });
             return;
         }
 
@@ -146,7 +146,7 @@ app.post('/api/ask-llm', async (req: Request, res: Response): Promise<void> => {
         res.json({ answer });
     } catch (error) {
         res.status(500).json({ 
-            error: error instanceof Error ? error.message : 'Ошибка при обращении к LLM'
+            error: error instanceof Error ? error.message : 'Error contacting LLM'
         });
     }
 });
@@ -159,7 +159,7 @@ app.get('/api/chat-history/:fileId', async (req: Request, res: Response): Promis
         res.json({ history });
     } catch (error) {
         res.status(404).json({ 
-            error: error instanceof Error ? error.message : 'История чата не найдена'
+            error: error instanceof Error ? error.message : 'Chat history not found'
         });
     }
 });
@@ -175,21 +175,36 @@ app.get('/api/file/:fileId', async (req: Request, res: Response): Promise<void> 
         res.send(fileContent);
     } catch (error) {
         res.status(404).json({ 
-            error: error instanceof Error ? error.message : 'Файл не найден'
+            error: error instanceof Error ? error.message : 'File not found'
         });
     }
 });
 
 // Обработка WebSocket подключений
 wss.on('connection', (ws: WebSocket) => {
-    console.log('Новое WebSocket подключение');
+    console.log('New WebSocket connection');
     
+    // Очищаем временные файлы при новом подключении
+    console.log('Cleaning up temporary files...');
+    cleanupTempFiles();
+    console.log('Cleanup completed');
+
+    ws.on('message', async (message: string) => {
+        try {
+            const data = JSON.parse(message);
+            // ... rest of the WebSocket message handling ...
+        } catch (error) {
+            console.error('Error processing WebSocket message:', error);
+            ws.send(JSON.stringify({ error: 'Error processing message' }));
+        }
+    });
+
     ws.on('close', () => {
-        console.log('WebSocket подключение закрыто');
+        console.log('WebSocket connection closed');
     });
 });
 
 const PORT = process.env.PORT || 3002;
 server.listen(PORT, () => {
-    console.log(`Сервер запущен на порту ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 }); 
