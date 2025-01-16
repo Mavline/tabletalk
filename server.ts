@@ -181,13 +181,16 @@ app.get('/api/file/:fileId', async (req: Request, res: Response): Promise<void> 
 });
 
 // Обработка WebSocket подключений
-wss.on('connection', (ws: WebSocket) => {
+wss.on('connection', async (ws: WebSocket) => {
     console.log('New WebSocket connection');
     
     // Очищаем временные файлы при новом подключении
-    console.log('Cleaning up temporary files...');
-    cleanupTempFiles();
-    console.log('Cleanup completed');
+    try {
+        await storageManager.cleanup();
+        console.log('Очистка временных файлов выполнена');
+    } catch (error) {
+        console.error('Ошибка при очистке файлов:', error);
+    }
 
     ws.on('message', async (message: string) => {
         try {

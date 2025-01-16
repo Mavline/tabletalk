@@ -21,15 +21,9 @@ export class StorageManager {
     private readonly uploadsDir = 'uploads';
     private readonly processedDir = 'processed';
     private readonly storageDir = './table_storage';
-    private readonly maxFiles = 10;
-    private readonly cleanupInterval = 24 * 60 * 60 * 1000; // 24 часа
 
     private constructor() {
-        if (!fs.existsSync(this.storageDir)) {
-            fs.mkdirSync(this.storageDir, { recursive: true });
-        }
-        this.cleanupOldFiles();
-        setInterval(() => this.cleanup(), this.cleanupInterval);
+        this.ensureDirectories();
     }
 
     public static getInstance(): StorageManager {
@@ -119,69 +113,30 @@ export class StorageManager {
         return path.join(this.processedDir, metadata.processedName);
     }
 
-    private async cleanup() {
+    public async cleanup() {
         try {
-            const files = await fs.promises.readdir(this.storageDir);
-            const metadataFiles = files.filter(f => f.endsWith('.json'));
+            // Очищаем все директории
+            const cleanDir = async (dir: string) => {
+                if (!fs.existsSync(dir)) return;
+                const files = await fs.promises.readdir(dir);
+                await Promise.all(
+                    files.map(file => 
+                        fs.promises.unlink(path.join(dir, file)).catch(() => {})
+                    )
+                );
+            };
 
-            if (metadataFiles.length <= this.maxFiles) return;
+            // Очищаем все три директории
+            await Promise.all([
+                cleanDir(this.uploadsDir),
+                cleanDir(this.processedDir),
+                cleanDir(this.storageDir)
+            ]);
 
-            const metadataWithStats = await Promise.all(
-                metadataFiles.map(async (file) => {
-                    const filePath = path.join(this.storageDir, file);
-                    const metadata: FileMetadata = JSON.parse(
-                        await fs.promises.readFile(filePath, 'utf-8')
-                    );
-                    return { file, metadata };
-                })
-            );
-
-            // Сортируем по времени последнего доступа
-            metadataWithStats.sort(
-                (a, b) => a.metadata.lastAccess.getTime() - b.metadata.lastAccess.getTime()
-            );
-
-            // Удаляем старые файлы
-            const filesToRemove = metadataWithStats.slice(0, metadataWithStats.length - this.maxFiles);
-            
-            for (const { file, metadata } of filesToRemove) {
-                const fileId = file.replace('.json', '');
-                const uploadPath = path.join(this.uploadsDir, fileId);
-                const processedPath = path.join(this.processedDir, metadata.processedName);
-                const metadataPath = path.join(this.storageDir, file);
-
-                await Promise.all([
-                    fs.promises.unlink(uploadPath).catch(() => {}),
-                    fs.promises.unlink(processedPath).catch(() => {}),
-                    fs.promises.unlink(metadataPath).catch(() => {})
-                ]);
-            }
+            // Пересоздаем директории
+            this.ensureDirectories();
         } catch (error) {
-            console.error('Ошибка при очистке старых файлов:', error);
-        }
-    }
-
-    private cleanupOldFiles() {
-        try {
-            const files = fs.readdirSync(this.storageDir);
-            if (files.length > this.maxFiles) {
-                // Сортируем файлы по времени создания
-                const sortedFiles = files
-                    .map(file => ({
-                        name: file,
-                        time: fs.statSync(path.join(this.storageDir, file)).birthtime.getTime()
-                    }))
-                    .sort((a, b) => a.time - b.time);
-
-                // Удаляем самые старые файлы
-                const filesToDelete = sortedFiles.slice(0, files.length - this.maxFiles);
-                filesToDelete.forEach(file => {
-                    fs.unlinkSync(path.join(this.storageDir, file.name));
-                    console.log(`Удален старый файл: ${file.name}`);
-                });
-            }
-        } catch (error) {
-            console.error('Ошибка при очистке старых файлов:', error);
+            console.error('Ошибка при очистке файлов:', error);
         }
     }
 } 
