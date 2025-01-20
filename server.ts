@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import multer from 'multer';
 import cors from 'cors';
-import { processExcelBuffer, askLLM, cleanupTempFiles } from './bomEnricher';
+import { processExcelBuffer, getFileHeaders, cleanupTempFiles, getSheetNames, getFileHeadersFromSheet } from './bomEnricher';
 import { Server as HttpServer } from 'http';
 import { WebSocket, WebSocketServer } from 'ws';
 import { StorageManager } from './storage';
@@ -21,6 +21,66 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+// Маршрут для получения заголовков файла
+app.post('/api/get-headers', async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { fileId, sheet } = req.body;
+        
+        if (!fileId) {
+            res.status(400).json({ error: 'Не указан идентификатор файла' });
+            return;
+        }
+
+        // Получаем файл из хранилища
+        const filePath = await storageManager.getUploadedFilePath(fileId);
+        const buffer = await fs.promises.readFile(filePath);
+
+        let headers;
+        if (sheet) {
+            headers = await getFileHeadersFromSheet(buffer, sheet);
+        } else {
+            headers = await getFileHeaders(buffer);
+        }
+
+        res.json({ headers });
+    } catch (error) {
+        console.error('Ошибка при чтении заголовков:', error);
+        res.status(500).json({ error: 'Ошибка при чтении заголовков файла' });
+    }
+});
+
+// Добавляем новый маршрут для получения списка листов
+app.post('/api/get-sheets', upload.single('file'), async (req: Request, res: Response): Promise<void> => {
+    console.log('=== Получен запрос на получение списка листов ===');
+    try {
+        if (!req.file) {
+            console.error('Файл не был загружен');
+            res.status(400).json({ error: 'Файл не был загружен' });
+            return;
+        }
+
+        // Сохраняем файл во временное хранилище
+        const fileId = await storageManager.saveUploadedFile(req.file.buffer, req.file.originalname);
+        
+        // Получаем список листов
+        const sheets = await getSheetNames(req.file.buffer);
+
+        if (!sheets || sheets.length === 0) {
+            console.error('Листы не найдены в файле');
+            res.status(400).json({ error: 'Листы не найдены в файле' });
+            return;
+        }
+
+        res.json({ sheets, fileId });
+        
+        // Очищаем память
+        req.file.buffer = Buffer.from([]);
+    } catch (error) {
+        console.error('Ошибка при получении списка листов:', error);
+        res.status(500).json({ error: 'Ошибка при получении списка листов' });
+    }
+});
+
 // Маршрут для обработки файла
 app.post('/process', upload.single('file'), async (req: Request, res: Response): Promise<void> => {
     if (!req.file?.buffer) {
@@ -33,35 +93,25 @@ app.post('/process', upload.single('file'), async (req: Request, res: Response):
         return;
     }
 
+    const partNumberColumn = parseInt(req.body.partNumberColumn);
+    const descriptionColumn = parseInt(req.body.descriptionColumn);
+    const sheetName = req.body.sheet;
+
+    if (isNaN(partNumberColumn) || isNaN(descriptionColumn)) {
+        res.status(400).json({ error: 'Invalid column indices' });
+        return;
+    }
+
     try {
-        console.log(`Starting file processing: ${req.file.originalname}`);
-        
-        // Сохраняем загруженный файл
+        // Сохраняем файл во временное хранилище
         const fileId = await storageManager.saveUploadedFile(req.file.buffer, req.file.originalname);
-
-        // Сохраняем начальное сообщение LLM в историю чата
-        await storageManager.addChatMessage(fileId, 'assistant', 
-            `I am analyzing the "Bill of Materials" table and helping to supplement information about components and their names by searching in sources on websites:
-
-I can:
-1. Identify missing information in descriptions
-2. Find components by part number
-3. Supplement descriptions while preserving the existing style
-4. Answer questions about components
-
-How can I help?`
-        );
-
-        // Получаем количество строк в файле
-        const workbook = new ExcelJS.Workbook();
-        await workbook.xlsx.load(req.file.buffer);
-        const worksheet = workbook.getWorksheet(1);
-        const totalRows = worksheet ? worksheet.rowCount - 1 : 0;
 
         const processedBuffer = await processExcelBuffer(
             req.file.buffer,
+            sheetName,
+            partNumberColumn,
+            descriptionColumn,
             (current: number, total: number) => {
-                console.log(`Progress: ${current}/${total} rows`);
                 wss.clients.forEach((client: WebSocket) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify({
@@ -74,10 +124,6 @@ How can I help?`
                 });
             },
             (before: string, after: string, source: string) => {
-                console.log('Preview of changes:');
-                console.log('Before:', before);
-                console.log('After:', after);
-                console.log('Source:', source);
                 wss.clients.forEach((client: WebSocket) => {
                     if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify({
@@ -93,16 +139,10 @@ How can I help?`
             fileId
         );
 
-        // Сохраняем обработанный файл
+        // Сохраняем только обработанный лист
         const processedName = await storageManager.saveProcessedFile(fileId, Buffer.from(processedBuffer));
 
-        // Добавляем сообщение о завершении обработки
-        await storageManager.addChatMessage(fileId, 'assistant', 
-            `File processed successfully. Processed rows: ${totalRows}. 
-You can ask questions about components or request additional information.`
-        );
-
-        console.log('Sending processed file to client');
+        console.log('Отправляем обработанный файл клиенту');
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         res.setHeader('Content-Disposition', `attachment; filename=${processedName}`);
         res.send(Buffer.from(processedBuffer));
@@ -119,35 +159,6 @@ You can ask questions about components or request additional information.`
             }
         });
         res.status(500).json({ error: errorMessage });
-    }
-});
-
-// Маршрут для диалога с LLM
-app.post('/api/ask-llm', async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { question, fileId } = req.body;
-        if (!question) {
-            res.status(400).json({ error: 'Question not specified' });
-            return;
-        }
-
-        // Сохраняем вопрос пользователя
-        if (fileId) {
-            await storageManager.addChatMessage(fileId, 'user', question);
-        }
-
-        const answer = await askLLM(question, fileId);
-
-        // Сохраняем ответ LLM
-        if (fileId) {
-            await storageManager.addChatMessage(fileId, 'assistant', answer);
-        }
-
-        res.json({ answer });
-    } catch (error) {
-        res.status(500).json({ 
-            error: error instanceof Error ? error.message : 'Error contacting LLM'
-        });
     }
 });
 
@@ -181,29 +192,27 @@ app.get('/api/file/:fileId', async (req: Request, res: Response): Promise<void> 
 });
 
 // Обработка WebSocket подключений
-wss.on('connection', async (ws: WebSocket) => {
-    console.log('New WebSocket connection');
-    
-    // Очищаем временные файлы при новом подключении
-    try {
-        await storageManager.cleanup();
-        console.log('Очистка временных файлов выполнена');
-    } catch (error) {
-        console.error('Ошибка при очистке файлов:', error);
-    }
+wss.on('connection', (ws: WebSocket) => {
+    console.log('WebSocket подключение установлено');
+    cleanupTempFiles();
 
     ws.on('message', async (message: string) => {
         try {
             const data = JSON.parse(message);
-            // ... rest of the WebSocket message handling ...
+            
+            if (data.type === 'progress') {
+                // Обработка прогресса
+                console.log('Progress:', data.current, '/', data.total);
+            }
+            // Удаляем обработку сообщений чата
         } catch (error) {
-            console.error('Error processing WebSocket message:', error);
-            ws.send(JSON.stringify({ error: 'Error processing message' }));
+            console.error('Ошибка при обработке WebSocket сообщения:', error);
+            ws.send(JSON.stringify({ error: 'Ошибка при обработке сообщения' }));
         }
     });
 
     ws.on('close', () => {
-        console.log('WebSocket connection closed');
+        console.log('WebSocket подключение закрыто');
     });
 });
 

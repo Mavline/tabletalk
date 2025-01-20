@@ -37,6 +37,34 @@ interface ColumnScore {
     descriptionScore: number;
 }
 
+// Функция для повторных попыток
+async function retryOperation<T>(
+    operation: () => Promise<T>,
+    maxAttempts: number = 3,
+    delay: number = 1000
+): Promise<T> {
+    let lastError;
+    
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
+            return await operation();
+        } catch (error: any) {
+            lastError = error;
+            
+            // Проверяем, является ли ошибка ECONNRESET
+            if (error.code === 'ECONNRESET' && attempt < maxAttempts) {
+                console.log(`Попытка ${attempt} из ${maxAttempts} не удалась, повторяем через ${delay}мс...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+                continue;
+            }
+            
+            throw error;
+        }
+    }
+    
+    throw lastError;
+}
+
 // Функция очистки временных файлов
 function cleanupTempFiles() {
     try {
@@ -78,125 +106,39 @@ function cleanupTempFiles() {
 // Экспортируем функцию очистки для использования в server.ts
 export { cleanupTempFiles };
 
-// 1. Анализ структуры таблицы и извлечение данных
-async function analyzeTableStructure(worksheet: Worksheet, headerRowIndex: number): Promise<{
-    descIndex: number;
-    partIndex: number;
-    headers: string[];
-    sampleRows: string[][];
-}> {
-    console.log('\n=== Начало анализа структуры таблицы ===');
-    console.log('Чтение заголовков из строки:', headerRowIndex);
-    
-    const headers: string[] = [];
-    const sampleRows: string[][] = [];
-    let validRowsCount = 0;
-
-    // Читаем заголовки
-    const headerRow = worksheet.getRow(headerRowIndex);
-    for (let col = 1; col <= worksheet.columnCount; col++) {
-        const header = headerRow.getCell(col).value?.toString().trim() ?? '';
-        headers.push(header);
-    }
-    console.log('Прочитаны заголовки:', headers);
-
-    // Собираем примеры данных
-    console.log('\nСбор примеров данных:');
-    for (let i = headerRowIndex + 1; validRowsCount < 5 && i <= worksheet.rowCount; i++) {
+// Функция для чтения заголовков
+async function readHeaders(worksheet: Worksheet): Promise<{ headers: string[], headerRow: number }> {
+    // Проходим по строкам сверху вниз
+    for (let i = 1; i <= worksheet.rowCount; i++) {
         const row = worksheet.getRow(i);
-        const rowValues = [];
+        const cellValues = [];
+        let hasLetters = false;
         
-        for (let j = 1; j <= headers.length; j++) {
-            const cellValue = row.getCell(j).value;
-            rowValues.push(cellValue ? String(cellValue).trim() : '');
+        // Читаем значения ячеек в строке
+        for (let j = 1; j <= worksheet.columnCount; j++) {
+            const cellValue = row.getCell(j).text?.trim() || '';
+            cellValues.push(cellValue);
+            // Проверяем наличие букв в ячейке
+            if (/[a-zA-Z]/.test(cellValue)) {
+                hasLetters = true;
+            }
         }
         
-        if (rowValues.some(val => val !== '')) {
-            sampleRows.push(rowValues);
-            validRowsCount++;
-            console.log(`Строка ${validRowsCount}:`, rowValues.join(' | '));
-        }
-    }
-
-    // Анализируем паттерны в данных
-    const columnScores = headers.map((_, colIndex) => {
-        let partNumberScore = 0;
-        let descriptionScore = 0;
-
-        sampleRows.forEach(row => {
-            const value = row[colIndex]?.trim() || '';
-            
-            // Проверяем характеристики парт-номера
-            if (/^[A-Z0-9-+]+$/.test(value) && value.length > 5) {
-                partNumberScore++;
-            }
-            
-            // Проверяем характеристики описания
-            if (/^[A-Z\s]+/.test(value) && value.includes(' ')) {
-                descriptionScore++;
-            }
-        });
-
-        return { colIndex, partNumberScore, descriptionScore };
-    });
-
-    // Находим колонки с максимальными очками
-    const maxPartScore = Math.max(...columnScores.map(s => s.partNumberScore));
-    const maxDescScore = Math.max(...columnScores.map(s => s.descriptionScore));
-
-    const partIndexCol = columnScores.find(s => s.partNumberScore === maxPartScore);
-    const descIndexCol = columnScores.find(s => s.descriptionScore === maxDescScore);
-
-    if (!partIndexCol || !descIndexCol) {
-        throw new Error('Не удалось определить нужные колонки на основе анализа данных');
-    }
-
-    const partIndex = partIndexCol.colIndex + 1;
-    const descIndex = descIndexCol.colIndex + 1;
-
-    console.log('\nРезультаты анализа:');
-    console.log('Оценки колонок:', columnScores);
-    console.log('Определены индексы:', { descIndex, partIndex });
-    console.log('=== Завершение анализа структуры таблицы ===\n');
-    
-    return {
-        descIndex,
-        partIndex,
-        headers,
-        sampleRows
-    };
-}
-
-// Функция для повторных попыток
-async function retryOperation<T>(
-    operation: () => Promise<T>,
-    maxAttempts: number = 3,
-    delay: number = 1000
-): Promise<T> {
-    let lastError;
-    
-    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-        try {
-            return await operation();
-        } catch (error: any) {
-            lastError = error;
-            
-            // Проверяем, является ли ошибка ECONNRESET
-            if (error.code === 'ECONNRESET' && attempt < maxAttempts) {
-                console.log(`Попытка ${attempt} из ${maxAttempts} не удалась, повторяем через ${delay}мс...`);
-                await new Promise(resolve => setTimeout(resolve, delay));
-                continue;
-            }
-            
-            throw error;
+        // Если в строке есть хотя бы одна ячейка с буквами - это заголовок
+        if (hasLetters) {
+            console.log(`Найдены заголовки в строке ${i}:`, cellValues);
+            return {
+                headers: cellValues,
+                headerRow: i
+            };
         }
     }
     
-    throw lastError;
+    throw new Error('Не удалось найти строку с заголовками');
 }
 
 // 2. Поиск информации о компоненте
-async function searchComponentInfo(partNumber: string, description: string): Promise<string> {
+async function searchComponentInfo(description: string, partNumber: string): Promise<string> {
     console.log('\n=== Поиск информации о компоненте ===');
     console.log(`Поиск для: ${partNumber}`);
     console.log(`Исходное описание: ${description}`);
@@ -209,6 +151,8 @@ async function searchComponentInfo(partNumber: string, description: string): Pro
                     {
                         role: "system",
                         content: `You are a component search engine. Return ONLY specifications and direct URLs.
+
+USE PLAIN TEXT, no markdown!
 
 DO NOT USE:
 - References like [1], [2], etc.
@@ -258,119 +202,371 @@ Return concise specs and REAL, FULL URLs only.`
 // 3. Форматирование и стандартизация описания
 async function formatComponentDescription(searchResults: string): Promise<ProcessedRow> {
     console.log('\n=== Анализ и форматирование результатов поиска ===');
-    console.log('Входные данные для анализа:', searchResults);
-
+   
     const response = await openai.chat.completions.create({
-        model: "meta-llama/llama-3.3-70b-instruct",
+        model: "microsoft/phi-4",
         messages: [
             {
                 role: "system",
-                content: `You are a component description formatter. Your task is to format search results into a standardized 3-line output for a table.
+                content: `You are an expert component description formatter. Your job is to transform raw component search results into clean, standardized descriptions following strict formatting rules. Below are the updated rules and structures you MUST follow:
 
-INPUT: You will receive search results of any length containing component specifications and URLs.
+        INPUT: You will receive raw search results of any length, which include component specifications and URLs. Your task is to extract relevant information and format it properly.
 
-OUTPUT FORMAT: You must ALWAYS return exactly 3 lines:
-Line 1: Formatted component description following all rules below
-Line 2: Primary source URL (must start with https://)
-Line 3: Secondary source URL (must start https://)
+        OUTPUT FORMAT: You must ALWAYS return EXACTLY 3 lines:
+        Line 1: Fully formatted and standardized component description (see rules below).
+        Line 2: Primary source URL (must start with https://). If none available, write "NO_SOURCE".
+        Line 3: Secondary source URL (must be from input, different from primary). If none available, write "NO_SECOND_SOURCE".
 
-CRITICAL RULES:
-1. Process input of ANY LENGTH - whether it's 2 lines or 100 lines
-2. Always output EXACTLY 3 lines as specified above
-3. If no valid URLs found, use "NO_SOURCE"
-4. If no valid description possible, use "NO_PART_NUMBER"
+        === DESCRIPTION STRUCTURE ===
+        The description on Line 1 must follow this structure (if applicable):
+        "<TYPE> <SERIES> <VALUE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE> <PACKAGING>"
+        For RF and special components also include:
+        "<DCR> <CURRENT> <Q> <SRF> <GAIN> <NOISE FIGURE> <INSERTION LOSS> <RETURN LOSS>"
+        For connectors:
+        "CONN <SERIES> <CONNECTOR TYPE> <FREQUENCY RANGE> <MATING MECHANISM> <PACKAGE> <MOUNTING TYPE>"
+        For diodes and components with packaging details:
+        "<TYPE> <SERIES> <VOLTAGE> <CURRENT> <PACKAGE> <MOUNTING TYPE> <PACKAGING>"
+        For resistors:
+        "RES <SERIES> <RESISTANCE> <TOLERANCE> <POWER RATING> <PACKAGE> <MOUNTING TYPE> <PACKAGING>"
+        For capacitors:
+        "CAP <SERIES> <CAPACITANCE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE> <PACKAGING>"
+        For inductors:
+        "IND <SERIES> <INDUCTANCE> <TOLERANCE> <CURRENT> <DCR> <PACKAGE> <MOUNTING TYPE> <PACKAGING>"
+        For inserts:
+        "INSERT <SERIES> <THREAD SIZE> <LENGTH> <MATERIAL> <LOCKING TYPE> <FINISH>"
+        For screws:
+        "SCREW <THREAD SIZE> <LENGTH> <MATERIAL> <THREAD SERIES> <THREAD CLASS> <MOUNTING TYPE>"
+        For unknown cases:
+        - When TYPE cannot be determined, return "UNKNOWN_COMPONENT".
+        - If PART NUMBER exists, include it in the output with "UNKNOWN_COMPONENT".
+        
+        === MANDATORY FIELDS ===
+        TYPE: Always standardized based on component category:
+        - Electronic Components: "CAP", "RES", "CONN", "FILTER", "IC", "XTAL", "IND", "DIPLEXER", "AMPLIFIER", "DIODE"
+        - Mechanical Parts: "SCREW", "BOLT", "NUT", "WASHER", "STANDOFF", "BRACKET"
+        - Chemical Materials: "ADHESIVE", "EPOXY", "PASTE", "COATING"
+        - Other: "WIRE", "CABLE", "LABEL", "TAPE"
 
-Line 1: Standardized component description
-Line 2: Primary source URL (must be from preferred sources)
-Line 3: Secondary source URL (must be different from primary, or "NO_SECOND_SOURCE" if not found)
+        For connectors specifically:
+        - Connector Type (e.g., "SMPM", "SMA")
+        - Frequency Range (e.g., "65GHZ")
+        - Mating Mechanism (e.g., "PUSH-ON")
+        - Mounting Type (e.g., "SMT")
 
-CRITICAL: NEVER CHANGE THE BEGINNING OF THE DESCRIPTION - ONLY IMPROVE SPECIFICATIONS ACCORDING TO THE RULES BELOW
-- DON'T INCLUDE PART NUMBER IN THE DESCRIPTION!
-- NEVER use +/- symbols, use % for tolerance
-- "SMT" MUST always be the LAST word in description
-- Remove all "~" symbols, use "-" for ranges
-- Use EXACT part number from input, don't suggest alternatives
-- Keep original frequency/voltage/current values, don't list ranges
-- If part number exists - ALWAYS search and return description
+        For diodes:
+        - Type (e.g., "DIODE").
+        - Series (if applicable, e.g., "SWTG").
+        - Voltage (e.g., "80V").
+        - Current (e.g., "250MA").
+        - Package size (e.g., "SOT23").
+        - Mounting Type (e.g., "SMT", "THT").
+        - Packaging type (e.g., "T&R", "BULK").
 
-CRITICAL URL RULES:
-- Use ONLY URLs provided in the input
-- NO placeholder or example URLs
-- NO modified or shortened URLs
-- If no URL in input, use "NO_SOURCE"
-- NEVER create or modify URLs
-- COPY URLs exactly as they appear in input
+        For resistors:
+        - Type (e.g., "RES").
+        - Series (if applicable, e.g., "CHIP").
+        - Resistance (e.g., "0.475R").
+        - Tolerance (e.g., "1%").
+        - Power Rating (e.g., "1W").
+        - Package size (e.g., "2512").
+        - Mounting Type (e.g., "SMT").
+        - Packaging type (e.g., "T&R").
 
-VALIDATION RULES:
-Return concise specs and REAL, FULL URLs only, IF NOT POSSIBLE - return "NO_SOURCE"
-If part number is empty -> return exactly:
-"NO_PART_NUMBER"
-"NO_SOURCE"
-"NO_SECOND_SOURCE"
+        For capacitors:
+        - Capacitance (e.g., "470PF").
+        - Rated Voltage (e.g., "50V").
+        - Tolerance (e.g., "5%").
+        - Temperature Coefficient (e.g., "X7R").
+        - Package size (e.g., "0402").
+        - Mounting Type (e.g., "SMT").
+        - Packaging type (e.g., "T&R").
 
-UNIT STANDARDIZATION RULES (EXACT MATCHES ONLY):
-1. Component Type:
-- "RESIST"/"RESS"/"resist"/etc -> "RES"
-- Remove "CHIP"/"CHP"/"chip" completely
-- Replace "CER"/"CERAMIC" with "CRM"
-- IND, INDICATOR -> "IND"
-- CONN, CONNECTOR -> "CONN"
-- FILTER -> "FILTER"
-- If ends with "SMD"/"SMT2" -> "SMT"
-- Keep component identifiers (e.g. "2W0")
+        For inductors:
+        - Inductance (e.g., "12NH").
+        - Tolerance (e.g., "2%").
+        - Current (e.g., "1.4A").
+        - DCR (e.g., "93M").
+        - Package size (e.g., "0402").
+        - Mounting Type (e.g., "SMT").
+        - Packaging type (e.g., "T&R").
 
-2. Join values and units without spaces:
-- "1.575 GHZ" -> "1.575GHZ"
-- "100 MA" -> "100MA"
-- "50 V" -> "50V"
+        For EMI filters:
+        - Type (e.g., "EMI").
+        - Current (e.g., "350MA").
+        - Voltage (e.g., "10V").
+        - Capacitance (e.g., "250PF").
+        - Package size (e.g., "0402").
+        - Mounting Type (e.g., "SMT").
 
-CHANGE RESISTANCE DESCRIPTION RULES (EXACT MATCHES ONLY):
-* "81 MOHM" -> "81M"
-* "1.8 KOHM" -> "1.8K"
-* "50 OHM" -> "50R"
-* "50 Ohm" -> "50R"
-* "50 ohm" -> "50R"
-* "50Ω", "93mΩ" -> "50R", "93M"
+        For inserts:
+        - Thread Size (e.g., "6-32").
+        - Length (e.g., "1.5IN").
+        - Material (e.g., "TYPE 304 SS").
+        - Locking Type (e.g., "SELF-LOCKING").
+        - Finish (if available, e.g., "NONE").
 
-CHANGE CAPACITANCE DESCRIPTION RULES (EXACT MATCHES ONLY):
-* "1 UF" -> "1MF"
-* "1 uF" -> "1MF"
-* "1 μF" -> "1MF"
-* "1 NF" -> "1000PF"
-* "1 nF" -> "1000PF"
-* PF stays as PF
+        For screws:
+        - Thread Size (e.g., "6-32").
+        - Length (e.g., "1.5IN").
+        - Material (e.g., "TYPE 304 SS").
+        - Thread Series (e.g., "UNC").
+        - Thread Class (e.g., "2B").
+        - Mounting Type (e.g., "SMT").
 
-OUTPUT FORMAT:
-- Replace "CER"/"CERAMIC" with "CRM"
-- Replace "nH" with "NH"
-- If ends with "SMD"/"SMT2" -> "SMT"
-- Keep component identifiers (e.g. "2W0")
 
-EXAMPLES:
-1. Input: "RESIST CHIP 1.8 KOHM 0.06W 1% 04*"
-Part: "RC0402FR-071K8L"
-Output: "RES 1.8K 0.06W 1% 0402 SMT"
-"https://www.digikey.com/product-detail/example1"
-"https://www.mouser.com/product-detail/example2"
+        VALUE: Format depends on component type:
+        - Electronic Components: normalized (e.g., "470PF", "1.8K", "81M")
+        - Mechanical Parts: dimensions/thread (e.g., "2X.250", "M3", "4-40")
+        - Chemical Materials: volume/weight when specified (e.g., "50ML", "100G")
+        - Inductors: Inductance value (e.g., "12NH", "10NH")
+        - RF Components: Frequency range (e.g., "1.2-3GHZ")
+        
+        PACKAGE: Context-dependent:
+        - Electronic: package size (e.g., "0402", "SOT23", "8-SMD")
+        - Mechanical: head style/material (e.g., "PHIL", "HEX", "CRES")
+        - Chemical: container type if applicable (e.g., "TUBE", "SYRINGE")
+        - Inductors: Inductance value (e.g., "12NH", "10NH").
+        - Capacitors: Capacitance value (e.g., "470PF").
+        - RF Components: Frequency range (e.g., "1.2-3GHZ").
 
-2. Input: "CAP CHP CER 470 PF 50 V 5% X7*"
-Part: "GRM155R71H471KA01D"
-Output: "CAP CRM 470PF 50V 5% X7R 0402 SMT"
-"https://www.digikey.com/product-detail/example3"
-"NO_SECOND_SOURCE"
 
-3. Input: "DIPLEXER DC-3G 1.5DB 2W 1008-8"
-Part: "LDPQ-132-33+"
-Output: "DIPLEXER 0-3GHZ 1.5DB 2W 1008 SMT"
-"https://www.digikey.com/product-detail/example4"
-"https://www.mouser.com/product-detail/example5"
+        MOUNTING TYPE:
+        - Electronic: "SMT" or "THT" - REQUIRED!
+        - Always include mounting type (e.g., "SMT", "THT").
+        - Mechanical: mounting method if relevant (e.g., "PANEL", "CHASSIS")
 
-4. Input: "PCB ASSEMBLY INSTRUCTIONS"
-Part: ""
-Output:
-"NO_PART_NUMBER"
-"NO_SOURCE"
-"NO_SECOND_SOURCE"`
+        OPTIONAL FIELDS (if present):
+        - SERIES: Technology or series identifier (e.g., "CRM", "COAX", "MS", "AN")
+        - RATED VOLTAGE: Voltage rating (e.g., "50V", "5.5V")
+        - TOLERANCE: Tolerance value (e.g., "5%", "2%")
+        - TEMPERATURE COEFFICIENT: Stability indicator (e.g., "X7R", "C0G")
+        - DCR: DC Resistance (e.g., "93M").
+        - CURRENT: Current rating (e.g., "1.4A").
+        - Q: Quality factor (e.g., "Q=30").
+        - SRF: Self-resonant frequency (e.g., "SRF=5.2GHZ").
+        - RATED VOLTAGE: Voltage rating (e.g., "5V").
+        - GAIN: Amplifier gain (e.g., "19.8DB").
+        - NOISE FIGURE: Noise figure (e.g., "NF=0.31DB").
+        - INSERTION LOSS: Insertion loss (e.g., "1.2DB").
+        - RETURN LOSS: Return loss (e.g., "15DB").
+
+        === CRITICAL PROCESSING RULES ===
+        1. **Preserve Meaning**: Never alter the meaning of the input. Only standardize format and terminology.
+        2. **Mandatory Normalization**:
+           - Join numeric values and units (e.g., "1 UF" -> "1MF").
+           - Standardize resistance (e.g., "50 OHM" -> "50R").
+           - Standardize capacitance (e.g., "1 uF" -> "1MF").
+           - Replace temperature coefficients (e.g., "C0G" remains "C0G").
+           - Frequency normalization (e.g., "1.5 GHZ" -> "1.5GHZ").
+           - Remove ±/+/- from tolerances (e.g., "±2%" -> "2%").
+        3. **Handle Missing Data**: If mandatory fields are missing:
+           - For TYPE or VALUE: Return "NO_PART_NUMBER" only if completely unavailable.
+           - For URL: Use "NO_SOURCE" or "NO_SECOND_SOURCE".
+        4. **Validation of URLs**: Only use URLs from the input. Copy them exactly; do not create or modify URLs.
+
+        === CHANGE RESISTANCE DESCRIPTION RULES (EXACT MATCHES ONLY) ===
+        - "81 MOHM" -> "81M"
+        - "1.8 KOHM" -> "1.8K"
+        - "50 OHM" -> "50R"
+        - "50 Ohm" -> "50R"
+        - "50 ohm" -> "50R"
+        - "50Ω", "93mΩ", "100KΩ" -> "50R", "93M", "100K"
+
+        === CHANGE CAPACITANCE DESCRIPTION RULES (EXACT MATCHES ONLY) ===
+        - "1 UF" -> "1MF"
+        - "1 uF" -> "1MF"
+        - "1 μF" -> "1MF"
+        - "1 NF" -> "1000PF"
+        - "1 nF" -> "1000PF"
+        - "1 nF" -> "0.001MF"
+        - "1 NF" -> "0.001MF"
+        - PF stays as PF
+
+        === ADDITIONAL OUTPUT FORMAT RULES ===
+        - Replace "CER"/"CERAMIC" with "CRM"
+        - Replace "nH" with "NH"
+        - If ends with "SMD"/"SMT2" -> "SMT"
+        - Keep component identifiers (e.g., "2W0")
+        - For screws: "PHILLIPS" -> "PHIL", "STAINLESS" -> "SS"
+        - For materials: "STAINLESS STEEL" -> "SS", "ALUMINUM" -> "AL"
+
+        === UNIT STANDARDIZATION RULES (EXACT MATCHES ONLY) ===
+        1. Component Type Standardization:
+           - "RESIST"/"RESS"/"resist"/etc -> "RES"
+           - Remove "CHIP"/"CHP"/"chip" completely
+           - Replace "CER"/"CERAMIC" with "CRM"
+           - "IND"/"INDUCTOR"/"CHOKE" -> "IND"
+           - "CONN"/"CONNECTOR" -> "CONN"
+           - "FILTER"/"FLT" -> "FILTER"
+           - "CAPACITOR" -> "CAP"
+           - "AMPLIFIER"/"AMP" -> "AMPLIFIER"
+           - "OSCILLATOR"/"OSC" -> "OSC"
+           - "TRANSFORMER"/"XFMR" -> "XFMR"
+
+        2. Value and Unit Standardization:
+           - Remove spaces between value and unit
+           - Remove "±/+/-" from tolerances
+           - "±/+/-2%" -> "2%"
+           - "nH"/"NH" -> "NH"
+           - "uH"/"μH"/"mH"/"MH" -> "MH"
+           - "pF"/"PF" -> "PF"
+           - "nF" -> "1000PF"
+           - "uF"/"μF" -> "MF"
+           - "mΩ"/"mohm"/"mOhm" -> "M"
+           - "Ω"/"ohm"/"OHM" -> "R"
+           - "kΩ"/"kohm"/"KOHM" -> "K"
+           - "MΩ"/"Mohm"/"MOHM" -> "M"
+           - "GHz"/"GHZ" -> "GHZ"
+           - "MHz"/"MHZ" -> "MHZ"
+           - "kHz"/"KHZ" -> "KHZ"
+
+        3. Package and Mounting:
+           - Always include mounting type ("SMT" or "THT")
+           - If ends with "SMD"/"SMT2" -> "SMT"
+           - Keep package identifiers (e.g., "0402", "SOT23", "2W0")
+           - Include package dimensions when available
+           - For filters and specific components, include impedance (e.g., "50R")
+
+        4. Extended Component Parameters:
+           - Include voltage rating when available (e.g., "50V")
+           - Include current rating when available (e.g., "1.4A")
+           - Include frequency range for RF components
+           - Include power rating when available (e.g., "0.1W")
+           - Include temperature coefficient when applicable
+           - Include Q factor when available for inductors
+           - Include DCR when available for inductors
+           - Include resonant frequency when relevant
+           - Include insertion loss and return loss for connectors
+           - Include frequency range for connectors
+
+        5. Description Structure:
+           - Start with standardized component type
+           - Include series/family when available
+           - Include all relevant electrical parameters
+           - End with package and mounting type
+           - Keep manufacturer's key specifications
+           - Maintain consistent order of parameters
+
+            === HANDLING UNMENTIONED CASES ===
+        1. If input data does not match predefined categories (e.g., CONNECTOR, INSERT, SCREW):
+        - Extract all available key specifications and list them as "SPECIFICATIONS".
+        - Return a generic description with "UNKNOWN_COMPONENT" and include all known details.
+
+        2. If no PART NUMBER is provided:
+        - Return "NO_PART_NUMBER".
+        - Include all specifications in the "SPECIFICATIONS" field
+
+        === EXAMPLES ===
+        INPUT:
+        RESIST CHIP 1.8 KOHM 0.06W 1% 0402 SMT
+        Part: RC0402FR-071K8L
+        URLs: https://digikey.com/example1, https://mouser.com/example2
+
+        OUTPUT:
+        RES 1.8K 0.06W 1% 0402 SMT
+        https://digikey.com/example1
+        https://mouser.com/example2
+
+        INPUT:
+        CAP CER 470 PF 50 V 5% X7R 0402 T&R
+        Part: GRM155R71H471KA01D
+        URLs: https://example.com
+
+        OUTPUT:
+        CAP CRM 470PF 50V 5% X7R 0402 T&R SMT
+        https://example.com
+        NO_SECOND_SOURCE
+
+        INPUT:
+        IC BUFFER NON-INVERTING 1.65V-5.5V 2.4NS 50PF 6PIN SOT363 SMT
+        Part: BUF-IC001
+        URLs: https://datasheet.example.com, https://octopart.example.com
+
+        OUTPUT:
+        IC BUFFER NON-INVERTING 1.65V-5.5V 2.4NS 50PF SOT363 SMT
+        https://datasheet.example.com
+        https://octopart.example.com
+
+        INPUT:
+        CHIP RESIS .475 OHM 1% 1W T&R
+        Part: WSL2512R4750FTA
+        URLs: https://example.com
+        OUTPUT:
+        RES CHIP 0.475R 1% 1W 2512 T&R SMT
+        https://example.com
+        NO_SECOND_SOURCE
+
+        INPUT:
+        FILTER EMI 350MA 10V 250PF 1005*
+        Part: MEM1005PP251T001
+        URLs: https://www.xecor.com/product/mem1005pp251t001, https://everythingrf.com/example
+
+        OUTPUT:
+        FILTER EMI 350MA 10V 250PF 1005 SMT
+        https://www.xecor.com/product/mem1005pp251t001
+        https://everythingrf.com/example
+
+        INPUT:
+        SCREW PH PHIL CRES NC 2X.250
+        Part: MS51957-3
+        URLs: https://military-fasteners.com/example
+
+        OUTPUT:
+        SCREW PHIL CRES 2X.250
+        https://military-fasteners.com/example
+        NO_SECOND_SOURCE
+
+        INPUT:
+        PCB ASSEMBLY GUIDE
+        Part: NONE
+        URLs: NONE
+
+        OUTPUT:
+        NO_PART_NUMBER
+        NO_SOURCE
+        NO_SECOND_SOURCE
+
+        === RF COMPONENT EXAMPLES ===
+        INPUT:
+        IND 12NH ±2% 93M 0402 SMT
+        Part: LQW15AN12NG8ZD
+        URLs: https://www.murata.com/example
+
+        OUTPUT:
+        IND LQW15 12NH 2% 93M Q=30 SRF=5.2GHZ 0402 SMT
+        https://www.murata.com/example
+        NO_SECOND_SOURCE
+
+        INPUT:
+        IC AMP LNA 1.2-3GHZ TDFN 8
+        Part: AHL5216T8
+        URLs: https://www.asb.co.kr/example
+
+        OUTPUT:
+        IC AMPLIFIER 1.2-3GHZ 5V GAIN=19.8DB NF=0.31DB TDFN8 2.0X2.0MM
+        https://www.asb.co.kr/example
+        NO_SECOND_SOURCE
+
+        INPUT:
+        DIPLEXER DC-3G 1.5DB 2W 1008-8
+        Part: LDPQ-132-33+
+        URLs: https://www.minicircuits.com/example
+
+        OUTPUT:
+        DIPLEXER 0HZ-1.28GHZ/1.55GHZ-3GHZ 1.2DB RETURN LOSS=15DB 8-SMD SMT
+        https://www.minicircuits.com/example
+        NO_SECOND_SOURCE
+
+        INPUT:
+        INSERT HCOIL CRES LOCK .138-32*
+        Part: NAS1130-06L15
+        URLs: https://catalog.monroeaerospace.com/item/all-categories/inserts-1/nas1130-06l15-1
+        OUTPUT:
+        INSERT NAS1130 6-32 1.5IN TYPE 304 SS SELF-LOCKING NONE
+        https://catalog.monroeaerospace.com/item/all-categories/inserts-1/nas1130-06l15-1
+        https://www.minicircuits.com/example
+
+        CRITICAL: Always validate input, preserve data meaning, and adhere to all rules strictly.`
             },
             {
                 role: "user",
@@ -422,7 +618,7 @@ async function processRow(description: string, partNumber: string): Promise<Proc
 
         // 1. Поиск информации
         console.log('\nШаг 1: Поиск информации');
-        const searchResults = await searchComponentInfo(partNumber, description);
+        const searchResults = await searchComponentInfo(description, partNumber);
         
         // 2. Форматирование результатов
         console.log('\nШаг 2: Форматирование результатов');
@@ -440,186 +636,198 @@ async function processRow(description: string, partNumber: string): Promise<Proc
     }
 }
 
+// Функция для получения списка листов из Excel файла
+export async function getSheetNames(buffer: Buffer): Promise<string[]> {
+    try {
+        console.log('=== Начинаем получение списка листов ===');
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.load(buffer);
+        
+        const sheets = workbook.worksheets;
+        const sheetNames = sheets.map(sheet => sheet.name);
+        
+        // Очищаем память
+        workbook.removeWorksheet(1);
+        return sheetNames;
+    } catch (error) {
+        console.error('Ошибка при получении списка листов:', error);
+        throw error;
+    }
+}
+
+// Функция для чтения заголовков с конкретного листа
+export async function getFileHeadersFromSheet(buffer: Buffer, sheetName: string): Promise<string[]> {
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(buffer);
+    const worksheet = workbook.getWorksheet(sheetName);
+    
+    if (!worksheet) {
+        throw new Error('Указанный лист не найден в файле');
+    }
+
+    const { headers } = await readHeaders(worksheet);
+    
+    // Очищаем память
+    workbook.removeWorksheet(worksheet.id);
+    return headers;
+}
+
+// Экспортируем функцию чтения заголовков для использования в API
+export async function getFileHeaders(buffer: Buffer): Promise<string[]> {
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(buffer);
+    const worksheet = workbook.getWorksheet(1);
+    
+    if (!worksheet) {
+        throw new Error('Excel файл не содержит листов');
+    }
+
+    const { headers } = await readHeaders(worksheet);
+    
+    // Очищаем память
+    workbook.removeWorksheet(1);
+    return headers;
+}
+
 // Основная функция обработки Excel файла
 export async function processExcelBuffer(
     buffer: Buffer,
+    sheetName: string | undefined,
+    partNumberColumn: number,
+    descriptionColumn: number,
     onProgress?: (current: number, total: number) => void,
     onPreview?: (before: string, after: string, source: string) => void,
     fileId?: string
 ): Promise<Uint8Array> {
     console.log('Начинаем обработку Excel файла...');
+    console.log('Выбранный лист:', sheetName || 'Первый лист');
+    
     const workbook = new ExcelJS.Workbook();
     
     try {
-        console.log('Загружаем файл в память...');
+        // Загружаем только выбранный лист
         await workbook.xlsx.load(buffer);
-        const worksheet = workbook.getWorksheet(1);
+        const worksheet = workbook.getWorksheet(sheetName || 1);
         
         if (!worksheet) {
-            console.error('Не найден лист в Excel файле');
-            throw new Error('Excel файл не содержит листов');
+            throw new Error('Указанный лист не найден в файле');
         }
 
-        console.log('Анализируем структуру файла...');
-        
-        // Ищем начало таблицы в первых 10 строках
-        let headerRowIndex = 0;
-        let headers: string[] = [];
-        
-        for (let i = 1; i <= Math.min(10, worksheet.rowCount); i++) {
-            const row = worksheet.getRow(i);
-            const rowValues = row.values as string[];
-            if (rowValues && rowValues.length > 0) {
-                // Проверяем, похожа ли строка на заголовок (содержит ключевые слова или форматирование)
-                const potentialHeaders = rowValues.filter(Boolean).map(val => String(val).trim());
-                if (potentialHeaders.some(header => 
-                    header.toLowerCase().includes('pn') || 
-                    header.toLowerCase().includes('description') ||
-                    header.toLowerCase().includes('mfg') ||
-                    header.toLowerCase().includes('part'))) {
-                    headerRowIndex = i;
-                    headers = potentialHeaders;
-                    break;
-                }
-            }
+        // Находим строку с заголовками
+        const { headers, headerRow } = await readHeaders(worksheet);
+
+        // Проверяем валидность индексов колонок
+        if (partNumberColumn < 1 || partNumberColumn > worksheet.columnCount ||
+            descriptionColumn < 1 || descriptionColumn > worksheet.columnCount) {
+            throw new Error('Некорректные индексы колонок');
         }
 
-        if (headerRowIndex === 0) {
-            throw new Error('Не удалось найти строку с заголовками');
-        }
+        // Создаем новый файл с одним листом
+        const enrichedWorkbook = new ExcelJS.Workbook();
+        const enrichedSheet = enrichedWorkbook.addWorksheet('Enriched');
 
-        console.log('Найдена строка заголовков:', headerRowIndex);
-        console.log('Заголовки:', headers);
-
-        // Собираем примеры данных из следующих строк после заголовков
-        const sampleRows: string[][] = [];
-        let validRowsCount = 0;
-        
-        // Читаем до тех пор, пока не найдем 5 непустых строк или не дойдем до конца таблицы
-        for (let i = headerRowIndex + 1; validRowsCount < 5 && i <= worksheet.rowCount; i++) {
-            const row = worksheet.getRow(i);
-            const rowValues = [];
+        // Копируем заголовки и форматирование из исходного листа
+        for (let colNumber = 1; colNumber <= worksheet.columnCount; colNumber++) {
+            const sourceCol = worksheet.getColumn(colNumber);
+            const targetCol = enrichedSheet.getColumn(colNumber);
             
-            // Собираем все значения из строки
-            for (let j = 1; j <= headers.length; j++) {
-                const cellValue = row.getCell(j).value;
-                rowValues.push(cellValue ? String(cellValue).trim() : '');
-            }
+            // Копируем точное значение заголовка
+            const headerCell = worksheet.getRow(headerRow).getCell(colNumber);
+            targetCol.header = headerCell.value?.toString() || '';
             
-            // Проверяем, что строка содержит хотя бы одно непустое значение
-            if (rowValues.some(val => val !== '')) {
-                sampleRows.push(rowValues);
-                validRowsCount++;
-                
-                // Выводим для отладки
-                console.log(`Sample Row ${validRowsCount}:`, rowValues.join(' | '));
-            }
+            // Копируем ширину и стиль
+            targetCol.width = sourceCol.width;
+            targetCol.font = { size: 9 };
         }
 
-        if (sampleRows.length === 0) {
-            throw new Error('Не удалось найти данные для анализа структуры');
-        }
+        // Добавляем новые колонки с минимальной шириной
+        const lastColumn = worksheet.columnCount;
+        const newColumns = [
+            { header: 'Enriched Description', width: 30 },
+            { header: 'Primary Source', width: 30 },
+            { header: 'Secondary Source', width: 30 },
+            { header: 'Full Search Result', width: 40 }
+        ];
 
-        // Анализируем структуру с помощью LLM
-        const { descIndex, partIndex } = await analyzeTableStructure(worksheet, headerRowIndex);
+        // Устанавливаем форматирование для новых колонок
+        newColumns.forEach((colConfig, index) => {
+            const newCol = enrichedSheet.getColumn(lastColumn + index + 1);
+            newCol.header = colConfig.header;
+            newCol.width = colConfig.width;
+            newCol.font = { size: 9 };
+        });
 
-        console.log(`Определены колонки:`);
-        console.log(`Description: '${headers[descIndex - 1]}' (${descIndex})`);
-        console.log(`Part Number: '${headers[partIndex - 1]}' (${partIndex})`);
+        // Устанавливаем размер шрифта 9 для всех ячеек в первой строке (заголовки)
+        const headerRowNew = enrichedSheet.getRow(1);
+        headerRowNew.font = { size: 9 };
 
-        // Проверяем валидность индексов
-        if (descIndex < 1 || descIndex > 16384 || 
-            partIndex < 1 || partIndex > 16384) {
-            throw new Error(`Некорректные индексы колонок: desc=${descIndex}, part=${partIndex}`);
-        }
-
-        // Добавляем колонки для результатов (используем текущее количество + 1)
-        const llmSuggestionIndex = worksheet.columnCount + 1;
-        const sourceIndex = worksheet.columnCount + 2;
-        const secondarySourceIndex = worksheet.columnCount + 3;
-        const fullSearchResultIndex = worksheet.columnCount + 4;
-
-        worksheet.getCell(1, llmSuggestionIndex).value = 'Enriched Description';
-        worksheet.getCell(1, sourceIndex).value = 'Primary Source';
-        worksheet.getCell(1, secondarySourceIndex).value = 'Secondary Source';
-        worksheet.getCell(1, fullSearchResultIndex).value = 'Full Search Result';
-
-        const totalRows = worksheet.rowCount - 1;
+        // Копируем данные и добавляем обогащенную информацию
+        const totalRows = worksheet.rowCount - headerRow;
         console.log(`Всего строк для обработки: ${totalRows}`);
 
+        // Начинаем со следующей строки после заголовков
+        const firstDataRow = headerRow + 1;
+        console.log('Первая строка с данными:', firstDataRow);
+
         try {
-            for (let rowNumber = 2; rowNumber <= worksheet.rowCount; rowNumber++) {
-                const row = worksheet.getRow(rowNumber);
+            for (let rowNumber = firstDataRow; rowNumber <= worksheet.rowCount; rowNumber++) {
+                const sourceRow = worksheet.getRow(rowNumber);
+                const newRow = enrichedSheet.getRow(rowNumber);
                 
-                // Правильно читаем данные из определенных колонок
-                const description = row.getCell(descIndex).value?.toString().trim() ?? '';
-                const partNumber = row.getCell(partIndex).value?.toString().trim() ?? '';
+                // Копируем существующие значения с форматированием
+                for (let colNumber = 1; colNumber <= worksheet.columnCount; colNumber++) {
+                    const sourceCell = sourceRow.getCell(colNumber);
+                    const targetCell = newRow.getCell(colNumber);
+                    targetCell.value = sourceCell.value;
+                    targetCell.font = { size: 9 };
+                }
+
+                const description = sourceRow.getCell(descriptionColumn).text?.trim() || '';
+                const partNumber = sourceRow.getCell(partNumberColumn).text?.trim() || '';
 
                 if (!partNumber) {
-                    onProgress?.(rowNumber - 1, totalRows);
+                    console.log('Пропускаем строку с пустым Part Number');
+                    onProgress?.(rowNumber - firstDataRow, totalRows);
                     continue;
                 }
 
-                // Поиск информации
-                const searchResult = await searchComponentInfo(partNumber, description);
-                
-                // Форматирование результатов
+                const searchResult = await searchComponentInfo(description, partNumber);
                 const result = await formatComponentDescription(searchResult);
                 
                 if (result) {
-                    // Записываем форматированные результаты
-                    row.getCell(llmSuggestionIndex).value = result.description;
-                    row.getCell(sourceIndex).value = {
-                        text: result.source,
-                        hyperlink: result.source
-                    };
-                    row.getCell(secondarySourceIndex).value = {
-                        text: result.secondary_source,
-                        hyperlink: result.secondary_source
-                    };
-                    // Записываем полный результат поиска
-                    row.getCell(fullSearchResultIndex).value = searchResult;
-                    
+                    const newCells = [
+                        { value: result.description },
+                        { value: result.source },
+                        { value: result.secondary_source },
+                        { value: searchResult }
+                    ];
+
+                    newCells.forEach((cellConfig, index) => {
+                        const cell = newRow.getCell(lastColumn + index + 1);
+                        cell.value = cellConfig.value;
+                        cell.font = { size: 9 };
+                    });
+
                     onPreview?.(description, result.description, result.source);
                 }
 
-                onProgress?.(rowNumber - 1, totalRows);
+                onProgress?.(rowNumber - firstDataRow, totalRows);
             }
         } catch (error: any) {
-            // Если превышен лимит API, сохраняем промежуточные результаты
             if (error?.status === 403 && error?.error?.message?.includes('Key limit exceeded')) {
                 console.error('Превышен лимит API ключа. Сохраняем промежуточные результаты...');
-                const arrayBuffer = await workbook.xlsx.writeBuffer();
+                const arrayBuffer = await enrichedWorkbook.xlsx.writeBuffer();
                 throw new Error('API_LIMIT_EXCEEDED:' + new Uint8Array(arrayBuffer).toString());
             }
             throw error;
         }
 
-        // Автоматически подгоняем ширину колонок
-        if (worksheet.columns) {
-            worksheet.columns.forEach(column => {
-                let maxLength = 0;
-                if (column && typeof column.eachCell === 'function') {
-                    column.eachCell({ includeEmpty: true }, cell => {
-                        const length = cell.value ? cell.value.toString().length : 10;
-                        if (length > maxLength) {
-                            maxLength = length;
-                        }
-                    });
-                    if (typeof column.width === 'number' || column.width === undefined) {
-                        column.width = Math.min(maxLength + 2, 100);
-                    }
-                }
-            });
-        }
-
         console.log('Сохраняем результаты...');
-        const arrayBuffer = await workbook.xlsx.writeBuffer();
+        const arrayBuffer = await enrichedWorkbook.xlsx.writeBuffer();
         console.log('Обработка файла завершена успешно');
         return new Uint8Array(arrayBuffer);
         
     } catch (error) {
-        // Проверяем, не содержит ли ошибка промежуточные результаты
         if (error instanceof Error && error.message.startsWith('API_LIMIT_EXCEEDED:')) {
             return new Uint8Array(error.message.split(':')[1].split(',').map(Number));
         }
@@ -627,44 +835,3 @@ export async function processExcelBuffer(
     }
 }
 
-export async function askLLM(question: string, fileId?: string): Promise<string> {
-    try {
-        let chatHistory: ChatMessage[] = [];
-        if (fileId) {
-            try {
-                chatHistory = await storageManager.getChatHistory(fileId);
-            } catch (error) {
-                console.log('История чата не найдена, используем пустой контекст');
-            }
-        }
-
-        const messages: OpenAIMessage[] = [
-            {
-                role: "system",
-                content: `You are analyzing the "Bill of Materials" table and FILLING IN component descriptions.
-                You can use information from ANY EXTERNAL websites.
-
-                Answer user questions using all available component information.
-                You can provide detailed answers, explanations, recommendations - anything that helps the user better understand the components.`
-            },
-            ...chatHistory.map(msg => ({
-                role: msg.role as 'user' | 'assistant',
-                content: msg.content
-            })),
-            { role: "user", content: question }
-        ];
-
-        const response = await retryOperation(async () => {
-            return await openai.chat.completions.create({
-                model: "perplexity/llama-3.1-sonar-small-128k-online",
-                messages: messages,
-                temperature: 0.5,
-            });
-        });
-
-        return response.choices[0]?.message?.content || 'No response generated';
-    } catch (error) {
-        console.error('Error in askLLM:', error);
-        throw error;
-    }
-}

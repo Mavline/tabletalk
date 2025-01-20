@@ -18,12 +18,21 @@ interface FileMetadata {
 
 export class StorageManager {
     private static instance: StorageManager;
-    private readonly uploadsDir = 'uploads';
-    private readonly processedDir = 'processed';
-    private readonly storageDir = './table_storage';
+    private uploadsDir: string;
+    private processedDir: string;
+    private tableStorageDir: string;
 
     private constructor() {
-        this.ensureDirectories();
+        this.uploadsDir = path.join(process.cwd(), 'uploads');
+        this.processedDir = path.join(process.cwd(), 'processed');
+        this.tableStorageDir = path.join(process.cwd(), 'table_storage');
+
+        // Создаем директории если они не существуют
+        [this.uploadsDir, this.processedDir, this.tableStorageDir].forEach(dir => {
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+        });
     }
 
     public static getInstance(): StorageManager {
@@ -31,14 +40,6 @@ export class StorageManager {
             StorageManager.instance = new StorageManager();
         }
         return StorageManager.instance;
-    }
-
-    private ensureDirectories() {
-        [this.uploadsDir, this.processedDir, this.storageDir].forEach(dir => {
-            if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir, { recursive: true });
-            }
-        });
     }
 
     private generateFileId(originalName: string): string {
@@ -64,14 +65,14 @@ export class StorageManager {
         await fs.promises.writeFile(uploadPath, buffer);
 
         // Сохраняем метаданные
-        const metadataPath = path.join(this.storageDir, `${fileId}.json`);
+        const metadataPath = path.join(this.tableStorageDir, `${fileId}.json`);
         await fs.promises.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
 
         return fileId;
     }
 
     public async saveProcessedFile(fileId: string, buffer: Buffer): Promise<string> {
-        const metadataPath = path.join(this.storageDir, `${fileId}.json`);
+        const metadataPath = path.join(this.tableStorageDir, `${fileId}.json`);
         const metadata: FileMetadata = JSON.parse(await fs.promises.readFile(metadataPath, 'utf-8'));
 
         const processedName = `${Date.now()}_enriched.xlsx`;
@@ -88,7 +89,7 @@ export class StorageManager {
     }
 
     public async addChatMessage(fileId: string, role: 'user' | 'assistant', content: string) {
-        const metadataPath = path.join(this.storageDir, `${fileId}.json`);
+        const metadataPath = path.join(this.tableStorageDir, `${fileId}.json`);
         const metadata: FileMetadata = JSON.parse(await fs.promises.readFile(metadataPath, 'utf-8'));
 
         metadata.chatHistory.push({
@@ -102,13 +103,13 @@ export class StorageManager {
     }
 
     public async getChatHistory(fileId: string): Promise<ChatMessage[]> {
-        const metadataPath = path.join(this.storageDir, `${fileId}.json`);
+        const metadataPath = path.join(this.tableStorageDir, `${fileId}.json`);
         const metadata: FileMetadata = JSON.parse(await fs.promises.readFile(metadataPath, 'utf-8'));
         return metadata.chatHistory;
     }
 
     public async getProcessedFilePath(fileId: string): Promise<string> {
-        const metadataPath = path.join(this.storageDir, `${fileId}.json`);
+        const metadataPath = path.join(this.tableStorageDir, `${fileId}.json`);
         const metadata: FileMetadata = JSON.parse(await fs.promises.readFile(metadataPath, 'utf-8'));
         return path.join(this.processedDir, metadata.processedName);
     }
@@ -130,13 +131,26 @@ export class StorageManager {
             await Promise.all([
                 cleanDir(this.uploadsDir),
                 cleanDir(this.processedDir),
-                cleanDir(this.storageDir)
+                cleanDir(this.tableStorageDir)
             ]);
 
-            // Пересоздаем директории
-            this.ensureDirectories();
+            // Создаем директории если они не существуют
+            [this.uploadsDir, this.processedDir, this.tableStorageDir].forEach(dir => {
+                if (!fs.existsSync(dir)) {
+                    fs.mkdirSync(dir, { recursive: true });
+                }
+            });
         } catch (error) {
             console.error('Ошибка при очистке файлов:', error);
         }
+    }
+
+    // Получение пути к загруженному файлу
+    async getUploadedFilePath(fileId: string): Promise<string> {
+        const filePath = path.join(this.uploadsDir, fileId);
+        if (!fs.existsSync(filePath)) {
+            throw new Error('Файл не найден');
+        }
+        return filePath;
     }
 } 
