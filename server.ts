@@ -18,6 +18,20 @@ const server = new HttpServer(app);
 const wss = new WebSocketServer({ server });
 const storageManager = StorageManager.getInstance();
 
+// Create necessary directories
+const resultsDir = path.join(process.cwd(), 'storage', 'results');
+const tempDir = path.join(process.cwd(), 'storage', 'temp');
+
+if (!fs.existsSync(path.join(process.cwd(), 'storage'))) {
+    fs.mkdirSync(path.join(process.cwd(), 'storage'));
+}
+if (!fs.existsSync(resultsDir)) {
+    fs.mkdirSync(resultsDir);
+}
+if (!fs.existsSync(tempDir)) {
+    fs.mkdirSync(tempDir);
+}
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
@@ -55,14 +69,15 @@ app.post('/api/get-headers', upload.single('file'), async (req: Request, res: Re
 app.post('/api/get-sheets', upload.single('file'), async (req: Request, res: Response): Promise<void> => {
     console.log('=== Получен запрос на получение списка листов ===');
     try {
-        if (!req.file) {
-            console.error('Файл не был загружен');
+        if (!req.file || !req.file.buffer) {
+            console.error('Файл не был загружен или буфер пуст');
             res.status(400).json({ error: 'Файл не был загружен' });
             return;
         }
 
-        // Получаем список листов
+        console.log('Размер буфера файла:', req.file.buffer.length);
         const sheets = await getSheetNames(req.file.buffer);
+        console.log('Найденные листы:', sheets);
 
         if (!sheets || sheets.length === 0) {
             console.error('Листы не найдены в файле');
@@ -71,12 +86,9 @@ app.post('/api/get-sheets', upload.single('file'), async (req: Request, res: Res
         }
 
         res.json({ sheets });
-        
-        // Очищаем память
-        req.file.buffer = Buffer.from([]);
-    } catch (error) {
+    } catch (error: any) {
         console.error('Ошибка при получении списка листов:', error);
-        res.status(500).json({ error: 'Ошибка при получении списка листов' });
+        res.status(500).json({ error: 'Ошибка при получении списка листов: ' + error.message });
     }
 });
 
