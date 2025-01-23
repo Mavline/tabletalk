@@ -740,7 +740,7 @@ DO NOT Include any explanatory text
             - Always use uppercase units (MA, A)
             - Examples: "50MA", "1.5A"
 
-        === HANDLING UNMENTIONED CASES ===
+            === HANDLING UNMENTIONED CASES ===
         1. If input data does not match predefined categories (e.g., CONNECTOR, INSERT, SCREW):
         - Extract all available key specifications and list them as "SPECIFICATIONS".
         - Return a generic description with "UNKNOWN_COMPONENT" and include all known details.
@@ -1138,57 +1138,30 @@ function postProcessDescription(description: string, partNumber: string): string
 
     let processedDesc = description;
 
-    // Улучшенное удаление номера детали из описания
+    // === PART NUMBER REMOVAL ===
     if (partNumber) {
-        // Удаляем точное совпадение номера детали
-        processedDesc = processedDesc.replace(new RegExp(`\\b${partNumber}\\b`, 'gi'), '');
-        // Удаляем номер детали с возможными разделителями
-        processedDesc = processedDesc.replace(new RegExp(`\\b${partNumber.replace(/[-]/g, '[-]?')}\\b`, 'gi'), '');
-        // Удаляем номер детали, если он является частью другого слова
         processedDesc = processedDesc.replace(new RegExp(partNumber, 'gi'), '');
     }
 
-    // Удаляем слово CHIP в любой позиции
+    // === REMOVE UNNECESSARY WORDS ===
     processedDesc = processedDesc.replace(/\b(CHIP|CHP)\b/gi, '');
 
-    // Удаляем символы ±, +, и - из описания
+    // === STANDARDIZE SPECIAL VALUES AND RANGES ===
     processedDesc = processedDesc
-        .replace(/[±+\-]/g, '') // Базовое удаление
-        .replace(/±\d+(?:PPM|%|V|MA|MHZ|GHZ|DB)/gi, '$1$2') // Удаляем ± перед значениями с единицами измерения
-        .replace(/\+\-\d+(?:PPM|%|V|MA|MHZ|GHZ|DB)/gi, '$1$2') // Удаляем +- перед значениями с единицами измерения
-        .replace(/(?:±|\+-)\s*\d+\s*(?:PPM|%|V|MA|MHZ|GHZ|DB)/gi, '$1$2') // Удаляем ± или +- с пробелами
-        .replace(/\s*-\s*(?=\d+[°C])/g, '') // Удаляем - между температурами
-        .replace(/(\d+)°C-(\d+)°C/g, '$1°C$2°C') // Удаляем - между температурами
-        .replace(/\s+(?:T&R|T\/R|TR|TAPE[- ]AND[- ]REEL)\b/gi, ''); // Удаляем T&R и подобные обозначения
+        // Стандартизация диапазонов напряжений и токов
+        .replace(/±(\d+(?:\.\d+)?V)[-\s]*±(\d+(?:\.\d+)?V)/gi, '$1-$2')
+        .replace(/±(\d+(?:\.\d+)?MA)[-\s]*±(\d+(?:\.\d+)?MA)/gi, '$1-$2')
+        // Удаление ± перед значениями с единицами измерения
+        .replace(/±(\d+(?:\.\d+)?(?:V|MA|MHZ|GHZ|DB|GAUSS|PPM\/K|PPM|%))/gi, '$1')
+        // Обработка температурных диапазонов
+        .replace(/[-\s]*(\d+)°C[-\s]*(\d+)°C/g, '$1°C$2°C')
+        // Удаление оставшихся ±, +, -
+        .replace(/[±+\-](?=\d)/g, '')
+        .replace(/(?<=\d)[±+\-](?!\d)/g, '')
+        // Удаление T&R и подобных обозначений
+        .replace(/\s+(?:T&R|T\/R|TR|TAPE[- ]AND[- ]REEL)\b/gi, '');
 
-    // === IC PACKAGE FORMAT RULES ===
-    // Правила форматирования пакетов - применяются ко всем описаниям
-    const packageRules: Array<[RegExp, string]> = [
-        [/(\d+)-PIN\s+([A-Z]+)/gi, '$2-$1'], // 16-PIN PLCC -> PLCC-16
-        [/(\d+)-([A-Z]+)-\1/gi, '$2-$1'], // 16-TSSOP-16 -> TSSOP-16
-        [/(\d+)-([A-Z]+)/gi, '$2-$1'], // 16-TSSOP -> TSSOP-16
-        [/([A-Z]+)-(\d+)-\2/gi, '$1-$2'], // TSSOP-16-16 -> TSSOP-16
-        [/\b(\d+)-([A-Z]+(?:-\d+)?)\b/gi, '$2'], // Удаляем цифры перед пакетом
-        [/SMD|DIRECTFET\s+SMD/gi, 'SMT'], // Заменяем SMD и DIRECTFET SMD на SMT
-        [/(?:LGA|BGA|QFN|TQFN|WQFN|VQFN|UQFN|DFN|TDFN|WDFN|VDFN|UDFN|QFP|LQFP|TQFP|VQFP|MQFP|HVQFN|SON|WSON|VSON|USON|UDFN|XSON|DSON|WDFN)-\d+(?!\s+SMT\b)(?!\s+[A-Z]+\s+SMT\b)$/gi, '$& SMT'] // Добавляем SMT только если его еще нет
-    ];
-
-    packageRules.forEach(([pattern, replacement]) => {
-        processedDesc = processedDesc.replace(pattern, replacement);
-    });
-
-    // === REMOVE T&R AND PACKAGING DETAILS ===
-    processedDesc = processedDesc
-        .replace(/\s+T&R\b/gi, '')
-        .replace(/\s+T\/R\b/gi, '')
-        .replace(/\s+TR\b/gi, '')
-        .replace(/\s+TAPE[- ]AND[- ]REEL\b/gi, '');
-
-    // === CRITICAL PROCESSING RULES ===
-    // 1. Объединение числовых значений с единицами измерения
-    processedDesc = processedDesc.replace(/(\d+)\s+(UF|MF|PF|R|K|M|NH|MH|GHZ|MHZ|KHZ)/gi, '$1$2');
-
-    // 2. Стандартизация сопротивления
+    // === RESISTANCE STANDARDIZATION ===
     const resistanceRules: Array<[RegExp, string]> = [
         [/(\d+(?:\.\d+)?)\s*MOHM/gi, '$1M'],
         [/(\d+(?:\.\d+)?)\s*KOHM/gi, '$1K'],
@@ -1202,84 +1175,67 @@ function postProcessDescription(description: string, partNumber: string): string
         [/mΩ/g, 'M'],
         [/Ω/g, 'R'],
         [/kΩ/g, 'K'],
-        [/MΩ/g, 'M']
+        [/MΩ/g, 'M'],
+        [/RDS\(ON\)\s*=\s*(\d+(?:\.\d+)?)[Ω]/gi, 'RDS$1R']
     ];
 
     resistanceRules.forEach(([pattern, replacement]) => {
         processedDesc = processedDesc.replace(pattern, replacement);
     });
 
-    // === CHANGE CAPACITANCE DESCRIPTION RULES ===
-    type CapacitanceRule = [RegExp, string | ((match: string, value: string) => string)];
+    // === MOUNTING TYPE DETECTION AND ASSIGNMENT ===
+    const hasExistingMountingType = /\s+(SMT|TH|THT|PTH|THROUGH[- ]HOLE)\b/i.test(processedDesc);
     
-    const capacitanceRules: CapacitanceRule[] = [
-        [/(\d+(?:\.\d+)?)\s*UF/gi, '$1MF'],
-        [/(\d+(?:\.\d+)?)\s*uF/gi, '$1MF'],
-        [/(\d+(?:\.\d+)?)\s*μF/gi, '$1MF'],
-        [/(\d+(?:\.\d+)?)\s*NF/gi, (match: string, value: string) => {
-            const numValue = parseFloat(value);
-            return `${numValue * 1000}PF`;
-        }],
-        [/(\d+(?:\.\d+)?)\s*nF/gi, (match: string, value: string) => {
-            const numValue = parseFloat(value);
-            return `${numValue * 1000}PF`;
-        }]
-    ];
+    if (!hasExistingMountingType) {
+        const isThroughHole = /\b(DIP|PDIP|CDIP|CERDIP|PTH|THT|TH|THROUGH[- ]HOLE)\b/i.test(processedDesc);
+        
+        const smtPackages = [
+            'LGA', 'BGA', 'FBGA', 'TFBGA', 'LFBGA',
+            'QFN', 'TQFN', 'WQFN', 'VQFN', 'UQFN',
+            'DFN', 'TDFN', 'WDFN', 'VDFN', 'UDFN',
+            'QFP', 'LQFP', 'TQFP', 'VQFP', 'MQFP', 'HVQFN',
+            'SON', 'WSON', 'VSON', 'USON',
+            'XSON', 'DSON',
+            'SOIC', 'SOP', 'SSOP', 'TSSOP', 'MSOP',
+            'SOT', 'SOT23', 'SOT223', 'SOT323', 'SOT363',
+            'SC70', 'SC88', 'SC70-3', 'SC70-5', 'SC70-6',
+            'TO263', 'TO252', 'TO268', 'TO269',
+            'PLCC'
+        ].join('|');
 
-    capacitanceRules.forEach(([pattern, replacement]) => {
-        if (typeof replacement === 'string') {
-            processedDesc = processedDesc.replace(pattern, replacement);
-        } else {
-            processedDesc = processedDesc.replace(pattern, replacement);
+        const isSMT = (
+            new RegExp(`\\b(${smtPackages}|TDFN)[-]?\\d+\\b|\\b(${smtPackages}|TDFN)\\d+\\b`, 'i').test(processedDesc) ||
+            /\b(0201|0402|0603|0805|1206|1210|1812|2010|2512)\b/i.test(processedDesc)
+        );
+
+        if (isThroughHole || (!isSMT && /\b(TO-\d+|TO\d+)\b/i.test(processedDesc))) {
+            processedDesc = `${processedDesc} TH`;
+        } else if (isSMT) {
+            processedDesc = `${processedDesc} SMT`;
         }
-    });
+        } else {
+        processedDesc = processedDesc.replace(/\s+SMD\b/gi, ' SMT');
+    }
 
-    // === ADDITIONAL OUTPUT FORMAT RULES ===
-    const additionalRules: Array<[RegExp, string]> = [
-        [/CER(?:AMIC)?/gi, 'CRM'],
-        [/nH/gi, 'NH'],
-        [/PHILLIPS/gi, 'PHIL'],
-        [/STAINLESS STEEL/gi, 'SS'],
-        [/ALUMINUM/gi, 'AL'],
-        [/SMD|SMT2/gi, 'SMT'],
-        [/[±+\-]/g, ''],  // Удаление специальных символов
-        [/±(\d+%)/g, '$1'],  // Удаление ± перед процентами
-        [/±(\d+PPM\/K)/g, '$1']  // Удаление ± перед PPM/K
+    // === IC PACKAGE FORMAT RULES ===
+    const packageRules: Array<[RegExp, string]> = [
+        [/(\d+)-PIN\s+([A-Z]+)/gi, '$2-$1'],
+        [/(\d+)-([A-Z]+)-\1/gi, '$2-$1'],
+        [/(\d+)-([A-Z]+)/gi, '$2-$1'],
+        [/([A-Z]+)-(\d+)-\2/gi, '$1-$2'],
+        [/\b(\d+)-([A-Z]+(?:-\d+)?)\b/gi, '$2'],
+        [/SMD|DIRECTFET\s+SMD/gi, 'SMT']
     ];
 
-    additionalRules.forEach(([pattern, replacement]) => {
+    packageRules.forEach(([pattern, replacement]) => {
         processedDesc = processedDesc.replace(pattern, replacement);
     });
 
-    // === UNIT STANDARDIZATION RULES ===
-    const unitStandardizationRules: Array<[RegExp, string]> = [
-        // 1. Component Type Standardization
-        [/RESIST|RESS|resist/gi, 'RES'],
-        [/CHIP|CHP|chip/gi, ''],
-        [/IND(?:UCTOR)?|CHOKE/gi, 'IND'],
-        [/CONN(?:ECTOR)?/gi, 'CONN'],
-        [/FILTER|FLT/gi, 'FILTER'],
-        [/CAPACITOR/gi, 'CAP'],
-        [/AMPLIFIER|AMP/gi, 'AMPLIFIER'],
-        [/OSCILLATOR|OSC/gi, 'OSC'],
-        [/TRANSFORMER|XFMR/gi, 'XFMR'],
+    processedDesc = processedDesc
+        .replace(/(\d+)\s+(UF|MF|PF|R|K|M|NH|MH|GHZ|MHZ|KHZ|W|MA|V)/gi, '$1$2')
+        .replace(/\s+/g, ' ');
 
-        // 2. Value and Unit Standardization
-        [/uH|μH|mH/gi, 'MH'],
-        [/pF/gi, 'PF'],
-        [/GHz/gi, 'GHZ'],
-        [/MHz/gi, 'MHZ'],
-        [/kHz/gi, 'KHZ']
-    ];
-
-    unitStandardizationRules.forEach(([pattern, replacement]) => {
-        processedDesc = processedDesc.replace(pattern, replacement);
-    });
-
-    // Удаление множественных пробелов
-    processedDesc = processedDesc.replace(/\s+/g, ' ').trim();
-
-    return processedDesc;
+    return processedDesc.trim();
 }
 
 // Обновляем функцию processRow для использования пост-обработки

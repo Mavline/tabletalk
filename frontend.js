@@ -78,7 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'enriched_bom.xlsx';
+            const fileNameWithoutExt = fileInput.files[0].name.replace('.xlsx', '');
+            a.download = `${fileNameWithoutExt}_enreached.xlsx`;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);

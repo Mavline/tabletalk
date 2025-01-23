@@ -1,72 +1,88 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOM Enricher</title>
+    <title>BOM Component Description Enricher</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="side-panel.css">
 </head>
 <body>
-    <div class="header">
-    <h1>BOM Component Description Enricher</h1>
-    </div>
-    
-    <div class="file-upload-section">
-        <div class="file-input-container">
-            <label>Выберите Excel файл для обработки</label>
-            <label for="fileInput" class="custom-file-upload">
-                Выбрать файл
-            </label>
-            <input type="file" id="fileInput" accept=".xls,.xlsx" />
-            <span id="selectedFileName"></span>
-        </div>
+    <div class="container">
+        <div class="main-content">
+            <header class="header">
+                <h1>BOM Component Description Enricher</h1>
+                <nav class="nav-links">
+                    <a href="/" class="active">Application</a>
+                    <a href="/docs">Documentation</a>
+                </nav>
+            </header>
+            
+            <div class="upload-section">
+                <label for="fileInput" class="custom-file-upload">
+                    Choose File
+                </label>
+                <input type="file" id="fileInput" accept=".xls,.xlsx" />
+                <span id="selectedFileName">No file chosen</span>
+            </div>
 
-        <div class="sheet-select-container" style="display: none;">
-            <label>Выберите лист для обработки:</label>
-            <select id="sheetSelect" class="select-input">
-                <option value="">Выберите лист</option>
-            </select>
-        </div>
+            <div class="sheet-select-container" style="display: none;">
+                <label>Select sheet for processing:</label>
+                <select id="sheetSelect" class="select-input">
+                    <option value="">Select sheet</option>
+                </select>
+            </div>
 
-        <div id="columnSelect" class="column-select-section" style="display: none;">
-            <div class="column-select-container">
-                <div class="column-select">
-                    <h3>Part Number</h3>
-                    <p>Выберите колонку с номерами компонентов:</p>
-                    <select id="partNumberSelect" class="select-input">
-                        <option value="">Select column</option>
-                    </select>
+            <div id="columnSelect" class="column-select-section" style="display: none;">
+                <div class="column-select-container">
+                    <div class="column-select">
+                        <h3>Part Number</h3>
+                        <p>Select column with part numbers:</p>
+                        <select id="partNumberSelect" class="select-input">
+                            <option value="">Select column</option>
+                        </select>
+                    </div>
+                    <div class="column-select">
+                        <h3>Description</h3>
+                        <p>Select column with descriptions:</p>
+                        <select id="descriptionSelect" class="select-input">
+                            <option value="">Select column</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="column-select">
-                    <h3>Description</h3>
-                    <p>Выберите колонку с описаниями:</p>
-                    <select id="descriptionSelect" class="select-input">
-                        <option value="">Select column</option>
-                    </select>
+                <button id="processBtn" class="process-btn" disabled>Start Processing</button>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="progress-info">
+                    <span>Processing...</span>
+                    <span class="processed-rows">Processed rows: <span id="processedRows">0</span></span>
                 </div>
             </div>
-            <button id="processBtn" class="process-btn" disabled>Start Processing</button>
-        </div>
-    </div>
 
-    <div class="progress-section" style="display: none;">
-        <div id="status">Waiting for file...</div>
-        <div class="progress-bar">
-            <div class="progress" id="progressBar"></div>
+            <div class="updates">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Original Description</th>
+                            <th>Enriched Description</th>
+                            <th>Source</th>
+                        </tr>
+                    </thead>
+                    <tbody id="updatesTable"></tbody>
+                </table>
+            </div>
         </div>
-    </div>
 
-    <div class="updates">
-        <table>
-            <thead>
-                <tr>
-                    <th>Original Description</th>
-                    <th>Enriched Description</th>
-                    <th>Source</th>
-                </tr>
-            </thead>
-            <tbody id="updatesTable"></tbody>
-        </table>
+        <div class="side-panel">
+            <h3>Processed Files</h3>
+            <div id="processedFiles" class="processed-files">
+                <!-- Processed files will be displayed here -->
+            </div>
+        </div>
     </div>
 
     <a id="downloadBtn" class="download-btn" style="display: none;">Download processed file</a>
@@ -81,26 +97,26 @@
         const partNumberSelect = document.getElementById('partNumberSelect');
         const descriptionSelect = document.getElementById('descriptionSelect');
         const processBtn = document.getElementById('processBtn');
-        const progressSection = document.querySelector('.progress-section');
-        const progressBar = document.getElementById('progressBar');
-        const progressStatus = document.getElementById('status');
+        const progressSection = document.getElementById('progressSection');
+        const progress = document.getElementById('progress');
+        const processedRows = document.getElementById('processedRows');
         const updatesTable = document.getElementById('updatesTable');
         const downloadBtn = document.getElementById('downloadBtn');
 
-        // Обработчик загрузки файла
+        // File upload handler
         fileInput.addEventListener('change', async (event) => {
             const file = event.target.files[0];
             if (!file) return;
 
             currentFile = file;
             selectedFileName.textContent = file.name;
-            console.log('Загружен файл:', file.name);
+            console.log('File loaded:', file.name);
             
             try {
                 const formData = new FormData();
                 formData.append('file', file);
                 
-                console.log('Отправляем запрос на получение списка листов...');
+                console.log('Requesting sheet list...');
                 const sheetsResponse = await fetch('/api/get-sheets', {
                     method: 'POST',
                     body: formData
@@ -108,67 +124,66 @@
                 
                 if (!sheetsResponse.ok) {
                     const error = await sheetsResponse.json();
-                    console.error('Ошибка ответа сервера:', error);
+                    console.error('Server response error:', error);
                     throw new Error(error.error || 'Failed to get sheets');
                 }
                 
                 const { sheets, fileId } = await sheetsResponse.json();
                 currentFileId = fileId;
-                console.log('Получены листы:', sheets);
+                console.log('Sheets received:', sheets);
                 
                 if (!sheets || sheets.length === 0) {
-                    throw new Error('В файле не найдено листов');
+                    throw new Error('No sheets found in file');
                 }
                 
-                // Заполняем выпадающий список листов
-                sheetSelect.innerHTML = '<option value="">Выберите лист</option>';
+                // Fill sheet select
+                sheetSelect.innerHTML = '<option value="">Select sheet</option>';
                 sheets.forEach(sheet => {
-                    console.log('Добавляем лист в select:', sheet);
+                    console.log('Adding sheet to select:', sheet);
                     const option = document.createElement('option');
                     option.value = sheet;
                     option.textContent = sheet;
                     sheetSelect.appendChild(option);
                 });
                 
-                // Показываем выбор листа
+                // Show sheet selection
                 document.querySelector('.sheet-select-container').style.display = 'block';
                 
-                // Скрываем выбор колонок до выбора листа
+                // Hide column selection until sheet is selected
                 columnSelect.style.display = 'none';
                 processBtn.disabled = true;
             } catch (error) {
-                console.error('Ошибка при загрузке файла:', error);
-                showError('Ошибка загрузки файла: ' + error.message);
+                console.error('File upload error:', error);
+                showError('File upload error: ' + error.message);
             }
         });
 
-        // Обработчик выбора листа
+        // Sheet selection handler
         sheetSelect.addEventListener('change', async () => {
             const selectedSheet = sheetSelect.value;
-            if (!currentFileId || !selectedSheet) return;
+            if (!currentFile || !selectedSheet) return;
             
             try {
-                console.log('Выбран лист:', selectedSheet);
+                console.log('Sheet selected:', selectedSheet);
+                
+                const formData = new FormData();
+                formData.append('file', currentFile);
+                formData.append('sheet', selectedSheet);
                 
                 const response = await fetch('/api/get-headers', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        fileId: currentFileId,
-                        sheet: selectedSheet
-                    })
+                    body: formData
                 });
                 
                 if (!response.ok) throw new Error('Failed to get headers');
                 
-                const { headers } = await response.json();
-                console.log('Получены заголовки:', headers);
+                const { headers, fileId } = await response.json();
+                currentFileId = fileId;
+                console.log('Headers received:', headers);
                 
-                // Заполняем выпадающие списки колонок
+                // Fill column selects
                 [partNumberSelect, descriptionSelect].forEach(select => {
-                    select.innerHTML = '<option value="">Выберите колонку</option>';
+                    select.innerHTML = '<option value="">Select column</option>';
                     headers.forEach((header, index) => {
                         const option = document.createElement('option');
                         option.value = index + 1;
@@ -177,39 +192,39 @@
                     });
                 });
                 
-                // Показываем выбор колонок
+                // Show column selection
                 columnSelect.style.display = 'block';
                 processBtn.style.display = 'block';
                 
-                // Активируем кнопку только когда выбраны обе колонки
+                // Enable button only when both columns are selected
                 checkColumns();
             } catch (error) {
                 console.error('Error:', error);
-                showError('Ошибка получения заголовков: ' + error.message);
+                showError('Error getting headers: ' + error.message);
             }
         });
 
-        // Функция проверки выбранных колонок
+        // Column selection check
         function checkColumns() {
             const partNumberValue = partNumberSelect.value;
             const descriptionValue = descriptionSelect.value;
             
-            // Проверяем, что обе колонки выбраны и они разные
+            // Check that both columns are selected and different
             const isValid = partNumberValue && descriptionValue && partNumberValue !== descriptionValue;
             
-            // Активируем/деактивируем кнопку
+            // Enable/disable button
             processBtn.disabled = !isValid;
             
             if (partNumberValue && descriptionValue && partNumberValue === descriptionValue) {
-                showError('Выберите разные колонки для Part Number и Description');
+                showError('Select different columns for Part Number and Description');
             }
         }
 
-        // Обработчики событий выбора колонок
+        // Column selection handlers
         partNumberSelect.addEventListener('change', checkColumns);
         descriptionSelect.addEventListener('change', checkColumns);
 
-        // Обработчик нажатия кнопки Process
+        // Process button handler
         processBtn.addEventListener('click', async () => {
             if (!currentFile) return;
 
@@ -218,13 +233,15 @@
             formData.append('partNumberColumn', partNumberSelect.value);
             formData.append('descriptionColumn', descriptionSelect.value);
             formData.append('sheet', sheetSelect.value);
+            if (currentFileId) {
+                formData.append('fileId', currentFileId);
+            }
 
             progressSection.style.display = 'block';
             processBtn.disabled = true;
             updatesTable.innerHTML = '';
-            progressBar.style.width = '0%';
+            progress.style.width = '0%';
             downloadBtn.style.display = 'none';
-            progressStatus.textContent = 'Начинаем обработку файла...';
 
             try {
                 const response = await fetch('/process', {
@@ -234,21 +251,15 @@
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.error || 'Ошибка обработки файла');
+                    throw new Error(errorData.error || 'File processing error');
                 }
 
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 downloadBtn.href = url;
-                downloadBtn.download = currentFile.name.replace(/\.xlsx?$/, '_enriched.xlsx');
+                const fileNameWithoutExt = currentFile.name.replace('.xlsx', '');
+                downloadBtn.download = `${fileNameWithoutExt}_processed.xlsx`;
                 downloadBtn.style.display = 'block';
-                downloadBtn.textContent = 'Скачать обработанный файл';
-
-                downloadBtn.onclick = () => {
-                    setTimeout(() => {
-                        window.URL.revokeObjectURL(url);
-                    }, 100);
-                };
 
             } catch (error) {
                 console.error('Error:', error);
@@ -257,7 +268,7 @@
             }
         });
 
-        // WebSocket подключение
+        // WebSocket connection
         const ws = new WebSocket(`ws://${window.location.host}`);
         
         ws.onmessage = (event) => {
@@ -276,19 +287,20 @@
                         break;
                 }
             } catch (error) {
-                console.error('Ошибка обработки сообщения WebSocket:', error);
+                console.error('WebSocket message processing error:', error);
             }
         };
 
         function updateProgress(current, total) {
-            const percent = Math.round((current / total) * 100);
-            progressBar.style.width = `${percent}%`;
-            progressStatus.textContent = `Обработано ${current} из ${total} строк`;
+            const percent = (current / total) * 100;
+            const progress = document.getElementById('progress');
+            progress.style.width = `${percent}%`;
+            document.getElementById('processedRows').textContent = current;
         }
 
         function showError(message) {
             const errorDiv = document.createElement('div');
-            errorDiv.className = 'error-message';
+            errorDiv.className = 'error';
             errorDiv.textContent = message;
             document.body.appendChild(errorDiv);
             setTimeout(() => errorDiv.remove(), 5000);
@@ -302,6 +314,60 @@
                 <td>${data.source ? `<a href="${data.source}" target="_blank">${data.source}</a>` : '-'}</td>
             `;
         }
+
+        // File size formatting
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        // Load processed files
+        async function loadProcessedFiles() {
+            try {
+                const response = await fetch('/api/processed-files');
+                if (!response.ok) {
+                    throw new Error('Failed to load files');
+                }
+                const { files } = await response.json();
+                
+                const filesContainer = document.getElementById('processedFiles');
+                filesContainer.innerHTML = '';
+                
+                if (!files || files.length === 0) {
+                    filesContainer.innerHTML = '<div class="no-files">No processed files</div>';
+                    return;
+                }
+                
+                files.forEach(file => {
+                    const fileElement = document.createElement('div');
+                    fileElement.className = 'processed-file';
+                    
+                    const size = formatFileSize(file.size);
+                    
+                    fileElement.innerHTML = `
+                        <div class="file-info">
+                            <span class="file-name">${file.name}</span>
+                            <span class="file-size">${size}</span>
+                        </div>
+                    `;
+                    
+                    fileElement.addEventListener('click', () => {
+                        window.location.href = `/api/download-processed/${file.name}`;
+                    });
+                    
+                    filesContainer.appendChild(fileElement);
+                });
+            } catch (error) {
+                console.error('Error loading processed files:', error);
+                const filesContainer = document.getElementById('processedFiles');
+                filesContainer.innerHTML = '<div class="error">Error loading files</div>';
+            }
+        }
+
+        // Load processed files initially and every 30 seconds
+        loadProcessedFiles();
+        setInterval(loadProcessedFiles, 30000);
     </script>
 </body>
 </html> 
