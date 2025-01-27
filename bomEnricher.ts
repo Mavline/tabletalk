@@ -274,7 +274,7 @@ async function searchComponentInfo(description: string, partNumber: string): Pro
                 messages: [
                     {
                         role: "system",
-                        content: `You are a component search engine. Return ONLY specifications ACCORDING THE RULES below and direct URLs.
+                        content: `You are a component search engine. Based on the original {description}, and searching by {partNumber}, return ONLY specifications ACCORDING THE RULES below and direct URLs.
 
 
 DO NOT USE:
@@ -303,7 +303,7 @@ Return ONLY:
             For resistors:
             "RES <RESISTANCE> <TOLERANCE> <POWER RATING> <PACKAGE> <MOUNTING TYPE>"
             For capacitors:
-            "CAP <CATEGORY> <CAPACITANCE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
+            "CAP <type: CRM/TANT> <CATEGORY> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
             For inductors:
             "IND <CATEGORY> <INDUCTANCE> <TOLERANCE> <CURRENT> <DCR> <PACKAGE> <MOUNTING TYPE>"
             For inserts:
@@ -551,7 +551,7 @@ async function formatComponentDescription(searchResults: string, partNumber: str
         messages: [
             {
                 role: "system",
-                        content: `You are an expert component description formatter. Based on the original {description}, enhance it with information from {searchResults}, following the rules below. Format the output into EXACTLY 3 lines:
+                        content: `You are an expert component description formatter. Based on the original {description}, enhance it with information from {searchResults}, following the rules below. ADD OR CHANGE ORIGINAL DESCRIPTION TO FORMAT the output into EXACTLY 3 lines:
 Line 1: Enhanced component description following the standardized format
 Line 2: Primary source URL (must start with https://)
 Line 3: Secondary source URL (must be different from primary, or NO_SECOND_SOURCE)
@@ -587,7 +587,7 @@ DO NOT Include any explanatory text
         For resistors:
         "RES <RESISTANCE> <TOLERANCE> <POWER RATING> <PACKAGE> <MOUNTING TYPE>"
         For capacitors:
-        "CAP <CAPACITANCE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
+        "CAP <type:CRM/TANT> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
         For inductors:
         "IND <INDUCTANCE> <TOLERANCE> <CURRENT> <DCR> <PACKAGE> <MOUNTING TYPE>"
         For inserts:

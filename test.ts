@@ -5,6 +5,21 @@ const testCases = [
         input: "ATTEN CHIP DC-18GHz 3 DB",
         partNumber: "TS0503W3",
         expected: "ATTEN DC-18GHz 3DB"
+    },
+    {
+        input: "CAP 100NF 50V",
+        partNumber: "C1234",
+        expected: "CAP+CRM 100NF 50V"
+    },
+    {
+        input: "CAP+CRM 100NF 50V",
+        partNumber: "C1234",
+        expected: "CAP+CRM 100NF 50V"
+    },
+    {
+        input: "CAP CRM 100NF 50V",
+        partNumber: "C1234",
+        expected: "CAP CRM 100NF 50V"
     }
 ];
 
