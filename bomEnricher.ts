@@ -270,11 +270,11 @@ async function searchComponentInfo(description: string, partNumber: string): Pro
     try {
         const response = await retryOperation(async () => {
             return await openai.chat.completions.create({
-                model: "perplexity/llama-3.1-sonar-small-128k-online",
+                model: "perplexity/llama-3.1-sonar-large-128k-online",
                 messages: [
                     {
                         role: "system",
-                        content: `You are a component search engine. Return ONLY specifications and direct URLs.
+                        content: `You are a component search engine. Return ONLY specifications ACCORDING THE RULES below and direct URLs.
 
 
 DO NOT USE:
@@ -293,30 +293,37 @@ Return ONLY:
 1. Basic short standardized specifications of the electronic component:
     === DESCRIPTION STRUCTURE ===
             The description on Line 1 must follow this structure (if applicable):
-            "<TYPE> <SERIES> <VALUE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
+            "<TYPE> <VALUE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
             For RF and special components also include:
             "<DCR> <CURRENT> <Q> <SRF> <GAIN> <NOISE FIGURE> <INSERTION LOSS> <RETURN LOSS>"
             For connectors:
-            "CONN <SERIES> <CONNECTOR TYPE> <FREQUENCY RANGE> <MATING MECHANISM> <PACKAGE> <MOUNTING TYPE>"
+            "CONN <CONNECTOR TYPE> <FREQUENCY RANGE> <MATING MECHANISM> <PACKAGE> <MOUNTING TYPE>"
             For diodes and components with packaging details:
-            "<TYPE> <SERIES> <VOLTAGE> <CURRENT> <PACKAGE> <MOUNTING TYPE>"
+            "<TYPE> <VOLTAGE> <CURRENT> <PACKAGE> <MOUNTING TYPE>"
             For resistors:
-            "RES <SERIES> <RESISTANCE> <TOLERANCE> <POWER RATING> <PACKAGE> <MOUNTING TYPE>"
+            "RES <RESISTANCE> <TOLERANCE> <POWER RATING> <PACKAGE> <MOUNTING TYPE>"
             For capacitors:
-            "CAP <SERIES> <CAPACITANCE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
+            "CAP <CATEGORY> <CAPACITANCE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
             For inductors:
-            "IND <SERIES> <INDUCTANCE> <TOLERANCE> <CURRENT> <DCR> <PACKAGE> <MOUNTING TYPE>"
+            "IND <CATEGORY> <INDUCTANCE> <TOLERANCE> <CURRENT> <DCR> <PACKAGE> <MOUNTING TYPE>"
             For inserts:
-            "INSERT <SERIES> <THREAD SIZE> <LENGTH> <MATERIAL> <LOCKING TYPE> <FINISH>"
+            "INSERT <CATEGORY> <THREAD SIZE> <LENGTH> <MATERIAL> <LOCKING TYPE> <FINISH>"
             For screws:
             "SCREW <THREAD SIZE> <LENGTH> <MATERIAL> <THREAD SERIES> <THREAD CLASS> <MOUNTING TYPE>"
             For LEDs:
-            "LED <SERIES> <COLOR> <WAVELENGTH/CCT> <LUMINOUS INTENSITY/FLUX> <FORWARD VOLTAGE> <FORWARD CURRENT> <VIEWING ANGLE> <PACKAGE> <MOUNTING TYPE>"
+            "LED <COLOR> <WAVELENGTH/CCT> <LUMINOUS INTENSITY/FLUX> <FORWARD VOLTAGE> <FORWARD CURRENT> <VIEWING ANGLE> <PACKAGE> <MOUNTING TYPE>"
             For sensors:
-            "SENSOR <TYPE> <SERIES> <AXIS> <SUPPLY VOLTAGE> <SENSITIVITY> <BANDWIDTH> <PACKAGE> <MOUNTING TYPE>"
+            "SENSOR <TYPE> <AXIS> <SUPPLY VOLTAGE> <SENSITIVITY> <BANDWIDTH> <PACKAGE> <MOUNTING TYPE>"
             For MOSFETs:
             "MOSFET <TYPE> <CHANNEL> <VOLTAGE> <CURRENT> <RDS ON> <GATE THRESHOLD> <PACKAGE> <MOUNTING TYPE>"
 
+    === ADDITIONAL OUTPUT FORMAT RULES ===
+        - Replace "CER"/"CERAMIC" with "CRM"
+        - Replace "nH" with "NH"
+        - Remove special characters: "Ω", "+", "-", "±" from component descriptions
+        - Remove "±" from all positions and descriptions (e.g., "±100PPM/K" -> "100PPM/K")
+        - If ends with "SMD"/"SMT2" -> "SMT"
+        - Keep component identifiers (e.g., "2W0")
 
     === MANDATORY FIELDS ===
             TYPE: Always standardized based on component category:
@@ -392,7 +399,99 @@ Return ONLY:
             - Label type (e.g., "THT-72-457-PRINTABLE")
             - Description (e.g., "Thermal transfer printable polyimide label B-457 series, 1.75" x 0.25", 10000 labels per roll")
             - Source URL (e.g., "https://www.bradyid.com/labels/tht-72-457")
-    === TEMPERATURE COEFFICIENT AND VOLTAGE/CURRENT RANGES ===
+            
+        MOUNTING TYPE:
+        - Electronic: "SMT" or "THT" - REQUIRED!
+        - Always include mounting type (e.g., "SMT", "THT")
+        - Mechanical: mounting method if relevant (e.g., "PANEL", "CHASSIS")
+
+        === CHANGE RESISTANCE DESCRIPTION RULES ===
+        - "81 MOHM" -> "81M"
+        - "1.8 KOHM" -> "1.8K"
+        - "50 OHM" -> "50R"
+        - "50 Ohm" -> "50R"
+        - "50 ohm" -> "50R"
+        - "50Ω" -> "50R"
+        - "93mΩ" -> "93M"
+        - "100KΩ" -> "100K"
+        - "1MΩ" -> "1M"
+        - "mΩ" -> "M"
+        - "Ω" -> "R"
+        - "kΩ" -> "K"
+        - "MΩ" -> "M"
+
+        === CHANGE CAPACITANCE DESCRIPTION RULES ===
+        - "1UF" -> "1MF"      (microfarads -> megafarads)
+        - "1uF" -> "1MF"
+        - "1μF" -> "1MF"
+        - "0.1UF" -> "0.1MF"
+        - "0.01UF" -> "0.01MF"
+        - "150NF" -> "0.15MF" (nanofarads -> megafarads, 150/1000 = 0.15)
+        - "100NF" -> "0.1MF"  (100/1000 = 0.1)
+        - "10NF" -> "0.01MF"  (10/1000 = 0.01)
+        - "1NF" -> "1000PF"   (1 * 1000 = 1000)
+        - "0.1NF" -> "100PF"  (0.1 * 1000 = 100)
+        - "0.01NF" -> "10PF"  (0.01 * 1000 = 10)
+        - PF stays as PF (uppercase only)
+
+        === UNIT STANDARDIZATION RULES (EXACT MATCHES ONLY) ===
+        1. Component Type Standardization:
+           - "RESIST"/"RESS"/"resist"/etc -> "RES"
+           - Remove "CHIP"/"CHP"/"chip" completely
+           - Replace "CER"/"CERAMIC" with "CRM"
+           - "IND"/"INDUCTOR"/"CHOKE" -> "IND"
+           - "CONN"/"CONNECTOR" -> "CONN"
+           - "FILTER"/"FLT" -> "FILTER"
+           - "CAPACITOR" -> "CAP"
+           - "AMPLIFIER"/"AMP" -> "AMPLIFIER"
+           - "OSCILLATOR"/"OSC" -> "OSC"
+           - "TRANSFORMER"/"XFMR" -> "XFMR"
+
+        2. Value and Unit Standardization:
+           - Remove spaces between value and unit
+           - Remove "±/+/-" from tolerances
+           - "±/+/-2%" -> "2%"
+           - "nH"/"NH" -> "NH"
+           - "uH"/"μH"/"mH"/"MH" -> "MH"
+           - "pF"/"PF" -> "PF"
+           - "nF"/"NF" -> convert to "PF" or "MF" based on value
+           - "uF"/"μF"/"UF" -> "MF"
+           - "mΩ"/"mohm"/"mOhm" -> "M"
+           - "Ω"/"ohm"/"OHM" -> "R"
+           - "kΩ"/"kohm"/"KOHM" -> "K"
+           - "MΩ"/"Mohm"/"MOHM" -> "M"
+           - "GHz"/"GHZ" -> "GHZ"
+           - "MHz"/"MHZ" -> "MHZ"
+           - "kHz"/"KHZ" -> "KHZ"
+
+        3. Package and Mounting:
+           - Always include mounting type ("SMT" or "THT")
+           - If ends with "SMD"/"SMT2" -> "SMT"
+           - Keep package identifiers (e.g., "0402", "SOT23", "2W0")
+           - Include package dimensions when available
+           - For filters and specific components, include impedance (e.g., "50R")
+
+        4. Extended Component Parameters:
+           - Include voltage rating when available (e.g., "50V")
+           - Include current rating when available (e.g., "1.4A")
+           - Include frequency range for RF components
+           - Include power rating when available (e.g., "0.1W")
+           - Include temperature coefficient when applicable
+           - Include Q factor when available for inductors
+           - Include DCR when available for inductors
+           - Include resonant frequency when relevant
+           - Include insertion loss and return loss for connectors
+           - Include frequency range for connectors
+
+        5. Description Structure:
+           - Start with standardized component type
+           - Include series/family when available
+           - Include all relevant electrical parameters
+           - End with package and mounting type
+           - Keep manufacturer's key specifications
+           - Maintain consistent order of parameters
+
+        === TEMPERATURE COEFFICIENT AND VOLTAGE/CURRENT RANGES ===
             - Temperature Coefficient format:
             - Remove ± from PPM values (e.g., "±100PPM/K" -> "100PPM/K")
             - Always keep "/K" or "/°C" suffix
@@ -448,18 +547,22 @@ async function formatComponentDescription(searchResults: string, partNumber: str
     try {
         const response = await retryOperation(async () => {
             return await openai.chat.completions.create({
-        model: "microsoft/phi-4",
+        model: "deepseek/deepseek-r1-distill-llama-70b",
         messages: [
             {
                 role: "system",
-                        content: `You are an expert component description formatter. Format the input into EXACTLY 3 lines:
-Line 1: Component description following the standardized format
+                        content: `You are an expert component description formatter. Based on the original {description}, enhance it with information from {searchResults}, following the rules below. Format the output into EXACTLY 3 lines:
+Line 1: Enhanced component description following the standardized format
 Line 2: Primary source URL (must start with https://)
 Line 3: Secondary source URL (must be different from primary, or NO_SECOND_SOURCE)
 
-        INPUT: You will receive raw search results of any length, which include component specifications and URLs. Your task is to extract relevant information and format it properly.
+        INPUT: You will receive:
+        1. Original component description that should be used as the base
+        2. Raw search results of any length with additional specifications and URLs
+        Your task is to enhance the original description with relevant information in standardized format from search results.
 
 DO NOT Include URLs in the component description
+DO NOT Include "Series" in the component description
 DO NOT Include ${partNumber} in the component description
 DO NOT Output any markdown formatting
 DO NOT Output any additional lines
@@ -474,29 +577,29 @@ DO NOT Include any explanatory text
 
         === DESCRIPTION STRUCTURE ===
         The description on Line 1 must follow this structure (if applicable):
-        "<TYPE> <SERIES> <VALUE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
+        "<TYPE> <VALUE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
         For RF and special components also include:
         "<DCR> <CURRENT> <Q> <SRF> <GAIN> <NOISE FIGURE> <INSERTION LOSS> <RETURN LOSS>"
         For connectors:
-        "CONN <SERIES> <CONNECTOR TYPE> <FREQUENCY RANGE> <MATING MECHANISM> <PACKAGE> <MOUNTING TYPE>"
+        "CONN <CONNECTOR TYPE> <FREQUENCY RANGE> <MATING MECHANISM> <PACKAGE> <MOUNTING TYPE>"
         For diodes and components with packaging details:
-        "<TYPE> <SERIES> <VOLTAGE> <CURRENT> <PACKAGE> <MOUNTING TYPE>"
+        "<TYPE> <VOLTAGE> <CURRENT> <PACKAGE> <MOUNTING TYPE>"
         For resistors:
-        "RES <SERIES> <RESISTANCE> <TOLERANCE> <POWER RATING> <PACKAGE> <MOUNTING TYPE>"
+        "RES <RESISTANCE> <TOLERANCE> <POWER RATING> <PACKAGE> <MOUNTING TYPE>"
         For capacitors:
-        "CAP <SERIES> <CAPACITANCE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
+        "CAP <CAPACITANCE> <RATED VOLTAGE> <TOLERANCE> <TEMPERATURE COEFFICIENT> <PACKAGE> <MOUNTING TYPE>"
         For inductors:
-        "IND <SERIES> <INDUCTANCE> <TOLERANCE> <CURRENT> <DCR> <PACKAGE> <MOUNTING TYPE>"
+        "IND <INDUCTANCE> <TOLERANCE> <CURRENT> <DCR> <PACKAGE> <MOUNTING TYPE>"
         For inserts:
-        "INSERT <SERIES> <THREAD SIZE> <LENGTH> <MATERIAL> <LOCKING TYPE> <FINISH>"
+        "INSERT <THREAD SIZE> <LENGTH> <MATERIAL> <LOCKING TYPE> <FINISH>"
         For screws:
         "SCREW <THREAD SIZE> <LENGTH> <MATERIAL> <THREAD SERIES> <THREAD CLASS> <MOUNTING TYPE>"
         For LEDs:
-        "LED <SERIES> <COLOR> <WAVELENGTH/CCT> <LUMINOUS INTENSITY/FLUX> <FORWARD VOLTAGE> <FORWARD CURRENT> <VIEWING ANGLE> <PACKAGE> <MOUNTING TYPE>"
+        "LED <COLOR> <WAVELENGTH/CCT> <LUMINOUS INTENSITY/FLUX> <FORWARD VOLTAGE> <FORWARD CURRENT> <VIEWING ANGLE> <PACKAGE> <MOUNTING TYPE>"
         For sensors:
-        "SENSOR <TYPE> <SERIES> <AXIS> <SUPPLY VOLTAGE> <SENSITIVITY> <BANDWIDTH> <PACKAGE> <MOUNTING TYPE>"
+        "SENSOR <TYPE> <AXIS> <SUPPLY VOLTAGE> <SENSITIVITY> <BANDWIDTH> <PACKAGE> <MOUNTING TYPE>"
         For MOSFETs:
-        "MOSFET <TYPE> <CHANNEL> <VOLTAGE> <CURRENT> <RDS ON> <GATE THRESHOLD> <PACKAGE> <MOUNTING TYPE>"
+        "MOSFET <CHANNEL> <VOLTAGE> <CURRENT> <RDS ON> <GATE THRESHOLD> <PACKAGE> <MOUNTING TYPE>"
         For unknown cases:
         - When TYPE cannot be determined, return "UNKNOWN_COMPONENT".
         - If PART NUMBER exists, include it in the output with "UNKNOWN_COMPONENT".
@@ -644,17 +747,17 @@ DO NOT Include any explanatory text
         - "MΩ" -> "M"
 
         === CHANGE CAPACITANCE DESCRIPTION RULES ===
-        - "1UF" -> "1MF"
+        - "1UF" -> "1MF"      (microfarads -> megafarads)
         - "1uF" -> "1MF"
         - "1μF" -> "1MF"
         - "0.1UF" -> "0.1MF"
         - "0.01UF" -> "0.01MF"
-        - "10NF" -> "0.01MF"
-        - "10nF" -> "0.01MF"
-        - "1NF" -> "1000PF"
-        - "1nF" -> "1000PF"
-        - "0.1NF" -> "100PF"
-        - "0.01NF" -> "10PF"
+        - "150NF" -> "0.15MF" (nanofarads -> megafarads, 150/1000 = 0.15)
+        - "100NF" -> "0.1MF"  (100/1000 = 0.1)
+        - "10NF" -> "0.01MF"  (10/1000 = 0.01)
+        - "1NF" -> "1000PF"   (1 * 1000 = 1000)
+        - "0.1NF" -> "100PF"  (0.1 * 1000 = 100)
+        - "0.01NF" -> "10PF"  (0.01 * 1000 = 10)
         - PF stays as PF (uppercase only)
 
         === ADDITIONAL OUTPUT FORMAT RULES ===
@@ -664,8 +767,6 @@ DO NOT Include any explanatory text
         - Remove "±" from all positions and descriptions (e.g., "±100PPM/K" -> "100PPM/K")
         - If ends with "SMD"/"SMT2" -> "SMT"
         - Keep component identifiers (e.g., "2W0")
-        - For screws: "PHILLIPS" -> "PHIL", "STAINLESS" -> "SS"
-        - For materials: "STAINLESS STEEL" -> "SS", "ALUMINUM" -> "AL"
 
         === UNIT STANDARDIZATION RULES (EXACT MATCHES ONLY) ===
         1. Component Type Standardization:
@@ -1131,7 +1232,7 @@ Search results to format: ${searchResults}`
 }
 
 // Функция пост-обработки описания компонента
-function postProcessDescription(description: string, partNumber: string): string {
+export function postProcessDescription(description: string, partNumber: string): string {
     if (!description || description === 'NO_PART_NUMBER') {
         return description;
     }
@@ -1144,7 +1245,10 @@ function postProcessDescription(description: string, partNumber: string): string
     }
 
     // === REMOVE UNNECESSARY WORDS ===
-    processedDesc = processedDesc.replace(/\b(CHIP|CHP)\b/gi, '');
+    processedDesc = processedDesc
+        .replace(/\s*(CHIP|CHP)\s*/gi, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 
     // === STANDARDIZE SPECIAL VALUES AND RANGES ===
     processedDesc = processedDesc
@@ -1181,6 +1285,41 @@ function postProcessDescription(description: string, partNumber: string): string
 
     resistanceRules.forEach(([pattern, replacement]) => {
         processedDesc = processedDesc.replace(pattern, replacement);
+    });
+
+    // === CAPACITANCE STANDARDIZATION ===
+    const capacitanceRules: Array<[RegExp, string | ((match: string, value: string) => string)]> = [
+        // UF/uF/μF -> MF (1:1)
+        [/(\d+(?:\.\d+)?)\s*[uμ]F\b/gi, '$1MF'],
+        [/(\d+(?:\.\d+)?)\s*UF\b/gi, '$1MF'],
+        
+        // NF/nF -> MF or PF (выбираем более короткую запись)
+        [/(\d+(?:\.\d+)?)\s*[nN]F\b/gi, (match, value) => {
+            const numericValue = parseFloat(value);
+            // Если значение >= 100NF, конвертируем в MF (делим на 1000)
+            if (numericValue >= 100) {
+                return `${(numericValue / 1000).toFixed(2).replace(/\.?0+$/, '')}MF`;
+            }
+            // Если значение < 1NF, конвертируем в PF (умножаем на 1000)
+            else if (numericValue < 1) {
+                return `${(numericValue * 1000).toFixed(0)}PF`;
+            }
+            // Для значений от 1NF до 99NF - в PF
+            else {
+                return `${(numericValue * 1000).toFixed(0)}PF`;
+            }
+        }],
+        
+        // Ensure PF is uppercase
+        [/(\d+(?:\.\d+)?)\s*pf\b/gi, '$1PF']
+    ];
+
+    capacitanceRules.forEach(([pattern, replacement]) => {
+        if (typeof replacement === 'string') {
+            processedDesc = processedDesc.replace(pattern, replacement);
+        } else {
+            processedDesc = processedDesc.replace(pattern, replacement);
+        }
     });
 
     // === MOUNTING TYPE DETECTION AND ASSIGNMENT ===
@@ -1232,7 +1371,7 @@ function postProcessDescription(description: string, partNumber: string): string
     });
 
     processedDesc = processedDesc
-        .replace(/(\d+)\s+(UF|MF|PF|R|K|M|NH|MH|GHZ|MHZ|KHZ|W|MA|V)/gi, '$1$2')
+        .replace(/(\d+)\s+(UF|MF|PF|R|K|M|NH|MH|GHZ|MHZ|KHZ|W|MA|V|DB)/gi, '$1$2')
         .replace(/\s+/g, ' ');
 
     return processedDesc.trim();

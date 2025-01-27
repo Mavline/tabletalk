@@ -36,6 +36,18 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+// Тестовый маршрут
+app.get('/api/test', (req: Request, res: Response) => {
+    console.log('Test route hit');
+    res.json({ status: 'ok' });
+});
+
+// Логирование всех запросов
+app.use((req: Request, res: Response, next) => {
+    console.log(`${req.method} ${req.path}`);
+    next();
+});
+
 // Маршрут для получения заголовков файла
 app.post('/api/get-headers', upload.single('file'), async (req: Request, res: Response): Promise<void> => {
     try {
@@ -239,7 +251,8 @@ wss.on('connection', (ws: WebSocket) => {
     });
 });
 
-const PORT = process.env.PORT || 3002;
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+const PORT = process.env.PORT || 3000;
+
+server.listen(Number(PORT), () => {
+    console.log(`Server is running on port ${PORT}`);
 }); 

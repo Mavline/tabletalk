@@ -29,6 +29,9 @@ program
             const buffer = await fs.promises.readFile(inputPath);
             const processedBuffer = await processExcelBuffer(
                 buffer,
+                'Sheet1',
+                1,
+                2,
                 (current: number, total: number) => {
                     const percent = Math.round((current / total) * 100);
                     process.stdout.write(`\rПрогресс: ${percent}% (${current}/${total})`);

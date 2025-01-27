@@ -1,0 +1,22 @@
+run = "pnpm start"
+modules = ["nodejs-20:v20-20230824-1d5a030", "typescript-language-server"]
+hidden = [".config", "package-lock.json", "pnpm-lock.yaml"]
+
+[nix]
+channel = "stable-23_11"
+
+[deployment]
+build = ["sh", "-c", "pnpm install && pnpm build"]
+run = ["sh", "-c", "pnpm start"]
+deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[[ports]]
+localPort = 3002
+externalPort = 3002
+
+[languages.typescript]
+pattern = "**/{*.ts,*.js,*.tsx,*.jsx}"
